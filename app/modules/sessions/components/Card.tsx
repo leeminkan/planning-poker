@@ -25,11 +25,13 @@ export function Card({ onClick, isFlipped, isActive, content }: CardProps) {
             "flex items-center justify-center",
             "rounded-lg",
             "shadow-lg",
-            "bg-blue-500 hover:bg-blue-700",
+            content
+              ? "bg-blue-500 hover:bg-blue-700"
+              : "bg-gray-500 hover:bg-gray-700",
             "hover:cursor-pointer",
           ])}
         >
-          <h1 className="text-2xl">{content || "NONE"}</h1>
+          <h1 className="text-2xl">{content}</h1>
         </div>
       ) : (
         <div
@@ -38,7 +40,9 @@ export function Card({ onClick, isFlipped, isActive, content }: CardProps) {
             "flex items-center justify-center",
             "rounded-lg",
             "shadow-lg",
-            "bg-red-500 hover:bg-red-700",
+            content
+              ? "bg-red-500 hover:bg-red-700"
+              : "bg-gray-500 hover:bg-gray-700",
             "hover:cursor-pointer",
           ])}
         />
