@@ -2,7 +2,7 @@ import { Socket } from "socket.io";
 import {
   SocketHandlerInterface,
   SocketWithUser,
-} from "../../websocket.interfaces";
+} from "~/server/websocket.interfaces";
 import {
   SLE_DISCONNECT,
   SLE_JOIN_SESSION,
