@@ -1,8 +1,18 @@
+import { io } from "socket.io-client";
+import { useEffect } from "react";
+
 import { cn } from "~/lib/utils";
+import { Button } from "~/components/ui/button";
+import {
+  SLE_JOIN_SESSION,
+  SLE_PING,
+  SSE_INIT_SESSION,
+  SSE_PING,
+} from "~/shared/socket-event";
+import { SessionStateInterface } from "~/shared/session-state.interface";
 
 import { Card } from "../components/Card";
 import { useSessionStore } from "../stores/session.store";
-import { Button } from "~/components/ui/button";
 import { cards } from "../constants";
 import { ResultForm } from "../components/ResultForm";
 
@@ -12,8 +22,33 @@ export const SessionPage = ({ id }: { id: string }) => {
     isRevealed,
     players,
     averagePoint,
-    actions: { setActiveCard, setIsRevealed },
+    actions: { setActiveCard, setIsRevealed, initSessionState },
   } = useSessionStore();
+
+  useEffect(() => {
+    const socket = io("http://localhost:3000/sessions");
+
+    socket.on("connect", () => {
+      socket.emit(SLE_PING, "Ping from client!");
+      socket.emit(SLE_JOIN_SESSION, id);
+    });
+    socket.on(SSE_PING, (value) => {
+      console.log("Received", value);
+    });
+
+    socket.on(SSE_INIT_SESSION, (sessionState: SessionStateInterface) => {
+      console.log("Received", sessionState);
+      initSessionState(sessionState);
+    });
+
+    socket.on("disconnect", () => {
+      console.error("Ops, something went wrong");
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [id, initSessionState]);
 
   return (
     <div className="w-full">
@@ -56,7 +91,7 @@ export const SessionPage = ({ id }: { id: string }) => {
               <Card
                 key={player.id}
                 isFlipped={isRevealed}
-                content={player.currentCardContent}
+                content={player.currentCard}
               ></Card>
             ))}
           </div>

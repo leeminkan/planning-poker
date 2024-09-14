@@ -23,6 +23,7 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
+      "~/shared/*": ["./shared/*"],
       "~/*": ["./app/*"]
     },
 

@@ -15,7 +15,7 @@ export default defineConfig({
       buildEnd: async () => {
         await esbuild
           .build({
-            alias: { "~": "./app" },
+            alias: { "~/shared": "./shared", "~": "./app" },
             outfile: "build/server/index.js",
             entryPoints: ["server/index.ts"],
             external: ["./build/server/*"],
