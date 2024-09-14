@@ -7,6 +7,7 @@ import {
   SLE_DISCONNECT,
   SLE_JOIN_SESSION,
   SLE_PING,
+  SLE_SET_IS_REVEALED_SESSION,
   SSE_INIT_SESSION,
   SSE_PING,
   SSE_SYNC_SESSION,
@@ -47,6 +48,32 @@ export class SessionSocket implements SocketHandlerInterface {
         socketWithUser.join(socketRoomId);
         socketWithUser.emit(SSE_SYNC_USER, socketWithUser.user);
         socketWithUser.emit(SSE_INIT_SESSION, sessionState);
+        socketWithUser.to(socketRoomId).emit(SSE_SYNC_SESSION, sessionState);
+      }
+    );
+
+    socketWithUser.on(
+      SLE_SET_IS_REVEALED_SESSION,
+      ({
+        sessionId,
+        isRevealed,
+      }: {
+        sessionId: string;
+        isRevealed: boolean;
+      }) => {
+        console.log("test");
+        // validate
+        if (!sessionId) return;
+
+        const sessionState = sessionStateRepository.findById(sessionId);
+
+        if (!sessionState) {
+          return;
+        }
+
+        sessionState.setIsRevealed(isRevealed);
+
+        const socketRoomId = getFormattedSessionRoom(sessionState.id);
         socketWithUser.to(socketRoomId).emit(SSE_SYNC_SESSION, sessionState);
       }
     );

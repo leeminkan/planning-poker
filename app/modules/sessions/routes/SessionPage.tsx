@@ -1,4 +1,3 @@
-import { io } from "socket.io-client";
 import { useEffect } from "react";
 import { useNavigate } from "@remix-run/react";
 
@@ -7,6 +6,7 @@ import { Button } from "~/components/ui/button";
 import {
   SLE_JOIN_SESSION,
   SLE_PING,
+  SLE_SET_IS_REVEALED_SESSION,
   SSE_INIT_SESSION,
   SSE_PING,
   SSE_SYNC_SESSION,
@@ -21,6 +21,7 @@ import { ResultForm } from "../components/ResultForm";
 import { useSessionStore } from "../stores/session.store";
 import { cards } from "../constants";
 import { useSessionState } from "../queries/useSessionState";
+import SocketClient from "../socket-client";
 
 export const SessionPage = ({ id }: { id: string }) => {
   const { isLoading, isError } = useSessionState({ id });
@@ -52,9 +53,10 @@ export const GameLayout = ({ id }: { id: string }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const socket = io("http://localhost:3000/sessions");
+    const socket = SocketClient.init("http://localhost:3000/sessions");
 
     socket.on("connect", () => {
+      console.log("tet");
       socket.emit(SLE_PING, "Ping from client!");
       socket.emit(SLE_JOIN_SESSION, {
         sessionId: id,
@@ -85,7 +87,7 @@ export const GameLayout = ({ id }: { id: string }) => {
     });
 
     return () => {
-      socket.disconnect();
+      SocketClient.disconnect();
     };
   }, [id, name, syncSessionState, syncUser]);
 
@@ -108,7 +110,17 @@ export const GameLayout = ({ id }: { id: string }) => {
       <div title="page-body" className="w-full h-full mt-4">
         <div className="flex gap-2 justify-center">
           {!isRevealed ? (
-            <Button onClick={() => setIsRevealed(true)}>Reveal</Button>
+            <Button
+              onClick={() => {
+                setIsRevealed(true);
+                SocketClient.getInstance().emit(SLE_SET_IS_REVEALED_SESSION, {
+                  sessionId: id,
+                  isRevealed: true,
+                });
+              }}
+            >
+              Reveal
+            </Button>
           ) : (
             <ResultForm
               averagePoint={averagePoint}

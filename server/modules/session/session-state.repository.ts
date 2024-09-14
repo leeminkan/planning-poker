@@ -33,6 +33,10 @@ class SessionState implements SessionStateInterface {
   removePlayer(playerId: string) {
     this.players = this.players.filter((player) => player.id !== playerId);
   }
+
+  setIsRevealed(isRevealed: boolean) {
+    this.isRevealed = isRevealed;
+  }
 }
 
 class SessionStateRepository {
