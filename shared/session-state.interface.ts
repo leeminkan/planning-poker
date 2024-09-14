@@ -3,6 +3,7 @@ export interface SessionStateInterface {
   isRevealed: boolean;
   players: {
     id: string;
+    name?: string;
     currentCard: string | null;
   }[];
   averagePoint: number;

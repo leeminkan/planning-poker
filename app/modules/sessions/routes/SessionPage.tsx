@@ -138,11 +138,18 @@ export const GameLayout = ({ id }: { id: string }) => {
         >
           <div className={cn(["flex gap-2 justify-center", "py-4"])}>
             {players.map((player) => (
-              <Card
+              <div
                 key={player.id}
-                isFlipped={isRevealed}
-                content={player.currentCard}
-              ></Card>
+                className={cn([
+                  "flex flex-col gap-2 justify-center items-center",
+                ])}
+              >
+                <Card
+                  isFlipped={isRevealed}
+                  content={player.currentCard}
+                ></Card>
+                <div>{player.name || "NO_NAME"}</div>
+              </div>
             ))}
           </div>
           {!isRevealed && (

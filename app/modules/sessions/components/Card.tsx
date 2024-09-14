@@ -29,7 +29,7 @@ export function Card({ onClick, isFlipped, isActive, content }: CardProps) {
             "hover:cursor-pointer",
           ])}
         >
-          <h1 className="text-2xl">{content}</h1>
+          <h1 className="text-2xl">{content || "NONE"}</h1>
         </div>
       ) : (
         <div

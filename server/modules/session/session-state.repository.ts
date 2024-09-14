@@ -1,12 +1,14 @@
 import { v4 as uuidV4 } from "uuid";
 import { SessionStateInterface } from "~/shared/session-state.interface";
 
+type Player = {
+  id: string;
+  name?: string;
+  currentCard: string | null;
+};
 class SessionState implements SessionStateInterface {
   id: string;
-  players: {
-    id: string;
-    currentCard: string | null;
-  }[] = [];
+  players: Player[] = [];
   isRevealed: boolean = false;
   averagePoint: number = 0;
   createdAt: Date;
@@ -18,16 +20,17 @@ class SessionState implements SessionStateInterface {
     this.updatedAt = new Date();
   }
 
-  addNewPlayer(playerId: string) {
-    const isExisted = this.players.find((player) => player.id === playerId);
+  addNewPlayer(playerParam: Omit<Player, "currentCard">) {
+    const isExisted = this.players.find(
+      (player) => player.id === playerParam.id
+    );
     if (!isExisted) {
       this.players.push({
-        id: playerId,
+        ...playerParam,
         currentCard: null,
       });
     }
     this.updatedAt = new Date();
-
     return this;
   }
 
@@ -49,6 +52,7 @@ class SessionState implements SessionStateInterface {
       return;
     }
     player.currentCard = card;
+    this.updatedAt = new Date();
     return this;
   }
 

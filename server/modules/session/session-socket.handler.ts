@@ -51,11 +51,14 @@ export class SessionSocket implements SocketHandlerInterface {
           return;
         }
 
-        sessionState.addNewPlayer(socketWithUser.user.id);
         socketWithUser.user.setCurrentSession(sessionState.id);
         if (name) {
           socketWithUser.user.setName(name);
         }
+        sessionState.addNewPlayer({
+          id: socketWithUser.user.id,
+          name: socketWithUser.user.name,
+        });
 
         const socketRoomId = getFormattedSessionRoom(sessionState.id);
         socketWithUser.join(socketRoomId);
