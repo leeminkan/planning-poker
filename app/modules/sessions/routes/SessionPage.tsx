@@ -1,5 +1,6 @@
 import { io } from "socket.io-client";
 import { useEffect } from "react";
+import { useNavigate } from "@remix-run/react";
 
 import { cn } from "~/lib/utils";
 import { Button } from "~/components/ui/button";
@@ -8,6 +9,7 @@ import {
   SLE_PING,
   SSE_INIT_SESSION,
   SSE_PING,
+  SSE_SYNC_SESSION,
   SSE_SYNC_USER,
 } from "~/shared/socket-event";
 import { SessionStateInterface } from "~/shared/session-state.interface";
@@ -19,7 +21,6 @@ import { ResultForm } from "../components/ResultForm";
 import { useSessionStore } from "../stores/session.store";
 import { cards } from "../constants";
 import { useSessionState } from "../queries/useSessionState";
-import { useNavigate } from "@remix-run/react";
 
 export const SessionPage = ({ id }: { id: string }) => {
   const { isLoading, isError } = useSessionState({ id });
@@ -66,6 +67,11 @@ export const GameLayout = ({ id }: { id: string }) => {
 
     socket.on(SSE_INIT_SESSION, (sessionState: SessionStateInterface) => {
       console.log("Received SSE_INIT_SESSION", sessionState);
+      syncSessionState(sessionState);
+    });
+
+    socket.on(SSE_SYNC_SESSION, (sessionState: SessionStateInterface) => {
+      console.log("Received SSE_SYNC_SESSION", sessionState);
       syncSessionState(sessionState);
     });
 

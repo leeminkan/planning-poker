@@ -4,6 +4,7 @@ export const SLE_PING = "SLE_PING";
 // SESSION
 export const SSE_INIT_SESSION = "SSE_INIT_SESSION";
 export const SLE_JOIN_SESSION = "SLE_JOIN_SESSION";
+export const SSE_SYNC_SESSION = "SSE_SYNC_SESSION";
 
 // USER
 export const SSE_SYNC_USER = "SSE_SYNC_USER";

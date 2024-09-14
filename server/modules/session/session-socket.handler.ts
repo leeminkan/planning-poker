@@ -9,10 +9,12 @@ import {
   SLE_PING,
   SSE_INIT_SESSION,
   SSE_PING,
+  SSE_SYNC_SESSION,
   SSE_SYNC_USER,
 } from "~/shared/socket-event";
 import { sessionStateRepository } from "./session-state.repository";
 import { userSessionRepository } from "../user-session/user-session.repository";
+import { getFormattedSessionRoom } from "./utils";
 
 export class SessionSocket implements SocketHandlerInterface {
   handleConnection(socket: Socket) {
@@ -40,9 +42,12 @@ export class SessionSocket implements SocketHandlerInterface {
         if (name) {
           socketWithUser.user.setName(name);
         }
-        socket.emit(SSE_SYNC_USER, socketWithUser.user);
 
+        const socketRoomId = getFormattedSessionRoom(sessionState.id);
+        socketWithUser.join(socketRoomId);
+        socketWithUser.emit(SSE_SYNC_USER, socketWithUser.user);
         socketWithUser.emit(SSE_INIT_SESSION, sessionState);
+        socketWithUser.to(socketRoomId).emit(SSE_SYNC_SESSION, sessionState);
       }
     );
 
@@ -54,6 +59,9 @@ export class SessionSocket implements SocketHandlerInterface {
         );
         if (!sessionState) return;
         sessionState.removePlayer(socketWithUser.user.id);
+
+        const socketRoomId = getFormattedSessionRoom(sessionState.id);
+        socketWithUser.to(socketRoomId).emit(SSE_SYNC_SESSION, sessionState);
       }
     });
   }

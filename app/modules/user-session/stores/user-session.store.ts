@@ -8,6 +8,7 @@ type UserSessionState = {
 };
 type UserSessionAction = {
   syncUser: (userSessionState: UserSessionInterface) => void;
+  setName: (name: string) => void;
 };
 type UserSessionStore = UserSessionState & {
   actions: UserSessionAction;
@@ -19,5 +20,6 @@ export const useUserSessionStore = create<UserSessionStore>((set) => ({
   actions: {
     syncUser: (state: UserSessionInterface) =>
       set((userSessionState) => ({ ...state, ...userSessionState })),
+    setName: (name: string) => set((state) => ({ ...state, name })),
   },
 }));

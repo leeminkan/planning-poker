@@ -15,6 +15,7 @@ export const useSessionState = ({ id }: UseSessionStateParams) => {
       syncSessionState(data);
       return data;
     },
+    cacheTime: 0,
   });
 
   return query;

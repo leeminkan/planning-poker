@@ -8,7 +8,7 @@ import { useStartNewSessionMutation } from "~/modules/sessions/mutations/useCrea
 
 export const HomePage = () => {
   const navigate = useNavigate();
-  const { mutate, isLoading } = useStartNewSessionMutation({
+  const { mutateAsync, isLoading } = useStartNewSessionMutation({
     onSuccess: (data) => {
       return navigate(`/sessions/${data.id}`);
     },
@@ -26,8 +26,8 @@ export const HomePage = () => {
       >
         <div>Home</div>
         <Button
-          onClick={() => {
-            mutate();
+          onClick={async () => {
+            await mutateAsync();
           }}
           disabled={isLoading}
         >

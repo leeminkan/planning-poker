@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useNavigate } from "@remix-run/react";
 
 import { Button } from "~/components/ui/button";
 import {
@@ -14,22 +15,36 @@ import { Input } from "~/components/ui/input";
 
 import { formSchema } from "./types";
 import { cn } from "~/lib/utils";
+import { useUserSessionStore } from "~/modules/user-session/stores/user-session.store";
+import { useSessionStateMutation } from "~/modules/sessions/mutations/useSessionStateMutation";
 
 export function ConfirmationForm() {
+  const {
+    name,
+    actions: { setName },
+  } = useUserSessionStore();
+  const navigate = useNavigate();
+
+  const { mutateAsync, isLoading } = useSessionStateMutation({
+    onSuccess: (data) => {
+      return navigate(`/sessions/${data.id}`);
+    },
+  });
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
+      name,
       sessionId: "",
     },
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    alert(values.name);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log("test");
+    setName(values.name);
+    await mutateAsync(values.sessionId);
   }
 
   return (
@@ -66,7 +81,9 @@ export function ConfirmationForm() {
             </FormItem>
           )}
         />
-        <Button type="submit">Join!</Button>
+        <Button type="submit" disabled={isLoading}>
+          Join!
+        </Button>
       </form>
     </Form>
   );
