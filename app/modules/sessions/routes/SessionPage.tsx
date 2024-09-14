@@ -154,7 +154,7 @@ export const GameLayout = ({ id }: { id: string }) => {
                 "pointer-events-auto",
               ])}
             >
-              <div className="flex items-center">You({name}):</div>
+              <div className="flex items-center">You({name || "NO_NAME"}):</div>
               {cards.map((card) => (
                 <Card
                   key={card}

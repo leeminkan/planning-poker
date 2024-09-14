@@ -3,12 +3,11 @@ import { UserSessionInterface } from "~/shared/user-session.interface";
 
 export class UserSession implements UserSessionInterface {
   id: string;
-  name: string;
+  name?: string = undefined;
   currentSessionId?: string = undefined;
 
   constructor() {
     this.id = uuidv4();
-    this.name = "NO_NAME";
   }
 
   setCurrentSession(sessionId: string) {
