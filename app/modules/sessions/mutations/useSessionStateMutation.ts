@@ -1,4 +1,7 @@
 import { useMutation } from "react-query";
+import { AxiosError } from "axios";
+import { toast } from "react-toastify";
+
 import { getSessionState } from "../services/session.service";
 import { SessionStateInterface } from "~/shared/session-state.interface";
 
@@ -14,6 +17,11 @@ export const useSessionStateMutation = ({
     },
     {
       onSuccess: onSuccess,
+      onError: (error: AxiosError) => {
+        if (error.status === 404) {
+          toast.error("Session ID not found!");
+        }
+      },
     }
   );
 

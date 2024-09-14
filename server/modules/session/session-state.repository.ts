@@ -1,19 +1,19 @@
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidV4 } from "uuid";
 import { SessionStateInterface } from "~/shared/session-state.interface";
 
 class SessionState implements SessionStateInterface {
   id: string;
-  isRevealed: boolean = false;
   players: {
     id: string;
     currentCard: string | null;
   }[] = [];
+  isRevealed: boolean = false;
   averagePoint: number = 0;
   createdAt: Date;
   updatedAt: Date;
 
   constructor() {
-    this.id = uuidv4();
+    this.id = uuidV4();
     this.createdAt = new Date();
     this.updatedAt = new Date();
   }
@@ -26,16 +26,28 @@ class SessionState implements SessionStateInterface {
         currentCard: null,
       });
     }
+    this.updatedAt = new Date();
 
     return this;
   }
 
   removePlayer(playerId: string) {
     this.players = this.players.filter((player) => player.id !== playerId);
+    this.updatedAt = new Date();
+    return this;
   }
 
   setIsRevealed(isRevealed: boolean) {
     this.isRevealed = isRevealed;
+    this.updatedAt = new Date();
+    return this;
+  }
+
+  reset() {
+    this.isRevealed = false;
+    this.averagePoint = 0;
+    this.updatedAt = new Date();
+    return this;
   }
 }
 

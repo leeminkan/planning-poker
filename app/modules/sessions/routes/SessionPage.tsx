@@ -6,14 +6,17 @@ import { Button } from "~/components/ui/button";
 import {
   SLE_JOIN_SESSION,
   SLE_PING,
-  SLE_SET_IS_REVEALED_SESSION,
   SSE_INIT_SESSION,
   SSE_PING,
   SSE_SYNC_SESSION,
   SSE_SYNC_USER,
 } from "~/shared/socket-event";
-import { SessionStateInterface } from "~/shared/session-state.interface";
-import { UserSessionInterface } from "~/shared/user-session.interface";
+import {
+  SLEJoinSessionPayload,
+  SSEInitSessionPayload,
+  SSESyncSessionPayload,
+  SSESyncUserPayload,
+} from "~/shared/socket-event.types";
 import { useUserSessionStore } from "~/modules/user-session/stores/user-session.store";
 
 import { Card } from "../components/Card";
@@ -43,7 +46,7 @@ export const GameLayout = ({ id }: { id: string }) => {
     isRevealed,
     players,
     averagePoint,
-    actions: { setActiveCard, setIsRevealed, syncSessionState },
+    actions: { setActiveCard, setIsRevealed, syncSessionState, reset },
   } = useSessionStore();
   const {
     name,
@@ -56,28 +59,27 @@ export const GameLayout = ({ id }: { id: string }) => {
     const socket = SocketClient.init("http://localhost:3000/sessions");
 
     socket.on("connect", () => {
-      console.log("tet");
       socket.emit(SLE_PING, "Ping from client!");
       socket.emit(SLE_JOIN_SESSION, {
         sessionId: id,
         name,
-      });
+      } as SLEJoinSessionPayload);
     });
     socket.on(SSE_PING, (value) => {
       console.log("Received SSE_PING", value);
     });
 
-    socket.on(SSE_INIT_SESSION, (sessionState: SessionStateInterface) => {
+    socket.on(SSE_INIT_SESSION, (sessionState: SSEInitSessionPayload) => {
       console.log("Received SSE_INIT_SESSION", sessionState);
       syncSessionState(sessionState);
     });
 
-    socket.on(SSE_SYNC_SESSION, (sessionState: SessionStateInterface) => {
+    socket.on(SSE_SYNC_SESSION, (sessionState: SSESyncSessionPayload) => {
       console.log("Received SSE_SYNC_SESSION", sessionState);
       syncSessionState(sessionState);
     });
 
-    socket.on(SSE_SYNC_USER, (userSession: UserSessionInterface) => {
+    socket.on(SSE_SYNC_USER, (userSession: SSESyncUserPayload) => {
       console.log("Received SSE_SYNC_USER", userSession);
       syncUser(userSession);
     });
@@ -113,10 +115,6 @@ export const GameLayout = ({ id }: { id: string }) => {
             <Button
               onClick={() => {
                 setIsRevealed(true);
-                SocketClient.getInstance().emit(SLE_SET_IS_REVEALED_SESSION, {
-                  sessionId: id,
-                  isRevealed: true,
-                });
               }}
             >
               Reveal
@@ -125,8 +123,7 @@ export const GameLayout = ({ id }: { id: string }) => {
             <ResultForm
               averagePoint={averagePoint}
               onReset={() => {
-                setIsRevealed(false);
-                setActiveCard(null);
+                reset();
               }}
             ></ResultForm>
           )}

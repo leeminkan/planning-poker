@@ -1,4 +1,5 @@
 import { Socket } from "socket.io";
+
 import {
   SocketHandlerInterface,
   SocketWithUser,
@@ -7,14 +8,23 @@ import {
   SLE_DISCONNECT,
   SLE_JOIN_SESSION,
   SLE_PING,
+  SLE_RESET_SESSION,
   SLE_SET_IS_REVEALED_SESSION,
   SSE_INIT_SESSION,
   SSE_PING,
   SSE_SYNC_SESSION,
   SSE_SYNC_USER,
 } from "~/shared/socket-event";
-import { sessionStateRepository } from "./session-state.repository";
+import {
+  SLEJoinSessionPayload,
+  SLEResetSessionPayload,
+  SLESetIsRevealedSessionPayload,
+  SSESyncSessionPayload,
+  SSESyncUserPayload,
+} from "~/shared/socket-event.types";
+
 import { userSessionRepository } from "../user-session/user-session.repository";
+import { sessionStateRepository } from "./session-state.repository";
 import { getFormattedSessionRoom } from "./utils";
 
 export class SessionSocket implements SocketHandlerInterface {
@@ -28,7 +38,8 @@ export class SessionSocket implements SocketHandlerInterface {
 
     socketWithUser.on(
       SLE_JOIN_SESSION,
-      ({ sessionId, name }: { sessionId: string; name?: string }) => {
+      ({ sessionId, name }: SLEJoinSessionPayload) => {
+        console.log("SLE_JOIN_SESSION", { sessionId, name });
         // validate
         if (!sessionId) return;
 
@@ -46,22 +57,24 @@ export class SessionSocket implements SocketHandlerInterface {
 
         const socketRoomId = getFormattedSessionRoom(sessionState.id);
         socketWithUser.join(socketRoomId);
-        socketWithUser.emit(SSE_SYNC_USER, socketWithUser.user);
-        socketWithUser.emit(SSE_INIT_SESSION, sessionState);
-        socketWithUser.to(socketRoomId).emit(SSE_SYNC_SESSION, sessionState);
+        socketWithUser.emit(
+          SSE_SYNC_USER,
+          socketWithUser.user as SSESyncUserPayload
+        );
+        socketWithUser.emit(
+          SSE_INIT_SESSION,
+          sessionState as SSESyncSessionPayload
+        );
+        socketWithUser
+          .to(socketRoomId)
+          .emit(SSE_SYNC_SESSION, sessionState as SSESyncSessionPayload);
       }
     );
 
     socketWithUser.on(
       SLE_SET_IS_REVEALED_SESSION,
-      ({
-        sessionId,
-        isRevealed,
-      }: {
-        sessionId: string;
-        isRevealed: boolean;
-      }) => {
-        console.log("test");
+      ({ sessionId, isRevealed }: SLESetIsRevealedSessionPayload) => {
+        console.log("SLE_SET_IS_REVEALED_SESSION", { sessionId, isRevealed });
         // validate
         if (!sessionId) return;
 
@@ -74,7 +87,31 @@ export class SessionSocket implements SocketHandlerInterface {
         sessionState.setIsRevealed(isRevealed);
 
         const socketRoomId = getFormattedSessionRoom(sessionState.id);
-        socketWithUser.to(socketRoomId).emit(SSE_SYNC_SESSION, sessionState);
+        socketWithUser
+          .to(socketRoomId)
+          .emit(SSE_SYNC_SESSION, sessionState as SSESyncSessionPayload);
+      }
+    );
+
+    socketWithUser.on(
+      SLE_RESET_SESSION,
+      ({ sessionId }: SLEResetSessionPayload) => {
+        console.log("SLE_RESET_SESSION", { sessionId });
+        // validate
+        if (!sessionId) return;
+
+        const sessionState = sessionStateRepository.findById(sessionId);
+
+        if (!sessionState) {
+          return;
+        }
+
+        sessionState.reset();
+
+        const socketRoomId = getFormattedSessionRoom(sessionState.id);
+        socketWithUser
+          .to(socketRoomId)
+          .emit(SSE_SYNC_SESSION, sessionState as SSESyncSessionPayload);
       }
     );
 
@@ -88,7 +125,9 @@ export class SessionSocket implements SocketHandlerInterface {
         sessionState.removePlayer(socketWithUser.user.id);
 
         const socketRoomId = getFormattedSessionRoom(sessionState.id);
-        socketWithUser.to(socketRoomId).emit(SSE_SYNC_SESSION, sessionState);
+        socketWithUser
+          .to(socketRoomId)
+          .emit(SSE_SYNC_SESSION, sessionState as SSESyncSessionPayload);
       }
     });
   }
@@ -102,7 +141,7 @@ export class SessionSocket implements SocketHandlerInterface {
   initUser(socket: Socket): SocketWithUser {
     const user = userSessionRepository.create();
     (socket as SocketWithUser).user = user;
-    socket.emit(SSE_SYNC_USER, user);
+    socket.emit(SSE_SYNC_USER, user as SSESyncUserPayload);
     return socket as SocketWithUser;
   }
 }

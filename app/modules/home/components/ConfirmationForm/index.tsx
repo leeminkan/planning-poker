@@ -25,7 +25,7 @@ export function ConfirmationForm() {
   } = useUserSessionStore();
   const navigate = useNavigate();
 
-  const { mutateAsync, isLoading } = useSessionStateMutation({
+  const { mutate, isLoading } = useSessionStateMutation({
     onSuccess: (data) => {
       return navigate(`/sessions/${data.id}`);
     },
@@ -42,9 +42,8 @@ export function ConfirmationForm() {
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("test");
     setName(values.name);
-    await mutateAsync(values.sessionId);
+    mutate(values.sessionId);
   }
 
   return (
