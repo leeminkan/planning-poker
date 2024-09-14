@@ -5,6 +5,7 @@ import {
   SocketWithUser,
 } from "~/server/websocket.interfaces";
 import {
+  SLE_CHOOSE_CARD,
   SLE_DISCONNECT,
   SLE_JOIN_SESSION,
   SLE_PING,
@@ -16,6 +17,7 @@ import {
   SSE_SYNC_USER,
 } from "~/shared/socket-event";
 import {
+  SLEChooseCardPayload,
   SLEJoinSessionPayload,
   SLEResetSessionPayload,
   SLESetIsRevealedSessionPayload,
@@ -107,6 +109,28 @@ export class SessionSocket implements SocketHandlerInterface {
         }
 
         sessionState.reset();
+
+        const socketRoomId = getFormattedSessionRoom(sessionState.id);
+        socketWithUser
+          .to(socketRoomId)
+          .emit(SSE_SYNC_SESSION, sessionState as SSESyncSessionPayload);
+      }
+    );
+
+    socketWithUser.on(
+      SLE_CHOOSE_CARD,
+      ({ sessionId, card }: SLEChooseCardPayload) => {
+        console.log("SLE_CHOOSE_CARD", { sessionId });
+        // validate
+        if (!sessionId) return;
+
+        const sessionState = sessionStateRepository.findById(sessionId);
+
+        if (!sessionState) {
+          return;
+        }
+
+        sessionState.chooseCardByPlayerId(socketWithUser.user.id, card);
 
         const socketRoomId = getFormattedSessionRoom(sessionState.id);
         socketWithUser

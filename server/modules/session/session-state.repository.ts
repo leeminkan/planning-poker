@@ -43,7 +43,20 @@ class SessionState implements SessionStateInterface {
     return this;
   }
 
+  chooseCardByPlayerId(playerId: string, card: string) {
+    const player = this.players.find((player) => player.id === playerId);
+    if (!player) {
+      return;
+    }
+    player.currentCard = card;
+    return this;
+  }
+
   reset() {
+    this.players = this.players.map((player) => {
+      player.currentCard = null;
+      return player;
+    });
     this.isRevealed = false;
     this.averagePoint = 0;
     this.updatedAt = new Date();

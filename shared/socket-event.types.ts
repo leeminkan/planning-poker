@@ -7,6 +7,7 @@ export type SLESetIsRevealedSessionPayload = {
   isRevealed: boolean;
 };
 export type SLEResetSessionPayload = { sessionId: string };
+export type SLEChooseCardPayload = { sessionId: string; card: string };
 export type SSESyncSessionPayload = SessionStateInterface;
 export type SSEInitSessionPayload = SessionStateInterface;
 export type SSESyncUserPayload = UserSessionInterface;

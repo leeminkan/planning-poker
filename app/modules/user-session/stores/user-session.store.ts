@@ -18,8 +18,8 @@ export const useUserSessionStore = create<UserSessionStore>((set) => ({
   name: "",
   currentSessionId: undefined,
   actions: {
-    syncUser: (state: UserSessionInterface) =>
-      set((userSessionState) => ({ ...state, ...userSessionState })),
+    syncUser: (userSessionState: UserSessionInterface) =>
+      set((state) => ({ ...state, ...userSessionState })),
     setName: (name: string) => set((state) => ({ ...state, name })),
   },
 }));

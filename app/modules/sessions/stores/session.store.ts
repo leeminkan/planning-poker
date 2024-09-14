@@ -2,28 +2,21 @@ import { create } from "zustand";
 
 import { SessionStateInterface } from "~/shared/session-state.interface";
 import {
+  SLE_CHOOSE_CARD,
   SLE_RESET_SESSION,
   SLE_SET_IS_REVEALED_SESSION,
 } from "~/shared/socket-event";
 import {
+  SLEChooseCardPayload,
   SLEResetSessionPayload,
   SLESetIsRevealedSessionPayload,
 } from "~/shared/socket-event.types";
 
 import SocketClient from "../socket-client";
 
-type SessionState = {
-  id: string;
-  activeCard: string | null;
-  isRevealed: boolean;
-  players: {
-    id: string;
-    currentCard: string | null;
-  }[];
-  averagePoint: number;
-};
+type SessionState = SessionStateInterface;
 type SessionAction = {
-  setActiveCard: (activeCard: SessionState["activeCard"]) => void;
+  chooseCardByPlayerId: (playerId: string, card: string) => void;
   setIsRevealed: (isRevealed: SessionState["isRevealed"]) => void;
   syncSessionState: (sessionState: SessionStateInterface) => void;
   reset: () => void;
@@ -37,9 +30,21 @@ export const useSessionStore = create<SessionStore>((set) => ({
   isRevealed: false,
   averagePoint: 0,
   players: [],
+  createdAt: new Date(),
+  updatedAt: new Date(),
   actions: {
-    setActiveCard: (activeCard: SessionState["activeCard"]) =>
-      set((state) => ({ ...state, activeCard })),
+    chooseCardByPlayerId: (playerId: string, card: string) =>
+      set((state) => {
+        SocketClient.getInstance().emit(SLE_CHOOSE_CARD, {
+          sessionId: state.id,
+          card,
+        } as SLEChooseCardPayload);
+        const player = state.players.find((player) => player.id === playerId);
+        if (player) {
+          player.currentCard = card;
+        }
+        return { ...state };
+      }),
     setIsRevealed: (isRevealed: SessionState["isRevealed"]) => {
       set((state) => {
         SocketClient.getInstance().emit(SLE_SET_IS_REVEALED_SESSION, {
@@ -56,10 +61,15 @@ export const useSessionStore = create<SessionStore>((set) => ({
         SocketClient.getInstance().emit(SLE_RESET_SESSION, {
           sessionId: state.id,
         } as SLEResetSessionPayload);
+        const players = state.players.map((player) => {
+          player.currentCard = null;
+          return player;
+        });
         return {
           ...state,
           isRevealed: false,
           averagePoint: 0,
+          players,
         };
       }),
   },

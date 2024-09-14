@@ -42,16 +42,17 @@ export const SessionPage = ({ id }: { id: string }) => {
 
 export const GameLayout = ({ id }: { id: string }) => {
   const {
-    activeCard,
     isRevealed,
     players,
     averagePoint,
-    actions: { setActiveCard, setIsRevealed, syncSessionState, reset },
+    actions: { chooseCardByPlayerId, setIsRevealed, syncSessionState, reset },
   } = useSessionStore();
   const {
+    id: userId,
     name,
     actions: { syncUser },
   } = useUserSessionStore();
+  const player = players.find((player) => player.id === userId);
 
   const navigate = useNavigate();
 
@@ -158,9 +159,11 @@ export const GameLayout = ({ id }: { id: string }) => {
                 <Card
                   key={card}
                   isFlipped={true}
-                  isActive={activeCard === card}
+                  isActive={player?.currentCard === card}
                   content={card}
-                  onClick={() => setActiveCard(card)}
+                  onClick={() =>
+                    player && chooseCardByPlayerId(player.id, card)
+                  }
                 ></Card>
               ))}
             </div>
