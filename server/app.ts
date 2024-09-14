@@ -1,8 +1,9 @@
 import { createRequestHandler } from "@remix-run/express";
 import { type ServerBuild } from "@remix-run/node";
 import compression from "compression";
-import express from "express";
+import express, { Router } from "express";
 import morgan from "morgan";
+import { sessionRouter } from "./modules/session/session.router.js";
 
 const viteDevServer =
   process.env.NODE_ENV === "production"
@@ -51,6 +52,11 @@ async function getBuild() {
     return { error: error, build: null as unknown as ServerBuild };
   }
 }
+
+// router
+const rootRouter = Router();
+rootRouter.use("/sessions", sessionRouter);
+app.use("/api", rootRouter);
 
 // handle SSR requests
 app.all(

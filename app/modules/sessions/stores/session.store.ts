@@ -13,7 +13,7 @@ type SessionState = {
 type SessionAction = {
   setActiveCard: (activeCard: SessionState["activeCard"]) => void;
   setIsRevealed: (isRevealed: SessionState["isRevealed"]) => void;
-  initSessionState: (sessionState: SessionStateInterface) => void;
+  syncSessionState: (sessionState: SessionStateInterface) => void;
 };
 type SessionStore = SessionState & {
   actions: SessionAction;
@@ -28,7 +28,7 @@ export const useSessionStore = create<SessionStore>((set) => ({
       set((state) => ({ ...state, activeCard })),
     setIsRevealed: (isRevealed: SessionState["isRevealed"]) =>
       set((state) => ({ ...state, isRevealed })),
-    initSessionState: (sessionState: SessionStateInterface) =>
+    syncSessionState: (sessionState: SessionStateInterface) =>
       set((state) => ({ ...state, ...sessionState })),
   },
 }));

@@ -9,9 +9,10 @@ import {
   SLE_PING,
   SSE_INIT_SESSION,
   SSE_PING,
+  SSE_SYNC_USER,
 } from "~/shared/socket-event";
 import { sessionStateRepository } from "./session-state.repository";
-import { userRepository } from "../user/user.repository";
+import { userSessionRepository } from "../user-session/user-session.repository";
 
 export class SessionSocket implements SocketHandlerInterface {
   handleConnection(socket: Socket) {
@@ -22,21 +23,28 @@ export class SessionSocket implements SocketHandlerInterface {
       console.log("Received", value);
     });
 
-    socketWithUser.on(SLE_JOIN_SESSION, (sessionId: string) => {
-      // validate
-      if (!sessionId) return;
+    socketWithUser.on(
+      SLE_JOIN_SESSION,
+      ({ sessionId, name }: { sessionId: string; name?: string }) => {
+        // validate
+        if (!sessionId) return;
 
-      let sessionState = sessionStateRepository.findById(sessionId);
+        const sessionState = sessionStateRepository.findById(sessionId);
 
-      if (!sessionState) {
-        sessionState = sessionStateRepository.create(sessionId);
+        if (!sessionState) {
+          return;
+        }
+
+        sessionState.addNewPlayer(socketWithUser.user.id);
+        socketWithUser.user.setCurrentSession(sessionState.id);
+        if (name) {
+          socketWithUser.user.setName(name);
+        }
+        socket.emit(SSE_SYNC_USER, socketWithUser.user);
+
+        socketWithUser.emit(SSE_INIT_SESSION, sessionState);
       }
-
-      sessionState.addNewPlayer(socketWithUser.user.id);
-      socketWithUser.user.setCurrentSession(sessionId);
-
-      socketWithUser.emit(SSE_INIT_SESSION, sessionState);
-    });
+    );
 
     socketWithUser.on(SLE_DISCONNECT, () => {
       console.log("CLIENT DISCONNECT", socketWithUser.user.id);
@@ -57,8 +65,9 @@ export class SessionSocket implements SocketHandlerInterface {
   }
 
   initUser(socket: Socket): SocketWithUser {
-    const user = userRepository.create();
+    const user = userSessionRepository.create();
     (socket as SocketWithUser).user = user;
+    socket.emit(SSE_SYNC_USER, user);
     return socket as SocketWithUser;
   }
 }

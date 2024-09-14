@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import { SessionStateInterface } from "~/shared/session-state.interface";
 
 class SessionState implements SessionStateInterface {
@@ -8,9 +9,13 @@ class SessionState implements SessionStateInterface {
     currentCard: string | null;
   }[] = [];
   averagePoint: number = 0;
+  createdAt: Date;
+  updatedAt: Date;
 
-  constructor(id: string) {
-    this.id = id;
+  constructor() {
+    this.id = uuidv4();
+    this.createdAt = new Date();
+    this.updatedAt = new Date();
   }
 
   addNewPlayer(playerId: string) {
@@ -35,9 +40,10 @@ class SessionStateRepository {
     [key in string]: SessionState;
   } = {};
 
-  create(id: string) {
-    this.stores[id] = new SessionState(id);
-    return this.stores[id];
+  create() {
+    const newSession = new SessionState();
+    this.stores[newSession.id] = newSession;
+    return this.stores[newSession.id];
   }
 
   findById(id: string) {

@@ -5,6 +5,9 @@ export const SLE_PING = "SLE_PING";
 export const SSE_INIT_SESSION = "SSE_INIT_SESSION";
 export const SLE_JOIN_SESSION = "SLE_JOIN_SESSION";
 
+// USER
+export const SSE_SYNC_USER = "SSE_SYNC_USER";
+
 // COMMON
 export const SLE_DISCONNECT = "disconnect";
 export const CLE_DISCONNECT = "disconnect";

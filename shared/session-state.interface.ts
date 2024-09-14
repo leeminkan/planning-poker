@@ -6,4 +6,6 @@ export interface SessionStateInterface {
     currentCard: string | null;
   }[];
   averagePoint: number;
+  createdAt: Date;
+  updatedAt: Date;
 }

@@ -1,6 +1,6 @@
 import { Socket } from "socket.io";
 
-import { User } from "./modules/user/user.repository";
+import { UserSession } from "./modules/user-session/user-session.repository";
 
 export interface SocketHandlerInterface {
   handleConnection(socket: Socket): void;
@@ -11,5 +11,5 @@ export interface SocketHandlerInterface {
 export type HandlerParam = { path: string; handler: SocketHandlerInterface };
 
 export type SocketWithUser = Socket & {
-  user: User;
+  user: UserSession;
 };

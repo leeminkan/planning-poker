@@ -8,47 +8,80 @@ import {
   SLE_PING,
   SSE_INIT_SESSION,
   SSE_PING,
+  SSE_SYNC_USER,
 } from "~/shared/socket-event";
 import { SessionStateInterface } from "~/shared/session-state.interface";
+import { UserSessionInterface } from "~/shared/user-session.interface";
+import { useUserSessionStore } from "~/modules/user-session/stores/user-session.store";
 
 import { Card } from "../components/Card";
+import { ResultForm } from "../components/ResultForm";
 import { useSessionStore } from "../stores/session.store";
 import { cards } from "../constants";
-import { ResultForm } from "../components/ResultForm";
+import { useSessionState } from "../queries/useSessionState";
+import { useNavigate } from "@remix-run/react";
 
 export const SessionPage = ({ id }: { id: string }) => {
+  const { isLoading, isError } = useSessionState({ id });
+
+  if (isLoading) {
+    return <div>Loading</div>;
+  }
+
+  if (isError) {
+    return <div>Error</div>;
+  }
+
+  return <GameLayout id={id} />;
+};
+
+export const GameLayout = ({ id }: { id: string }) => {
   const {
     activeCard,
     isRevealed,
     players,
     averagePoint,
-    actions: { setActiveCard, setIsRevealed, initSessionState },
+    actions: { setActiveCard, setIsRevealed, syncSessionState },
   } = useSessionStore();
+  const {
+    name,
+    actions: { syncUser },
+  } = useUserSessionStore();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const socket = io("http://localhost:3000/sessions");
 
     socket.on("connect", () => {
       socket.emit(SLE_PING, "Ping from client!");
-      socket.emit(SLE_JOIN_SESSION, id);
+      socket.emit(SLE_JOIN_SESSION, {
+        sessionId: id,
+        name,
+      });
     });
     socket.on(SSE_PING, (value) => {
-      console.log("Received", value);
+      console.log("Received SSE_PING", value);
     });
 
     socket.on(SSE_INIT_SESSION, (sessionState: SessionStateInterface) => {
-      console.log("Received", sessionState);
-      initSessionState(sessionState);
+      console.log("Received SSE_INIT_SESSION", sessionState);
+      syncSessionState(sessionState);
+    });
+
+    socket.on(SSE_SYNC_USER, (userSession: UserSessionInterface) => {
+      console.log("Received SSE_SYNC_USER", userSession);
+      syncUser(userSession);
     });
 
     socket.on("disconnect", () => {
-      console.error("Ops, something went wrong");
+      console.log("Ops, socket client is disconnected!");
     });
 
     return () => {
       socket.disconnect();
     };
-  }, [id, initSessionState]);
+  }, [id, name, syncSessionState, syncUser]);
 
   return (
     <div className="w-full">
@@ -60,6 +93,7 @@ export const SessionPage = ({ id }: { id: string }) => {
           "flex items-center justify-between",
         ])}
       >
+        <Button onClick={() => navigate(-1)}>Back</Button>
         <div>Session: {id}</div>
         <div>
           <Button>Copy Link</Button>
@@ -104,6 +138,7 @@ export const SessionPage = ({ id }: { id: string }) => {
                 "pointer-events-auto",
               ])}
             >
+              <div className="flex items-center">You({name}):</div>
               {cards.map((card) => (
                 <Card
                   key={card}
