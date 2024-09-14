@@ -25,6 +25,7 @@ import { useSessionStore } from "../stores/session.store";
 import { cards } from "../constants";
 import { useSessionState } from "../queries/useSessionState";
 import SocketClient from "../socket-client";
+import { toast } from "react-toastify";
 
 export const SessionPage = ({ id }: { id: string }) => {
   const { isLoading, isError } = useSessionState({ id });
@@ -107,7 +108,17 @@ export const GameLayout = ({ id }: { id: string }) => {
         <Button onClick={() => navigate(-1)}>Back</Button>
         <div>Session: {id}</div>
         <div>
-          <Button>Copy Link</Button>
+          <Button
+            onClick={() => {
+              navigator.clipboard
+                .writeText(`http://localhost:3000/sessions/${id}`)
+                .then(() => {
+                  toast("Copy successfully!");
+                });
+            }}
+          >
+            Copy Link
+          </Button>
         </div>
       </header>
       <div title="page-body" className="w-full h-full mt-4">
