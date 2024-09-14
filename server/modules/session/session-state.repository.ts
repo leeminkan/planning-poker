@@ -42,6 +42,15 @@ class SessionState implements SessionStateInterface {
 
   setIsRevealed(isRevealed: boolean) {
     this.isRevealed = isRevealed;
+    const filteredPlayers = this.players.filter(
+      (player) =>
+        player.currentCard !== null && !isNaN(Number(player.currentCard))
+    );
+    const sum = filteredPlayers.reduce((acc, player) => {
+      return acc + Number(player.currentCard);
+    }, 0);
+    this.averagePoint =
+      filteredPlayers.length !== 0 ? sum / filteredPlayers.length : 0;
     this.updatedAt = new Date();
     return this;
   }

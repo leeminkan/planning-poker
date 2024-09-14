@@ -24,7 +24,7 @@ export function ResultForm({ averagePoint, onReset }: ResultFormParams) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      finalPoint: 0,
+      finalPoint: Math.floor(averagePoint),
     },
   });
 

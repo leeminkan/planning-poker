@@ -51,7 +51,16 @@ export const useSessionStore = create<SessionStore>((set) => ({
           sessionId: state.id,
           isRevealed: true,
         } as SLESetIsRevealedSessionPayload);
-        return { ...state, isRevealed };
+        const filteredPlayers = state.players.filter(
+          (player) =>
+            player.currentCard !== null && !isNaN(Number(player.currentCard))
+        );
+        const sum = filteredPlayers.reduce((acc, player) => {
+          return acc + Number(player.currentCard);
+        }, 0);
+        const averagePoint =
+          filteredPlayers.length !== 0 ? sum / filteredPlayers.length : 0;
+        return { ...state, isRevealed, averagePoint };
       });
     },
     syncSessionState: (sessionState: SessionStateInterface) =>

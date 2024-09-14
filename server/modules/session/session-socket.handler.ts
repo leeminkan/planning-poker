@@ -70,7 +70,7 @@ export class SessionSocket implements SocketHandlerInterface {
           SSE_INIT_SESSION,
           sessionState as SSESyncSessionPayload
         );
-        socketWithUser
+        socketWithUser.nsp
           .to(socketRoomId)
           .emit(SSE_SYNC_SESSION, sessionState as SSESyncSessionPayload);
       }
@@ -92,7 +92,7 @@ export class SessionSocket implements SocketHandlerInterface {
         sessionState.setIsRevealed(isRevealed);
 
         const socketRoomId = getFormattedSessionRoom(sessionState.id);
-        socketWithUser
+        socketWithUser.nsp
           .to(socketRoomId)
           .emit(SSE_SYNC_SESSION, sessionState as SSESyncSessionPayload);
       }
@@ -114,7 +114,7 @@ export class SessionSocket implements SocketHandlerInterface {
         sessionState.reset();
 
         const socketRoomId = getFormattedSessionRoom(sessionState.id);
-        socketWithUser
+        socketWithUser.nsp
           .to(socketRoomId)
           .emit(SSE_SYNC_SESSION, sessionState as SSESyncSessionPayload);
       }
@@ -136,7 +136,7 @@ export class SessionSocket implements SocketHandlerInterface {
         sessionState.chooseCardByPlayerId(socketWithUser.user.id, card);
 
         const socketRoomId = getFormattedSessionRoom(sessionState.id);
-        socketWithUser
+        socketWithUser.nsp
           .to(socketRoomId)
           .emit(SSE_SYNC_SESSION, sessionState as SSESyncSessionPayload);
       }
@@ -152,7 +152,7 @@ export class SessionSocket implements SocketHandlerInterface {
         sessionState.removePlayer(socketWithUser.user.id);
 
         const socketRoomId = getFormattedSessionRoom(sessionState.id);
-        socketWithUser
+        socketWithUser.nsp
           .to(socketRoomId)
           .emit(SSE_SYNC_SESSION, sessionState as SSESyncSessionPayload);
       }
