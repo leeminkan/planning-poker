@@ -1,9 +1,14 @@
 import { createRequestHandler } from "@remix-run/express";
 import { type ServerBuild } from "@remix-run/node";
 import compression from "compression";
-import express, { Router } from "express";
+import express, { Router, Express } from "express";
 import morgan from "morgan";
-import { sessionRouter } from "./modules/session/session.router.js";
+import bodyParser from "body-parser";
+
+import { AppDataSource } from "./data-source";
+import { sessionRouter } from "./modules/session/session.router";
+import { ticketRouter } from "./modules/ticket/ticket.router";
+import { ZodError } from "zod";
 
 const viteDevServer =
   process.env.NODE_ENV === "production"
@@ -14,9 +19,15 @@ const viteDevServer =
         })
       );
 
-const app = express();
+const app: Express = express();
 
 app.use(compression());
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
+app.use(bodyParser.json());
 
 // http://expressjs.com/en/advanced/best-practice-security.html#at-a-minimum-disable-x-powered-by-header
 app.disable("x-powered-by");
@@ -53,9 +64,13 @@ async function getBuild() {
   }
 }
 
+// init database connection
+await AppDataSource.initialize();
+
 // router
 const rootRouter = Router();
 rootRouter.use("/sessions", sessionRouter);
+rootRouter.use("/tickets", ticketRouter);
 app.use("/api", rootRouter);
 
 // handle SSR requests
@@ -71,5 +86,20 @@ app.all(
     },
   })
 );
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+app.use((err, _req, res, _next) => {
+  if (err instanceof ZodError) {
+    return res.status(400).send({
+      message: "Bad request!",
+      error: err,
+    });
+  }
+  return res.status(500).send({
+    message: "Something was wrong!",
+  });
+});
 
 export default app;

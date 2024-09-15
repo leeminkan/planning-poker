@@ -8,7 +8,7 @@ import { SessionSocket } from "./modules/session/session-socket.handler";
 const httpServer = http.createServer(app);
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const io = Websocket.getInstance(httpServer);
+const io = Websocket.initInstance(httpServer);
 io.initializeHandlers([{ path: "/sessions", handler: new SessionSocket() }]);
 
 const port = process.env.PORT || 3000;

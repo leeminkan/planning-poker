@@ -16,11 +16,18 @@ class Websocket extends Server {
     });
   }
 
-  public static getInstance(httpServer: http.Server): Websocket {
+  public static initInstance(httpServer: http.Server): Websocket {
     if (!Websocket.io) {
       Websocket.io = new Websocket(httpServer);
     }
 
+    return Websocket.io;
+  }
+
+  public static getInstance(): Websocket {
+    if (!Websocket.io) {
+      throw new Error("Socket is not initiated!");
+    }
     return Websocket.io;
   }
 
@@ -33,6 +40,10 @@ class Websocket extends Server {
 
       if (element.handler.middlewareImplementation) {
         namespace.use(element.handler.middlewareImplementation);
+      }
+
+      if (element.handler.additionalSetup) {
+        element.handler.additionalSetup(namespace);
       }
     });
   }

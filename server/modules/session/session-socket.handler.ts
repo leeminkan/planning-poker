@@ -1,4 +1,5 @@
-import { Socket } from "socket.io";
+import { Namespace, Socket } from "socket.io";
+import EventEmitter from "node:events";
 
 import {
   SocketHandlerInterface,
@@ -28,6 +29,9 @@ import {
 import { userSessionRepository } from "../user-session/user-session.repository";
 import { sessionStateRepository } from "./session-state.repository";
 import { getFormattedSessionRoom } from "./utils";
+import { sessionRepository } from "./session.repository";
+
+export const sessionEventEmitter = new EventEmitter();
 
 export class SessionSocket implements SocketHandlerInterface {
   handleConnection(socket: Socket) {
@@ -40,15 +44,17 @@ export class SessionSocket implements SocketHandlerInterface {
 
     socketWithUser.on(
       SLE_JOIN_SESSION,
-      ({ sessionId, name }: SLEJoinSessionPayload) => {
+      async ({ sessionId, name }: SLEJoinSessionPayload) => {
         console.log("SLE_JOIN_SESSION", { sessionId, name });
         // validate
         if (!sessionId) return;
 
-        const sessionState = sessionStateRepository.findById(sessionId);
+        let sessionState = sessionStateRepository.findById(sessionId);
 
         if (!sessionState) {
-          return;
+          const persistedSession = await sessionRepository.findById(sessionId);
+          if (!persistedSession) return;
+          sessionState = sessionStateRepository.create({ id: sessionId });
         }
 
         socketWithUser.user.setCurrentSession(sessionState.id);
@@ -170,5 +176,15 @@ export class SessionSocket implements SocketHandlerInterface {
     (socket as SocketWithUser).user = user;
     socket.emit(SSE_SYNC_USER, user as SSESyncUserPayload);
     return socket as SocketWithUser;
+  }
+
+  additionalSetup(namespace: Namespace): void {
+    // EVENT EMITTER
+    sessionEventEmitter.on(
+      SSE_SYNC_SESSION,
+      (payload: SSESyncSessionPayload) => {
+        namespace.to(payload.id).emit(SSE_SYNC_SESSION, payload);
+      }
+    );
   }
 }

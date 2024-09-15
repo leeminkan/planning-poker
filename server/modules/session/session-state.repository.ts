@@ -14,8 +14,8 @@ class SessionState implements SessionStateInterface {
   createdAt: Date;
   updatedAt: Date;
 
-  constructor() {
-    this.id = uuidV4();
+  constructor({ id }: { id?: string }) {
+    this.id = id ?? uuidV4();
     this.createdAt = new Date();
     this.updatedAt = new Date();
   }
@@ -93,8 +93,8 @@ class SessionStateRepository {
     [key in string]: SessionState;
   } = {};
 
-  create() {
-    const newSession = new SessionState();
+  create({ id }: { id?: string } = {}) {
+    const newSession = new SessionState({ id });
     // add default tickets
     // TODO: remove this later
     newSession.addTicket({
@@ -127,6 +127,10 @@ class SessionStateRepository {
 
   findById(id: string) {
     return this.stores[id];
+  }
+
+  removeById(id: string) {
+    delete this.stores[id];
   }
 }
 
