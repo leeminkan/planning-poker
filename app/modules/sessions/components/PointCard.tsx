@@ -2,17 +2,22 @@ import { MouseEventHandler } from "react";
 
 import { cn } from "~/lib/utils";
 
-type CardProps = {
+type PointCardProps = {
   onClick?: MouseEventHandler;
   isFlipped: boolean;
   isActive?: boolean;
   content: string | null;
 };
-export function Card({ onClick, isFlipped, isActive, content }: CardProps) {
+export function PointCard({
+  onClick,
+  isFlipped,
+  isActive,
+  content,
+}: PointCardProps) {
   return (
     <div
       className={cn([
-        "w-20 h-40",
+        "w-16 h-20",
         isActive ? "transition-transform -translate-y-10" : "",
       ])}
       role="presentation"
@@ -31,7 +36,7 @@ export function Card({ onClick, isFlipped, isActive, content }: CardProps) {
             "hover:cursor-pointer",
           ])}
         >
-          <h1 className="text-2xl">{content}</h1>
+          <h1 className="text-xl">{content}</h1>
         </div>
       ) : (
         <div

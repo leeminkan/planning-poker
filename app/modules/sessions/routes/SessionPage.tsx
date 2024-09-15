@@ -1,6 +1,4 @@
 import { useEffect } from "react";
-import { useNavigate } from "@remix-run/react";
-import { toast } from "react-toastify";
 
 import { cn } from "~/lib/utils";
 import { Button } from "~/components/ui/button";
@@ -20,12 +18,14 @@ import {
 } from "~/shared/socket-event.types";
 import { useUserSessionStore } from "~/modules/user-session/stores/user-session.store";
 
-import { Card } from "../components/Card";
+import { PointCard } from "../components/PointCard";
 import { ResultForm } from "../components/ResultForm";
 import { useSessionStore } from "../stores/session.store";
 import { cards } from "../constants";
 import { useSessionState } from "../queries/useSessionState";
 import SocketClient from "../socket-client";
+import { TicketList } from "../components/TicketList";
+import { PageHeader } from "../components/PageHeader";
 
 export const SessionPage = ({ id }: { id: string }) => {
   const { isLoading, isError } = useSessionState({ id });
@@ -46,6 +46,7 @@ export const GameLayout = ({ id }: { id: string }) => {
     isRevealed,
     players,
     averagePoint,
+    tickets,
     actions: { chooseCardByPlayerId, setIsRevealed, syncSessionState, reset },
   } = useSessionStore();
   const {
@@ -54,8 +55,6 @@ export const GameLayout = ({ id }: { id: string }) => {
     actions: { syncUser },
   } = useUserSessionStore();
   const player = players.find((player) => player.id === userId);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     const socket = SocketClient.init("http://localhost:3000/sessions");
@@ -96,58 +95,42 @@ export const GameLayout = ({ id }: { id: string }) => {
   }, [id, name, syncSessionState, syncUser]);
 
   return (
-    <div className="w-full">
-      <header
-        title="page-header"
-        className={cn([
-          "w-full p-4",
-          "bg-white shadow-md",
-          "flex items-center justify-between",
-        ])}
-      >
-        <Button onClick={() => navigate(-1)}>Back</Button>
-        <div>Session: {id}</div>
-        <div>
-          <Button
-            onClick={() => {
-              navigator.clipboard
-                .writeText(`http://localhost:3000/sessions/${id}`)
-                .then(() => {
-                  toast("Copy successfully!");
-                });
-            }}
-          >
-            Copy Link
-          </Button>
-        </div>
-      </header>
-      <div title="page-body" className="w-full h-full mt-4">
-        <div className="flex gap-2 justify-center">
-          {!isRevealed ? (
-            <Button
-              onClick={() => {
-                setIsRevealed(true);
-              }}
-            >
-              Reveal
-            </Button>
-          ) : (
-            <ResultForm
-              averagePoint={averagePoint}
-              onReset={() => {
-                reset();
-              }}
-            ></ResultForm>
-          )}
+    <div className={cn("h-screen", "flex flex-col")}>
+      <PageHeader id={id} />
+      <div title="page-body" className={cn(["grow mt-2", "flex"])}>
+        <div
+          title="page-body-left"
+          className={cn(["basis-1/4", "flex justify-center"])}
+        >
+          <div>LEFT</div>
         </div>
         <div
-          className={cn([
-            "fixed inset-0",
-            "flex items-center justify-center",
-            "pointer-events-none",
-          ])}
+          title="page-body-main"
+          className={cn(["basis-1/2", "flex flex-col justify-center"])}
         >
-          <div className={cn(["flex gap-2 justify-center", "py-4"])}>
+          {/* TOP */}
+          <div
+            className={cn(["basis-1/4", "flex justify-center items-center"])}
+          >
+            {!isRevealed ? (
+              <Button
+                onClick={() => {
+                  setIsRevealed(true);
+                }}
+              >
+                Reveal
+              </Button>
+            ) : (
+              <ResultForm
+                averagePoint={averagePoint}
+                onReset={() => {
+                  reset();
+                }}
+              ></ResultForm>
+            )}
+          </div>
+          {/* CENTER */}
+          <div className={cn(["basis-1/2", "flex gap-2 justify-center"])}>
             {players.map((player) => (
               <div
                 key={player.id}
@@ -155,37 +138,38 @@ export const GameLayout = ({ id }: { id: string }) => {
                   "flex flex-col gap-2 justify-center items-center",
                 ])}
               >
-                <Card
+                <PointCard
                   isFlipped={isRevealed}
                   content={player.currentCard}
-                ></Card>
-                <div>{player.name || "NO_NAME"}</div>
+                ></PointCard>
+                <div>{player.name || "Anonymous user"}</div>
               </div>
             ))}
           </div>
-          {!isRevealed && (
-            <div
-              className={cn([
-                "w-full flex gap-2 justify-center",
-                "fixed bottom-0",
-                "py-4",
-                "pointer-events-auto",
-              ])}
-            >
-              <div className="flex items-center">You({name || "NO_NAME"}):</div>
-              {cards.map((card) => (
-                <Card
-                  key={card}
-                  isFlipped={true}
-                  isActive={player?.currentCard === card}
-                  content={card}
-                  onClick={() =>
-                    player && chooseCardByPlayerId(player.id, card)
-                  }
-                ></Card>
-              ))}
-            </div>
-          )}
+          {/* BOTTOM */}
+          <div className={cn(["flex justify-center basis-1/4"])}>
+            {!isRevealed && (
+              <div className={cn(["flex gap-2 justify-center"])}>
+                {cards.map((card) => (
+                  <PointCard
+                    key={card}
+                    isFlipped={true}
+                    isActive={player?.currentCard === card}
+                    content={card}
+                    onClick={() =>
+                      player && chooseCardByPlayerId(player.id, card)
+                    }
+                  ></PointCard>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+        <div
+          title="page-body-right"
+          className={cn(["basis-1/4", "flex flex-col justify-center"])}
+        >
+          <TicketList tickets={tickets} />
         </div>
       </div>
     </div>

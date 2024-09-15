@@ -30,18 +30,19 @@ export function ResultForm({ averagePoint, onReset }: ResultFormParams) {
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
     alert(values.finalPoint);
   }
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className={cn(["space-y-8", "p-4", "border-solid border-2"])}
-      >
-        <div className={cn(["flex gap-2 items-baseline justify-center"])}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <div
+          className={cn([
+            "p-4",
+            "flex gap-2 items-baseline justify-center",
+            "border-solid border-2",
+          ])}
+        >
           <div className={cn(["flex gap-2 items-center justify-center"])}>
             <FormLabel>Average</FormLabel>
             <div>{averagePoint}</div>

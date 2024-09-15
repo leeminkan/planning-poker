@@ -30,6 +30,7 @@ export const useSessionStore = create<SessionStore>((set) => ({
   isRevealed: false,
   averagePoint: 0,
   players: [],
+  tickets: [],
   createdAt: new Date(),
   updatedAt: new Date(),
   actions: {
