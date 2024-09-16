@@ -22,12 +22,10 @@ import {
   SSESyncUserPayload,
 } from '~/shared/socket-event.types';
 
-import {
-  SocketHandlerInterface,
-  SocketWithUser,
-} from '~/server/websocket.interfaces';
+import { SocketHandlerInterface } from '~/server/websocket.interfaces';
 
-import { userSessionRepository } from '../user-session/user-session.repository';
+import { userSessionStateRepository } from '../user-session/user-session-state.repository';
+import { SocketWithUser } from './session-socket.types';
 import { sessionStateRepository } from './session-state.repository';
 import { sessionRepository } from './session.repository';
 import { getFormattedSessionRoom } from './utils';
@@ -173,7 +171,7 @@ export class SessionSocket implements SocketHandlerInterface {
   }
 
   initUser(socket: Socket): SocketWithUser {
-    const user = userSessionRepository.create();
+    const user = userSessionStateRepository.create();
     (socket as SocketWithUser).user = user;
     socket.emit(SSE_SYNC_USER, user as SSESyncUserPayload);
     return socket as SocketWithUser;
