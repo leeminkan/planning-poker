@@ -1,5 +1,6 @@
-import { v4 as uuidv4 } from "uuid";
-import { UserSessionInterface } from "~/shared/user-session.interface";
+import { v4 as uuidv4 } from 'uuid';
+
+import { UserSessionInterface } from '~/shared/user-session.interface';
 
 export class UserSession implements UserSessionInterface {
   id: string;

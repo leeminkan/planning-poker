@@ -1,6 +1,6 @@
-import { Namespace, Socket } from "socket.io";
+import { Namespace, Socket } from 'socket.io';
 
-import { UserSession } from "./modules/user-session/user-session.repository";
+import { UserSession } from './modules/user-session/user-session.repository';
 
 export interface SocketHandlerInterface {
   handleConnection(socket: Socket): void;

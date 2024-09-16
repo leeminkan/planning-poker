@@ -1,4 +1,4 @@
-import { io, Socket } from "socket.io-client";
+import { Socket, io } from 'socket.io-client';
 
 class SocketClient extends Socket {
   private static socket: Socket | null = null;
@@ -12,7 +12,7 @@ class SocketClient extends Socket {
 
   public static getInstance(): Socket {
     if (!SocketClient.socket) {
-      throw new Error("Instance not found!");
+      throw new Error('Instance not found!');
     }
 
     return SocketClient.socket;
@@ -20,7 +20,7 @@ class SocketClient extends Socket {
 
   public static disconnect() {
     if (!SocketClient.socket) {
-      throw new Error("Instance not found!");
+      throw new Error('Instance not found!');
     }
 
     SocketClient.socket.disconnect();

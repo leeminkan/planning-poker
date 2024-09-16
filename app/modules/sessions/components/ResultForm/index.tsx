@@ -1,19 +1,19 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
-import { Button } from "~/components/ui/button";
+import { Button } from '~/components/ui/button';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-} from "~/components/ui/form";
-import { Input } from "~/components/ui/input";
+} from '~/components/ui/form';
+import { Input } from '~/components/ui/input';
 
-import { formSchema } from "./types";
-import { cn } from "~/lib/utils";
+import { formSchema } from './types';
+import { cn } from '~/lib/utils';
 
 type ResultFormParams = {
   averagePoint: number;
@@ -38,12 +38,12 @@ export function ResultForm({ averagePoint, onReset }: ResultFormParams) {
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div
           className={cn([
-            "p-4",
-            "flex gap-2 items-baseline justify-center",
-            "border-solid border-2",
+            'p-4',
+            'flex gap-2 items-baseline justify-center',
+            'border-solid border-2',
           ])}
         >
-          <div className={cn(["flex gap-2 items-center justify-center"])}>
+          <div className={cn(['flex gap-2 items-center justify-center'])}>
             <FormLabel>Average</FormLabel>
             <div>{averagePoint}</div>
           </div>
@@ -52,7 +52,7 @@ export function ResultForm({ averagePoint, onReset }: ResultFormParams) {
             name="finalPoint"
             render={({ field }) => (
               <FormItem>
-                <div className={cn(["flex gap-2 items-center justify-center"])}>
+                <div className={cn(['flex gap-2 items-center justify-center'])}>
                   <FormLabel>Final</FormLabel>
                   <FormControl>
                     <Input className="w-20" placeholder="Final" {...field} />

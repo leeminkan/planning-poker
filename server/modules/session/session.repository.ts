@@ -1,7 +1,8 @@
-import { DeepPartial, Repository } from "typeorm";
+import { DeepPartial, Repository } from 'typeorm';
 
-import { AppDataSource } from "~/server/data-source";
-import { SessionEntity } from "./session.entity";
+import { AppDataSource } from '~/server/data-source';
+
+import { SessionEntity } from './session.entity';
 
 class SessionRepository {
   repository: Repository<SessionEntity>;

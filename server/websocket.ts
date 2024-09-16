@@ -1,10 +1,11 @@
-import { Server, Socket } from "socket.io";
-import http from "http";
-import { HandlerParam } from "./websocket.interfaces";
+import http from 'http';
+import { Server, Socket } from 'socket.io';
+
+import { HandlerParam } from './websocket.interfaces';
 
 const WEBSOCKET_CORS = {
-  origin: "*",
-  methods: ["GET", "POST"],
+  origin: '*',
+  methods: ['GET', 'POST'],
 };
 
 class Websocket extends Server {
@@ -26,7 +27,7 @@ class Websocket extends Server {
 
   public static getInstance(): Websocket {
     if (!Websocket.io) {
-      throw new Error("Socket is not initiated!");
+      throw new Error('Socket is not initiated!');
     }
     return Websocket.io;
   }

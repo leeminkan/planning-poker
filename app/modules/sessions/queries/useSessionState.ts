@@ -1,6 +1,7 @@
-import { useQuery } from "react-query";
-import { getSessionState } from "../services/session.service";
-import { useSessionStore } from "../stores/session.store";
+import { useQuery } from 'react-query';
+
+import { getSessionState } from '../services/session.service';
+import { useSessionStore } from '../stores/session.store';
 
 type UseSessionStateParams = { id: string };
 export const useSessionState = ({ id }: UseSessionStateParams) => {
@@ -8,7 +9,7 @@ export const useSessionState = ({ id }: UseSessionStateParams) => {
     actions: { syncSessionState },
   } = useSessionStore();
   const query = useQuery<UseSessionStateParams>({
-    queryKey: ["@@sessions", "detail", id],
+    queryKey: ['@@sessions', 'detail', id],
     queryFn: async () => {
       const data = await getSessionState({ id });
       // sync with SessionStore

@@ -1,4 +1,4 @@
-import { SessionStateInterface } from "~/shared/session-state.interface";
+import { SessionStateInterface } from '~/shared/session-state.interface';
 
 export type Response<T> = {
   data: T;

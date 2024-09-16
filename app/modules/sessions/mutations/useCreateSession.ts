@@ -1,6 +1,8 @@
-import { useMutation } from "react-query";
-import { createSessionState } from "../services/session.service";
-import { SessionStateInterface } from "~/shared/session-state.interface";
+import { useMutation } from 'react-query';
+
+import { SessionStateInterface } from '~/shared/session-state.interface';
+
+import { createSessionState } from '../services/session.service';
 
 type StartNewSessionMutationParams = {
   onSuccess: (data: SessionStateInterface) => void;

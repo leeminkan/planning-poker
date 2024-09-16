@@ -1,21 +1,22 @@
-import { Router, Request, Response } from "express";
+import { Request, Response, Router } from 'express';
 
-import { ticketRepository } from "./ticket.repository";
-import { sessionRepository } from "../session/session.repository";
-import { sessionStateRepository } from "../session/session-state.repository";
-import { CreateTicketDto, createTicketSchema } from "./validate-schema";
-import { sessionEventEmitter } from "../session/session-socket.handler";
-import { SSE_SYNC_SESSION } from "~/shared/socket-event";
+import { SSE_SYNC_SESSION } from '~/shared/socket-event';
+
+import { sessionEventEmitter } from '../session/session-socket.handler';
+import { sessionStateRepository } from '../session/session-state.repository';
+import { sessionRepository } from '../session/session.repository';
+import { ticketRepository } from './ticket.repository';
+import { CreateTicketDto, createTicketSchema } from './validate-schema';
 
 const ticketRouter = Router();
 
-ticketRouter.post("/", async (req: Request, res: Response, next) => {
+ticketRouter.post('/', async (req: Request, res: Response, next) => {
   try {
     const body: CreateTicketDto = createTicketSchema.parse(req.body);
     const persistedSession = await sessionRepository.findById(body.sessionId);
     if (!persistedSession) {
       return res.status(404).send({
-        message: "Session not found!",
+        message: 'Session not found!',
       });
     }
 

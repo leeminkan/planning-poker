@@ -1,23 +1,23 @@
-import { create } from "zustand";
+import { create } from 'zustand';
 
-import { SessionStateInterface } from "~/shared/session-state.interface";
+import { SessionStateInterface } from '~/shared/session-state.interface';
 import {
   SLE_CHOOSE_CARD,
   SLE_RESET_SESSION,
   SLE_SET_IS_REVEALED_SESSION,
-} from "~/shared/socket-event";
+} from '~/shared/socket-event';
 import {
   SLEChooseCardPayload,
   SLEResetSessionPayload,
   SLESetIsRevealedSessionPayload,
-} from "~/shared/socket-event.types";
+} from '~/shared/socket-event.types';
 
-import SocketClient from "../socket-client";
+import SocketClient from '../socket-client';
 
 type SessionState = SessionStateInterface;
 type SessionAction = {
   chooseCardByPlayerId: (playerId: string, card: string) => void;
-  setIsRevealed: (isRevealed: SessionState["isRevealed"]) => void;
+  setIsRevealed: (isRevealed: SessionState['isRevealed']) => void;
   syncSessionState: (sessionState: SessionStateInterface) => void;
   reset: () => void;
 };
@@ -25,7 +25,7 @@ type SessionStore = SessionState & {
   actions: SessionAction;
 };
 export const useSessionStore = create<SessionStore>((set) => ({
-  id: "",
+  id: '',
   activeCard: null,
   isRevealed: false,
   averagePoint: 0,
@@ -46,7 +46,7 @@ export const useSessionStore = create<SessionStore>((set) => ({
         }
         return { ...state };
       }),
-    setIsRevealed: (isRevealed: SessionState["isRevealed"]) => {
+    setIsRevealed: (isRevealed: SessionState['isRevealed']) => {
       set((state) => {
         SocketClient.getInstance().emit(SLE_SET_IS_REVEALED_SESSION, {
           sessionId: state.id,
@@ -54,7 +54,7 @@ export const useSessionStore = create<SessionStore>((set) => ({
         } as SLESetIsRevealedSessionPayload);
         const filteredPlayers = state.players.filter(
           (player) =>
-            player.currentCard !== null && !isNaN(Number(player.currentCard))
+            player.currentCard !== null && !isNaN(Number(player.currentCard)),
         );
         const sum = filteredPlayers.reduce((acc, player) => {
           return acc + Number(player.currentCard);

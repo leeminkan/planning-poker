@@ -1,22 +1,22 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { useNavigate } from "@remix-run/react";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { useNavigate } from '@remix-run/react';
 
-import { Button } from "~/components/ui/button";
+import { Button } from '~/components/ui/button';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-} from "~/components/ui/form";
-import { Input } from "~/components/ui/input";
+} from '~/components/ui/form';
+import { Input } from '~/components/ui/input';
 
-import { formSchema } from "./types";
-import { cn } from "~/lib/utils";
-import { useUserSessionStore } from "~/modules/user-session/stores/user-session.store";
-import { useSessionStateMutation } from "~/modules/sessions/mutations/useSessionStateMutation";
+import { formSchema } from './types';
+import { cn } from '~/lib/utils';
+import { useUserSessionStore } from '~/modules/user-session/stores/user-session.store';
+import { useSessionStateMutation } from '~/modules/sessions/mutations/useSessionStateMutation';
 
 export function ConfirmationForm() {
   const {
@@ -36,7 +36,7 @@ export function ConfirmationForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name,
-      sessionId: "",
+      sessionId: '',
     },
   });
 
@@ -51,9 +51,9 @@ export function ConfirmationForm() {
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className={cn([
-          " p-4 max-w-40",
-          "border-solid border-2",
-          "flex flex-col gap-2",
+          ' p-4 max-w-40',
+          'border-solid border-2',
+          'flex flex-col gap-2',
         ])}
       >
         <FormField

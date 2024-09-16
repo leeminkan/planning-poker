@@ -1,5 +1,6 @@
-import { create } from "zustand";
-import { UserSessionInterface } from "~/shared/user-session.interface";
+import { create } from 'zustand';
+
+import { UserSessionInterface } from '~/shared/user-session.interface';
 
 type UserSessionState = {
   id: string;
@@ -14,8 +15,8 @@ type UserSessionStore = UserSessionState & {
   actions: UserSessionAction;
 };
 export const useUserSessionStore = create<UserSessionStore>((set) => ({
-  id: "",
-  name: "",
+  id: '',
+  name: '',
   currentSessionId: undefined,
   actions: {
     syncUser: (userSessionState: UserSessionInterface) =>

@@ -1,10 +1,6 @@
-import { Namespace, Socket } from "socket.io";
-import EventEmitter from "node:events";
+import EventEmitter from 'node:events';
+import { Namespace, Socket } from 'socket.io';
 
-import {
-  SocketHandlerInterface,
-  SocketWithUser,
-} from "~/server/websocket.interfaces";
 import {
   SLE_CHOOSE_CARD,
   SLE_DISCONNECT,
@@ -16,7 +12,7 @@ import {
   SSE_PING,
   SSE_SYNC_SESSION,
   SSE_SYNC_USER,
-} from "~/shared/socket-event";
+} from '~/shared/socket-event';
 import {
   SLEChooseCardPayload,
   SLEJoinSessionPayload,
@@ -24,12 +20,17 @@ import {
   SLESetIsRevealedSessionPayload,
   SSESyncSessionPayload,
   SSESyncUserPayload,
-} from "~/shared/socket-event.types";
+} from '~/shared/socket-event.types';
 
-import { userSessionRepository } from "../user-session/user-session.repository";
-import { sessionStateRepository } from "./session-state.repository";
-import { getFormattedSessionRoom } from "./utils";
-import { sessionRepository } from "./session.repository";
+import {
+  SocketHandlerInterface,
+  SocketWithUser,
+} from '~/server/websocket.interfaces';
+
+import { userSessionRepository } from '../user-session/user-session.repository';
+import { sessionStateRepository } from './session-state.repository';
+import { sessionRepository } from './session.repository';
+import { getFormattedSessionRoom } from './utils';
 
 export const sessionEventEmitter = new EventEmitter();
 
@@ -37,15 +38,15 @@ export class SessionSocket implements SocketHandlerInterface {
   handleConnection(socket: Socket) {
     const socketWithUser = this.initUser(socket);
 
-    socketWithUser.emit(SSE_PING, "Ping from server!");
+    socketWithUser.emit(SSE_PING, 'Ping from server!');
     socketWithUser.on(SLE_PING, (value) => {
-      console.log("Received", value);
+      console.log('Received', value);
     });
 
     socketWithUser.on(
       SLE_JOIN_SESSION,
       async ({ sessionId, name }: SLEJoinSessionPayload) => {
-        console.log("SLE_JOIN_SESSION", { sessionId, name });
+        console.log('SLE_JOIN_SESSION', { sessionId, name });
         // validate
         if (!sessionId) return;
 
@@ -70,22 +71,22 @@ export class SessionSocket implements SocketHandlerInterface {
         socketWithUser.join(socketRoomId);
         socketWithUser.emit(
           SSE_SYNC_USER,
-          socketWithUser.user as SSESyncUserPayload
+          socketWithUser.user as SSESyncUserPayload,
         );
         socketWithUser.emit(
           SSE_INIT_SESSION,
-          sessionState as SSESyncSessionPayload
+          sessionState as SSESyncSessionPayload,
         );
         socketWithUser.nsp
           .to(socketRoomId)
           .emit(SSE_SYNC_SESSION, sessionState as SSESyncSessionPayload);
-      }
+      },
     );
 
     socketWithUser.on(
       SLE_SET_IS_REVEALED_SESSION,
       ({ sessionId, isRevealed }: SLESetIsRevealedSessionPayload) => {
-        console.log("SLE_SET_IS_REVEALED_SESSION", { sessionId, isRevealed });
+        console.log('SLE_SET_IS_REVEALED_SESSION', { sessionId, isRevealed });
         // validate
         if (!sessionId) return;
 
@@ -101,13 +102,13 @@ export class SessionSocket implements SocketHandlerInterface {
         socketWithUser.nsp
           .to(socketRoomId)
           .emit(SSE_SYNC_SESSION, sessionState as SSESyncSessionPayload);
-      }
+      },
     );
 
     socketWithUser.on(
       SLE_RESET_SESSION,
       ({ sessionId }: SLEResetSessionPayload) => {
-        console.log("SLE_RESET_SESSION", { sessionId });
+        console.log('SLE_RESET_SESSION', { sessionId });
         // validate
         if (!sessionId) return;
 
@@ -123,13 +124,13 @@ export class SessionSocket implements SocketHandlerInterface {
         socketWithUser.nsp
           .to(socketRoomId)
           .emit(SSE_SYNC_SESSION, sessionState as SSESyncSessionPayload);
-      }
+      },
     );
 
     socketWithUser.on(
       SLE_CHOOSE_CARD,
       ({ sessionId, card }: SLEChooseCardPayload) => {
-        console.log("SLE_CHOOSE_CARD", { sessionId });
+        console.log('SLE_CHOOSE_CARD', { sessionId });
         // validate
         if (!sessionId) return;
 
@@ -145,14 +146,14 @@ export class SessionSocket implements SocketHandlerInterface {
         socketWithUser.nsp
           .to(socketRoomId)
           .emit(SSE_SYNC_SESSION, sessionState as SSESyncSessionPayload);
-      }
+      },
     );
 
     socketWithUser.on(SLE_DISCONNECT, () => {
-      console.log("CLIENT DISCONNECT", socketWithUser.user.id);
+      console.log('CLIENT DISCONNECT', socketWithUser.user.id);
       if (socketWithUser.user.currentSessionId) {
         const sessionState = sessionStateRepository.findById(
-          socketWithUser.user.currentSessionId
+          socketWithUser.user.currentSessionId,
         );
         if (!sessionState) return;
         sessionState.removePlayer(socketWithUser.user.id);
@@ -184,7 +185,7 @@ export class SessionSocket implements SocketHandlerInterface {
       SSE_SYNC_SESSION,
       (payload: SSESyncSessionPayload) => {
         namespace.to(payload.id).emit(SSE_SYNC_SESSION, payload);
-      }
+      },
     );
   }
 }

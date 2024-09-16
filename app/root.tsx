@@ -4,17 +4,17 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-} from "@remix-run/react";
-import type { LinksFunction } from "@remix-run/node";
+} from '@remix-run/react';
+import type { LinksFunction } from '@remix-run/node';
 
-import styles from "./tailwind.css?url";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { ToastContainer } from "react-toastify";
-import toastStyles from "react-toastify/dist/ReactToastify.css?url";
+import styles from './tailwind.css?url';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ToastContainer } from 'react-toastify';
+import toastStyles from 'react-toastify/dist/ReactToastify.css?url';
 
 export const links: LinksFunction = () => [
-  { rel: "stylesheet", href: styles },
-  { rel: "stylesheet", href: toastStyles },
+  { rel: 'stylesheet', href: styles },
+  { rel: 'stylesheet', href: toastStyles },
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {

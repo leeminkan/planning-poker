@@ -1,8 +1,8 @@
-import { useNavigate } from "@remix-run/react";
-import { toast } from "react-toastify";
+import { useNavigate } from '@remix-run/react';
+import { toast } from 'react-toastify';
 
-import { cn } from "~/lib/utils";
-import { Button } from "~/components/ui/button";
+import { cn } from '~/lib/utils';
+import { Button } from '~/components/ui/button';
 
 export const PageHeader = ({ id }: { id: string }) => {
   const navigate = useNavigate();
@@ -11,9 +11,9 @@ export const PageHeader = ({ id }: { id: string }) => {
     <header
       title="page-header"
       className={cn([
-        "p-4",
-        "flex items-center justify-between",
-        "bg-white shadow-md",
+        'p-4',
+        'flex items-center justify-between',
+        'bg-white shadow-md',
       ])}
     >
       <Button onClick={() => navigate(-1)}>Back</Button>
@@ -24,7 +24,7 @@ export const PageHeader = ({ id }: { id: string }) => {
             navigator.clipboard
               .writeText(`http://localhost:3000/sessions/${id}`)
               .then(() => {
-                toast("Copy successfully!");
+                toast('Copy successfully!');
               });
           }}
         >

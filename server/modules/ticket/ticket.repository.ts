@@ -1,7 +1,8 @@
-import { DeepPartial, Repository } from "typeorm";
+import { DeepPartial, Repository } from 'typeorm';
 
-import { AppDataSource } from "~/server/data-source";
-import { TicketEntity } from "./ticket.entity";
+import { AppDataSource } from '~/server/data-source';
+
+import { TicketEntity } from './ticket.entity';
 
 class TicketRepository {
   repository: Repository<TicketEntity>;

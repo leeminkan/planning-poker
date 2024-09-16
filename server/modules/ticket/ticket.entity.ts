@@ -1,27 +1,27 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
-  ManyToOne,
+  Entity,
   JoinColumn,
-} from "typeorm";
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
-import { SessionEntity } from "../session/session.entity";
+import { SessionEntity } from '../session/session.entity';
 
-@Entity({ name: "tickets" })
+@Entity({ name: 'tickets' })
 export class TicketEntity {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id!: string;
 
   @Column({
-    type: "varchar",
+    type: 'varchar',
   })
   title: string;
 
   @Column({
-    type: "varchar",
+    type: 'varchar',
   })
   description: string;
 
@@ -32,11 +32,11 @@ export class TicketEntity {
   updatedAt: Date;
 
   @Column({
-    type: "uuid",
+    type: 'uuid',
   })
   sessionId: string;
 
   @ManyToOne(() => SessionEntity, (session) => session.tickets)
-  @JoinColumn({ name: "session_id" })
+  @JoinColumn({ name: 'session_id' })
   session: SessionEntity;
 }

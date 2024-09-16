@@ -1,5 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
-import { Ticket } from "~/shared/session-state.interface";
+import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
+import { Ticket } from '~/shared/session-state.interface';
 
 export const TicketItem = ({ ticket }: { ticket: Ticket }) => {
   return (

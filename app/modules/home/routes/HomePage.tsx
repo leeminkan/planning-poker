@@ -1,10 +1,10 @@
-import { useNavigate } from "@remix-run/react";
+import { useNavigate } from '@remix-run/react';
 
-import { cn } from "~/lib/utils";
-import { Button } from "~/components/ui/button";
+import { cn } from '~/lib/utils';
+import { Button } from '~/components/ui/button';
 
-import { ConfirmationForm } from "../components/ConfirmationForm";
-import { useStartNewSessionMutation } from "~/modules/sessions/mutations/useCreateSession";
+import { ConfirmationForm } from '../components/ConfirmationForm';
+import { useStartNewSessionMutation } from '~/modules/sessions/mutations/useCreateSession';
 
 export const HomePage = () => {
   const navigate = useNavigate();
@@ -19,9 +19,9 @@ export const HomePage = () => {
       <header
         title="page-header"
         className={cn([
-          "w-full p-4",
-          "bg-white shadow-md",
-          "flex items-center justify-between",
+          'w-full p-4',
+          'bg-white shadow-md',
+          'flex items-center justify-between',
         ])}
       >
         <div>Home</div>
@@ -37,8 +37,8 @@ export const HomePage = () => {
       <div
         title="page-body"
         className={cn([
-          "w-full h-full mt-4",
-          "flex items-center justify-center",
+          'w-full h-full mt-4',
+          'flex items-center justify-center',
         ])}
       >
         <ConfirmationForm />

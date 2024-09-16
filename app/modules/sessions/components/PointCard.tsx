@@ -1,6 +1,6 @@
-import { MouseEventHandler } from "react";
+import { MouseEventHandler } from 'react';
 
-import { cn } from "~/lib/utils";
+import { cn } from '~/lib/utils';
 
 type PointCardProps = {
   onClick?: MouseEventHandler;
@@ -17,8 +17,8 @@ export function PointCard({
   return (
     <div
       className={cn([
-        "w-16 h-20",
-        isActive ? "transition-transform -translate-y-10" : "",
+        'w-16 h-20',
+        isActive ? 'transition-transform -translate-y-10' : '',
       ])}
       role="presentation"
       onClick={onClick}
@@ -26,14 +26,14 @@ export function PointCard({
       {isFlipped ? (
         <div
           className={cn([
-            "w-full h-full",
-            "flex items-center justify-center",
-            "rounded-lg",
-            "shadow-lg",
+            'w-full h-full',
+            'flex items-center justify-center',
+            'rounded-lg',
+            'shadow-lg',
             content
-              ? "bg-blue-500 hover:bg-blue-700"
-              : "bg-gray-500 hover:bg-gray-700",
-            "hover:cursor-pointer",
+              ? 'bg-blue-500 hover:bg-blue-700'
+              : 'bg-gray-500 hover:bg-gray-700',
+            'hover:cursor-pointer',
           ])}
         >
           <h1 className="text-xl">{content}</h1>
@@ -41,14 +41,14 @@ export function PointCard({
       ) : (
         <div
           className={cn([
-            "w-full h-full",
-            "flex items-center justify-center",
-            "rounded-lg",
-            "shadow-lg",
+            'w-full h-full',
+            'flex items-center justify-center',
+            'rounded-lg',
+            'shadow-lg',
             content
-              ? "bg-red-500 hover:bg-red-700"
-              : "bg-gray-500 hover:bg-gray-700",
-            "hover:cursor-pointer",
+              ? 'bg-red-500 hover:bg-red-700'
+              : 'bg-gray-500 hover:bg-gray-700',
+            'hover:cursor-pointer',
           ])}
         />
       )}

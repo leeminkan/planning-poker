@@ -1,5 +1,5 @@
-import { SessionStateInterface } from "./session-state.interface";
-import { UserSessionInterface } from "./user-session.interface";
+import { SessionStateInterface } from './session-state.interface';
+import { UserSessionInterface } from './user-session.interface';
 
 export type SLEJoinSessionPayload = { sessionId: string; name?: string };
 export type SLESetIsRevealedSessionPayload = {

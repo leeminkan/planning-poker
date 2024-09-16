@@ -1,21 +1,21 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
   Column,
+  CreateDateColumn,
+  Entity,
   OneToMany,
-} from "typeorm";
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
-import { TicketEntity } from "../ticket/ticket.entity";
+import { TicketEntity } from '../ticket/ticket.entity';
 
-@Entity({ name: "sessions" })
+@Entity({ name: 'sessions' })
 export class SessionEntity {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({
-    type: "varchar",
+    type: 'varchar',
   })
   name: string;
 

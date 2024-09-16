@@ -1,4 +1,4 @@
-import "dotenv/config";
+import 'dotenv/config';
 
 export const databaseConfig = {
   host: process.env.POSTGRESQL_HOST,

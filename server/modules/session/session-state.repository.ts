@@ -1,9 +1,10 @@
-import { v4 as uuidV4 } from "uuid";
+import { v4 as uuidV4 } from 'uuid';
+
 import {
   Player,
   SessionStateInterface,
   Ticket,
-} from "~/shared/session-state.interface";
+} from '~/shared/session-state.interface';
 
 class SessionState implements SessionStateInterface {
   id: string;
@@ -20,9 +21,9 @@ class SessionState implements SessionStateInterface {
     this.updatedAt = new Date();
   }
 
-  addNewPlayer(playerParam: Omit<Player, "currentCard">) {
+  addNewPlayer(playerParam: Omit<Player, 'currentCard'>) {
     const isExisted = this.players.find(
-      (player) => player.id === playerParam.id
+      (player) => player.id === playerParam.id,
     );
     if (!isExisted) {
       this.players.push({
@@ -42,7 +43,7 @@ class SessionState implements SessionStateInterface {
 
   addTicket(ticketParam: Ticket) {
     const isExisted = this.tickets.find(
-      (player) => player.id === ticketParam.id
+      (player) => player.id === ticketParam.id,
     );
     if (!isExisted) {
       this.tickets.push(ticketParam);
@@ -55,7 +56,7 @@ class SessionState implements SessionStateInterface {
     this.isRevealed = isRevealed;
     const filteredPlayers = this.players.filter(
       (player) =>
-        player.currentCard !== null && !isNaN(Number(player.currentCard))
+        player.currentCard !== null && !isNaN(Number(player.currentCard)),
     );
     const sum = filteredPlayers.reduce((acc, player) => {
       return acc + Number(player.currentCard);
@@ -99,25 +100,25 @@ class SessionStateRepository {
     // TODO: remove this later
     newSession.addTicket({
       id: uuidV4(),
-      title: "CFA-1",
+      title: 'CFA-1',
       description:
         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
     });
     newSession.addTicket({
       id: uuidV4(),
-      title: "CFA-2",
+      title: 'CFA-2',
       description:
         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
     });
     newSession.addTicket({
       id: uuidV4(),
-      title: "CFA-3",
+      title: 'CFA-3',
       description:
         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
     });
     newSession.addTicket({
       id: uuidV4(),
-      title: "CFA-4",
+      title: 'CFA-4',
       description:
         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
     });
