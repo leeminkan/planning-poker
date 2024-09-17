@@ -26,10 +26,14 @@ export const TicketItem = ({
 }) => {
   return (
     <Card className={cn([isChosen ? 'bg-slate-500' : ''])}>
-      <CardHeader
+      <CardHeader>
+        <CardTitle>{ticket.title}</CardTitle>
+      </CardHeader>
+      <CardContent>{ticket.description}</CardContent>
+      <CardFooter
         className={cn(['flex flex-row gap-2 items-center justify-between'])}
       >
-        <CardTitle>{ticket.title}</CardTitle>
+        {ticket.point ? <Badge>{ticket.point}</Badge> : <div></div>}
         <div className="flex gap-2">
           {isChosen ? (
             <Button onClick={() => reset()}>Reset</Button>
@@ -38,10 +42,6 @@ export const TicketItem = ({
           )}
           <UpdateTicketBtnDialog ticket={ticket} />
         </div>
-      </CardHeader>
-      <CardContent>{ticket.description}</CardContent>
-      <CardFooter>
-        {ticket.point ? <Badge>{ticket.point}</Badge> : null}
       </CardFooter>
     </Card>
   );

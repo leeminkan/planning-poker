@@ -19,6 +19,7 @@ import { Button } from '~/components/ui/button';
 import { cn } from '~/lib/utils';
 import { useUserSessionStore } from '~/modules/user-session/stores/user-session.store';
 
+import { CardTable } from '../components/CardTable';
 import { PageHeader } from '../components/PageHeader';
 import { PointCard } from '../components/PointCard';
 import { ResultForm } from '../components/ResultForm';
@@ -138,24 +139,23 @@ export const GameLayout = ({ id }: { id: string }) => {
                 )}
               </div>
               {/* CENTER */}
-              <div className={cn(['basis-1/2', 'flex gap-2 justify-center'])}>
-                {players.map((player) => (
-                  <div
-                    key={player.id}
-                    className={cn([
-                      'flex flex-col gap-2 justify-center items-center',
-                    ])}
-                  >
-                    <PointCard
-                      isFlipped={isRevealed}
-                      content={player.currentCard}
-                    ></PointCard>
-                    <div>{player.name || 'Anonymous user'}</div>
-                  </div>
-                ))}
+              <div
+                className={cn([
+                  'basis-1/2',
+                  'flex gap-2 justify-center',
+                  'select-none',
+                ])}
+              >
+                <CardTable />
               </div>
               {/* BOTTOM */}
-              <div className={cn(['flex justify-center basis-1/4'])}>
+              <div
+                className={cn([
+                  'mt-20',
+                  'flex justify-center basis-1/4',
+                  'select-none',
+                ])}
+              >
                 {!isRevealed && (
                   <div className={cn(['flex gap-2 justify-center'])}>
                     {cards.map((card) => (
