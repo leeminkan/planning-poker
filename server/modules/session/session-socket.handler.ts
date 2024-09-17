@@ -9,6 +9,7 @@ import {
   SLE_PING,
   SLE_RESET_SESSION,
   SLE_SET_IS_REVEALED_SESSION,
+  SLE_UNSELECT_CARD,
   SSE_INIT_SESSION,
   SSE_PING,
   SSE_SYNC_SESSION,
@@ -20,6 +21,7 @@ import {
   SLEJoinSessionPayload,
   SLEResetSessionPayload,
   SLESetIsRevealedSessionPayload,
+  SLEUnselectCardPayload,
   SSESyncSessionPayload,
   SSESyncUserPayload,
 } from '~/shared/socket-event.types';
@@ -139,6 +141,28 @@ export class SessionSocket implements SocketHandlerInterface {
         }
 
         sessionState.chooseCardByPlayerId(socketWithUser.user.id, card);
+
+        const socketRoomId = getFormattedSessionRoom(sessionState.id);
+        socketWithUser.nsp
+          .to(socketRoomId)
+          .emit(SSE_SYNC_SESSION, sessionState as SSESyncSessionPayload);
+      },
+    );
+
+    socketWithUser.on(
+      SLE_UNSELECT_CARD,
+      ({ sessionId }: SLEUnselectCardPayload) => {
+        console.log('SLE_UNSELECT_CARD', { sessionId });
+        // validate
+        if (!sessionId) return;
+
+        const sessionState = sessionStateRepository.findById(sessionId);
+
+        if (!sessionState) {
+          return;
+        }
+
+        sessionState.unselectCardByPlayerId(socketWithUser.user.id);
 
         const socketRoomId = getFormattedSessionRoom(sessionState.id);
         socketWithUser.nsp

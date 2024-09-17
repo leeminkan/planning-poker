@@ -91,6 +91,16 @@ export class SessionState implements SessionStateInterface {
     return this;
   }
 
+  unselectCardByPlayerId(playerId: string) {
+    const player = this.players.find((player) => player.id === playerId);
+    if (!player) {
+      return;
+    }
+    player.currentCard = null;
+    this.updatedAt = new Date();
+    return this;
+  }
+
   setCurrentTicket(ticketId: string) {
     const ticket = this.tickets.find((ticket) => ticket.id === ticketId);
     if (!ticket) {

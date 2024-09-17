@@ -49,7 +49,13 @@ export const GameLayout = ({ id }: { id: string }) => {
     players,
     averagePoint,
     currentTicketId,
-    actions: { chooseCardByPlayerId, setIsRevealed, syncSessionState, reset },
+    actions: {
+      chooseCardByPlayerId,
+      unselectCardByPlayerId,
+      setIsRevealed,
+      syncSessionState,
+      reset,
+    },
   } = useSessionStore();
   const {
     id: userId,
@@ -164,9 +170,15 @@ export const GameLayout = ({ id }: { id: string }) => {
                         isFlipped={true}
                         isActive={player?.currentCard === card}
                         content={card}
-                        onClick={() =>
-                          player && chooseCardByPlayerId(player.id, card)
-                        }
+                        onClick={() => {
+                          if (player) {
+                            if (player.currentCard === card) {
+                              unselectCardByPlayerId(player.id);
+                            } else {
+                              chooseCardByPlayerId(player.id, card);
+                            }
+                          }
+                        }}
                       ></PointCard>
                     ))}
                   </div>

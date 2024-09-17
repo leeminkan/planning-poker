@@ -9,6 +9,7 @@ import {
   SLE_CHOOSE_TICKET,
   SLE_RESET_SESSION,
   SLE_SET_IS_REVEALED_SESSION,
+  SLE_UNSELECT_CARD,
 } from '~/shared/socket-event';
 import {
   SLEChooseCardPayload,
@@ -22,6 +23,7 @@ import SocketClient from '../socket-client';
 type SessionState = SessionStateInterface;
 type SessionAction = {
   chooseCardByPlayerId: (playerId: string, card: string) => void;
+  unselectCardByPlayerId: (playerId: string) => void;
   setIsRevealed: (isRevealed: SessionState['isRevealed']) => void;
   chooseTicket: (ticketId: Ticket['id']) => void;
   syncSessionState: (sessionState: SessionStateInterface) => void;
@@ -50,6 +52,17 @@ export const useSessionStore = create<SessionStore>((set) => ({
         const player = state.players.find((player) => player.id === playerId);
         if (player) {
           player.currentCard = card;
+        }
+        return { ...state };
+      }),
+    unselectCardByPlayerId: (playerId: string) =>
+      set((state) => {
+        SocketClient.getInstance().emit(SLE_UNSELECT_CARD, {
+          sessionId: state.id,
+        } as SLEChooseCardPayload);
+        const player = state.players.find((player) => player.id === playerId);
+        if (player) {
+          player.currentCard = null;
         }
         return { ...state };
       }),
