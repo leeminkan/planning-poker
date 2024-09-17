@@ -1,12 +1,17 @@
 import { Request, Response, Router } from 'express';
 
 import { SSE_SYNC_SESSION } from '~/shared/socket-event';
+import {
+  CreateTicketDto,
+  UpdateTicketDto,
+  createTicketSchema,
+  updateTicketSchema,
+} from '~/shared/ticket.dto';
 
 import { sessionEventEmitter } from '../session/session-socket.handler';
 import { sessionStateRepository } from '../session/session-state.repository';
 import { sessionRepository } from '../session/session.repository';
 import { ticketRepository } from './ticket.repository';
-import { CreateTicketDto, createTicketSchema } from './validate-schema';
 
 const ticketRouter = Router();
 
@@ -30,6 +35,37 @@ ticketRouter.post('/', async (req: Request, res: Response, next) => {
 
     return res.send({
       data: ticket,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+ticketRouter.put('/:id', async (req: Request, res: Response, next) => {
+  try {
+    const body: UpdateTicketDto = updateTicketSchema.parse(req.body);
+    const persistedTicket = await ticketRepository.findById(req.params.id);
+    if (!persistedTicket) {
+      return res.status(404).send({
+        message: 'Ticket not found!',
+      });
+    }
+
+    const updatedTicket = await ticketRepository.save({
+      ...persistedTicket,
+      ...body,
+    });
+
+    const sessionState = sessionStateRepository.findById(
+      updatedTicket.sessionId,
+    );
+    if (sessionState) {
+      sessionState.updateTicket(updatedTicket);
+      sessionEventEmitter.emit(SSE_SYNC_SESSION, sessionState);
+    }
+
+    return res.send({
+      data: updatedTicket,
     });
   } catch (error) {
     next(error);

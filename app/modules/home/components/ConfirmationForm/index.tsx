@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useNavigate } from '@remix-run/react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { useNavigate } from '@remix-run/react';
 
 import { Button } from '~/components/ui/button';
 import {
@@ -12,11 +12,11 @@ import {
   FormLabel,
 } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
+import { cn } from '~/lib/utils';
+import { useSessionStateMutation } from '~/modules/sessions/mutations/useSessionStateMutation';
+import { useUserSessionStore } from '~/modules/user-session/stores/user-session.store';
 
 import { formSchema } from './types';
-import { cn } from '~/lib/utils';
-import { useUserSessionStore } from '~/modules/user-session/stores/user-session.store';
-import { useSessionStateMutation } from '~/modules/sessions/mutations/useSessionStateMutation';
 
 export function ConfirmationForm() {
   const {
@@ -51,9 +51,9 @@ export function ConfirmationForm() {
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className={cn([
-          ' p-4 max-w-40',
+          'p-4 w-[500px]',
           'border-solid border-2',
-          'flex flex-col gap-2',
+          'flex flex-col gap-4',
         ])}
       >
         <FormField

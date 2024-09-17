@@ -1,10 +1,10 @@
 import { useNavigate } from '@remix-run/react';
 
-import { cn } from '~/lib/utils';
 import { Button } from '~/components/ui/button';
+import { cn } from '~/lib/utils';
+import { useStartNewSessionMutation } from '~/modules/sessions/mutations/useCreateSession';
 
 import { ConfirmationForm } from '../components/ConfirmationForm';
-import { useStartNewSessionMutation } from '~/modules/sessions/mutations/useCreateSession';
 
 export const HomePage = () => {
   const navigate = useNavigate();

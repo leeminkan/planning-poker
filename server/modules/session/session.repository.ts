@@ -18,6 +18,10 @@ class SessionRepository {
   async create(payload: DeepPartial<SessionEntity>) {
     return await this.repository.save(payload);
   }
+
+  async save(ticket: SessionEntity) {
+    return await this.repository.save(ticket);
+  }
 }
 
 export const sessionRepository = new SessionRepository();

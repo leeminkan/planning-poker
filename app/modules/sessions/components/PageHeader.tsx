@@ -1,10 +1,14 @@
 import { useNavigate } from '@remix-run/react';
 import { toast } from 'react-toastify';
 
-import { cn } from '~/lib/utils';
 import { Button } from '~/components/ui/button';
+import { cn } from '~/lib/utils';
 
-export const PageHeader = ({ id }: { id: string }) => {
+import { useSessionStore } from '../stores/session.store';
+import { UpdateSessionBtnDialog } from './UpdateSessionBtnDialog';
+
+export const PageHeader = () => {
+  const { name, id } = useSessionStore();
   const navigate = useNavigate();
 
   return (
@@ -12,13 +16,18 @@ export const PageHeader = ({ id }: { id: string }) => {
       title="page-header"
       className={cn([
         'p-4',
-        'flex items-center justify-between',
+        'flex items-center justify-between gap-2',
         'bg-white shadow-md',
       ])}
     >
-      <Button onClick={() => navigate(-1)}>Back</Button>
-      <div>Session: {id}</div>
-      <div>
+      <div className="flex basis-1/4 justify-start">
+        <Button onClick={() => navigate('/')}>Home</Button>
+      </div>
+      <div className="flex basis-1/2 justify-center text-center">
+        {name || `Session: ${id}`}
+      </div>
+      <div className="flex gap-2 basis-1/4 justify-end">
+        <UpdateSessionBtnDialog />
         <Button
           onClick={() => {
             navigator.clipboard

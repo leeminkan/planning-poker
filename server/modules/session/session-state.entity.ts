@@ -8,15 +8,21 @@ import {
 
 export class SessionState implements SessionStateInterface {
   id: string;
+  // persisted state
+  tickets: Ticket[] = [];
+  name: string;
+  // eventually-persisted state
+  // game state
+  currentTicketId?: Ticket['id'];
   players: Player[] = [];
   isRevealed: boolean = false;
   averagePoint: number = 0;
-  tickets: Ticket[] = [];
   createdAt: Date;
   updatedAt: Date;
 
-  constructor({ id }: { id?: string }) {
+  constructor({ id, tickets }: { id?: string; tickets?: Ticket[] }) {
     this.id = id ?? uuidV4();
+    this.tickets = tickets ?? [];
     this.createdAt = new Date();
     this.updatedAt = new Date();
   }
@@ -43,11 +49,26 @@ export class SessionState implements SessionStateInterface {
 
   addTicket(ticketParam: Ticket) {
     const isExisted = this.tickets.find(
-      (player) => player.id === ticketParam.id,
+      (ticket) => ticket.id === ticketParam.id,
     );
     if (!isExisted) {
       this.tickets.push(ticketParam);
     }
+    this.updatedAt = new Date();
+    return this;
+  }
+
+  updateTicket(ticketParam: Ticket) {
+    const ticket = this.tickets.find((ticket) => ticket.id === ticketParam.id);
+    if (ticket) {
+      Object.assign(ticket, ticketParam);
+    }
+    this.updatedAt = new Date();
+    return this;
+  }
+
+  update(session: Partial<SessionStateInterface>) {
+    Object.assign(this, session);
     this.updatedAt = new Date();
     return this;
   }
@@ -73,6 +94,26 @@ export class SessionState implements SessionStateInterface {
       return;
     }
     player.currentCard = card;
+    this.updatedAt = new Date();
+    return this;
+  }
+
+  unselectCardByPlayerId(playerId: string) {
+    const player = this.players.find((player) => player.id === playerId);
+    if (!player) {
+      return;
+    }
+    player.currentCard = null;
+    this.updatedAt = new Date();
+    return this;
+  }
+
+  setCurrentTicket(ticketId: string) {
+    const ticket = this.tickets.find((ticket) => ticket.id === ticketId);
+    if (!ticket) {
+      return;
+    }
+    this.currentTicketId = ticket.id;
     this.updatedAt = new Date();
     return this;
   }

@@ -25,6 +25,12 @@ export class TicketEntity {
   })
   description: string;
 
+  @Column({
+    type: 'smallint',
+    nullable: true,
+  })
+  point: number;
+
   @CreateDateColumn()
   createdAt: Date;
 

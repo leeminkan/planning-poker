@@ -1,7 +1,5 @@
 import { useEffect } from 'react';
 
-import { cn } from '~/lib/utils';
-import { Button } from '~/components/ui/button';
 import {
   SLE_JOIN_SESSION,
   SLE_PING,
@@ -16,16 +14,20 @@ import {
   SSESyncSessionPayload,
   SSESyncUserPayload,
 } from '~/shared/socket-event.types';
+
+import { Button } from '~/components/ui/button';
+import { cn } from '~/lib/utils';
 import { useUserSessionStore } from '~/modules/user-session/stores/user-session.store';
 
+import { CardTable } from '../components/CardTable';
+import { PageHeader } from '../components/PageHeader';
 import { PointCard } from '../components/PointCard';
 import { ResultForm } from '../components/ResultForm';
-import { useSessionStore } from '../stores/session.store';
+import { TicketList } from '../components/TicketList';
 import { cards } from '../constants';
 import { useSessionState } from '../queries/useSessionState';
 import SocketClient from '../socket-client';
-import { TicketList } from '../components/TicketList';
-import { PageHeader } from '../components/PageHeader';
+import { useSessionStore } from '../stores/session.store';
 
 export const SessionPage = ({ id }: { id: string }) => {
   const { isLoading, isError } = useSessionState({ id });
@@ -46,8 +48,14 @@ export const GameLayout = ({ id }: { id: string }) => {
     isRevealed,
     players,
     averagePoint,
-    tickets,
-    actions: { chooseCardByPlayerId, setIsRevealed, syncSessionState, reset },
+    currentTicketId,
+    actions: {
+      chooseCardByPlayerId,
+      unselectCardByPlayerId,
+      setIsRevealed,
+      syncSessionState,
+      reset,
+    },
   } = useSessionStore();
   const {
     id: userId,
@@ -90,86 +98,101 @@ export const GameLayout = ({ id }: { id: string }) => {
     });
 
     return () => {
+      reset();
       SocketClient.disconnect();
     };
-  }, [id, name, syncSessionState, syncUser]);
+  }, [id, name, reset, syncSessionState, syncUser]);
 
   return (
     <div className={cn('h-screen', 'flex flex-col')}>
-      <PageHeader id={id} />
+      <PageHeader />
       <div title="page-body" className={cn(['grow mt-2', 'flex'])}>
         <div
           title="page-body-left"
           className={cn(['basis-1/4', 'flex justify-center'])}
-        >
-          <div>LEFT</div>
-        </div>
+        ></div>
         <div
           title="page-body-main"
           className={cn(['basis-1/2', 'flex flex-col justify-center'])}
         >
-          {/* TOP */}
-          <div
-            className={cn(['basis-1/4', 'flex justify-center items-center'])}
-          >
-            {!isRevealed ? (
-              <Button
-                onClick={() => {
-                  setIsRevealed(true);
-                }}
-              >
-                Reveal
-              </Button>
-            ) : (
-              <ResultForm
-                averagePoint={averagePoint}
-                onReset={() => {
-                  reset();
-                }}
-              ></ResultForm>
-            )}
-          </div>
-          {/* CENTER */}
-          <div className={cn(['basis-1/2', 'flex gap-2 justify-center'])}>
-            {players.map((player) => (
+          {currentTicketId && (
+            <>
+              {/* TOP */}
               <div
-                key={player.id}
                 className={cn([
-                  'flex flex-col gap-2 justify-center items-center',
+                  'basis-1/4',
+                  'flex justify-center items-center',
                 ])}
               >
-                <PointCard
-                  isFlipped={isRevealed}
-                  content={player.currentCard}
-                ></PointCard>
-                <div>{player.name || 'Anonymous user'}</div>
+                {!isRevealed ? (
+                  <Button
+                    onClick={() => {
+                      setIsRevealed(true);
+                    }}
+                  >
+                    Reveal
+                  </Button>
+                ) : (
+                  <ResultForm
+                    currentTicketId={currentTicketId}
+                    averagePoint={averagePoint}
+                    onReset={() => {
+                      reset();
+                    }}
+                    onSuccess={() => {
+                      reset();
+                    }}
+                  ></ResultForm>
+                )}
               </div>
-            ))}
-          </div>
-          {/* BOTTOM */}
-          <div className={cn(['flex justify-center basis-1/4'])}>
-            {!isRevealed && (
-              <div className={cn(['flex gap-2 justify-center'])}>
-                {cards.map((card) => (
-                  <PointCard
-                    key={card}
-                    isFlipped={true}
-                    isActive={player?.currentCard === card}
-                    content={card}
-                    onClick={() =>
-                      player && chooseCardByPlayerId(player.id, card)
-                    }
-                  ></PointCard>
-                ))}
+              {/* CENTER */}
+              <div
+                className={cn([
+                  'basis-1/2',
+                  'flex gap-2 justify-center',
+                  'select-none',
+                ])}
+              >
+                <CardTable />
               </div>
-            )}
-          </div>
+              {/* BOTTOM */}
+              <div
+                className={cn([
+                  'mt-20',
+                  'flex justify-center basis-1/4',
+                  'select-none',
+                ])}
+              >
+                {!isRevealed && (
+                  <div className={cn(['flex gap-2 justify-center'])}>
+                    {cards.map((card) => (
+                      <PointCard
+                        key={card}
+                        isFlipped={true}
+                        isActive={player?.currentCard === card}
+                        content={card}
+                        onClick={() => {
+                          if (player) {
+                            if (player.currentCard === card) {
+                              unselectCardByPlayerId(player.id);
+                            } else {
+                              chooseCardByPlayerId(player.id, card);
+                            }
+                          }
+                        }}
+                      ></PointCard>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </>
+          )}
         </div>
         <div
           title="page-body-right"
           className={cn(['basis-1/4', 'flex flex-col justify-center'])}
         >
-          <TicketList tickets={tickets} />
+          <TicketList sessionId={id} />
         </div>
       </div>
     </div>

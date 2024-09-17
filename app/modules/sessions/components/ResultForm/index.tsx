@@ -2,6 +2,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import { Ticket } from '~/shared/session-state.interface';
+
 import { Button } from '~/components/ui/button';
 import {
   Form,
@@ -11,26 +13,36 @@ import {
   FormLabel,
 } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
-
-import { formSchema } from './types';
 import { cn } from '~/lib/utils';
 
+import { useUpdateTicketMutation } from '../../mutations/useUpdateTicketMutation';
+import { formSchema } from './types';
+
 type ResultFormParams = {
+  currentTicketId: string;
   averagePoint: number;
   onReset: () => void;
+  onSuccess: (data: Ticket) => void;
 };
-export function ResultForm({ averagePoint, onReset }: ResultFormParams) {
+export function ResultForm({
+  currentTicketId,
+  averagePoint,
+  onReset,
+  onSuccess,
+}: ResultFormParams) {
+  const { mutate, isLoading } = useUpdateTicketMutation({ onSuccess });
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      finalPoint: Math.floor(averagePoint),
+      point: Math.floor(averagePoint),
     },
   });
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
-    alert(values.finalPoint);
+    mutate({ id: currentTicketId, ...values });
   }
 
   return (
@@ -49,7 +61,7 @@ export function ResultForm({ averagePoint, onReset }: ResultFormParams) {
           </div>
           <FormField
             control={form.control}
-            name="finalPoint"
+            name="point"
             render={({ field }) => (
               <FormItem>
                 <div className={cn(['flex gap-2 items-center justify-center'])}>
@@ -61,8 +73,12 @@ export function ResultForm({ averagePoint, onReset }: ResultFormParams) {
               </FormItem>
             )}
           />
-          <Button type="submit">Save & Next</Button>
-          <Button onClick={onReset}>Reset</Button>
+          <Button type="submit" disabled={isLoading}>
+            Save
+          </Button>
+          <Button onClick={onReset} disabled={isLoading}>
+            Reset
+          </Button>
         </div>
       </form>
     </Form>

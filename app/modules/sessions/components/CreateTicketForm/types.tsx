@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
 export const formSchema = z.object({
-  point: z.coerce.number().min(0),
+  title: z.string(),
+  description: z.string(),
 });

@@ -8,6 +8,8 @@ export type SLESetIsRevealedSessionPayload = {
 };
 export type SLEResetSessionPayload = { sessionId: string };
 export type SLEChooseCardPayload = { sessionId: string; card: string };
+export type SLEUnselectCardPayload = { sessionId: string };
+export type SLEChooseTicketPayload = { sessionId: string; ticketId: string };
 export type SSESyncSessionPayload = SessionStateInterface;
 export type SSEInitSessionPayload = SessionStateInterface;
 export type SSESyncUserPayload = UserSessionStateInterface;
