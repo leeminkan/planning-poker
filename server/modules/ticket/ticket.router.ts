@@ -40,6 +40,7 @@ ticketRouter.post('/', async (req: Request, res: Response, next) => {
     next(error);
   }
 });
+
 ticketRouter.put('/:id', async (req: Request, res: Response, next) => {
   try {
     const body: UpdateTicketDto = updateTicketSchema.parse(req.body);

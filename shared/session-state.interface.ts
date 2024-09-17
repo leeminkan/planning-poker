@@ -7,6 +7,7 @@ export interface Ticket {
   id: string;
   title: string;
   description: string;
+  point?: number;
 }
 export interface SessionStateInterface {
   id: string;

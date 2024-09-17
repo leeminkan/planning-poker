@@ -22,7 +22,9 @@ export const TicketItem = ({
       <CardHeader
         className={cn(['flex flex-row items-center justify-between'])}
       >
-        <CardTitle>{ticket.title}</CardTitle>
+        <CardTitle>
+          {ticket.title} {ticket.point && `[${ticket.point}]`}
+        </CardTitle>
         <div className="flex gap-2">
           {isChosen ? (
             <Button onClick={() => reset()}>Reset</Button>

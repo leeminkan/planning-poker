@@ -126,8 +126,12 @@ export const GameLayout = ({ id }: { id: string }) => {
                   </Button>
                 ) : (
                   <ResultForm
+                    currentTicketId={currentTicketId}
                     averagePoint={averagePoint}
                     onReset={() => {
+                      reset();
+                    }}
+                    onSuccess={() => {
                       reset();
                     }}
                   ></ResultForm>

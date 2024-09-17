@@ -8,7 +8,8 @@ export const createTicketSchema = z.object({
 export type CreateTicketDto = z.infer<typeof createTicketSchema>;
 
 export const updateTicketSchema = z.object({
-  title: z.string(),
-  description: z.string(),
+  title: z.string().optional(),
+  description: z.string().optional(),
+  point: z.coerce.number().optional(),
 });
 export type UpdateTicketDto = z.infer<typeof updateTicketSchema>;
