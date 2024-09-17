@@ -13,6 +13,7 @@ export interface SessionStateInterface {
   isRevealed: boolean;
   players: Player[];
   tickets: Ticket[];
+  currentTicketId?: string;
   averagePoint: number;
   createdAt: Date;
   updatedAt: Date;

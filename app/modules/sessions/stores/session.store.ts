@@ -1,13 +1,18 @@
 import { create } from 'zustand';
 
-import { SessionStateInterface } from '~/shared/session-state.interface';
+import {
+  SessionStateInterface,
+  Ticket,
+} from '~/shared/session-state.interface';
 import {
   SLE_CHOOSE_CARD,
+  SLE_CHOOSE_TICKET,
   SLE_RESET_SESSION,
   SLE_SET_IS_REVEALED_SESSION,
 } from '~/shared/socket-event';
 import {
   SLEChooseCardPayload,
+  SLEChooseTicketPayload,
   SLEResetSessionPayload,
   SLESetIsRevealedSessionPayload,
 } from '~/shared/socket-event.types';
@@ -18,6 +23,7 @@ type SessionState = SessionStateInterface;
 type SessionAction = {
   chooseCardByPlayerId: (playerId: string, card: string) => void;
   setIsRevealed: (isRevealed: SessionState['isRevealed']) => void;
+  chooseTicket: (ticketId: Ticket['id']) => void;
   syncSessionState: (sessionState: SessionStateInterface) => void;
   reset: () => void;
 };
@@ -26,6 +32,7 @@ type SessionStore = SessionState & {
 };
 export const useSessionStore = create<SessionStore>((set) => ({
   id: '',
+  currentTicketId: undefined,
   activeCard: null,
   isRevealed: false,
   averagePoint: 0,
@@ -45,6 +52,18 @@ export const useSessionStore = create<SessionStore>((set) => ({
           player.currentCard = card;
         }
         return { ...state };
+      }),
+    chooseTicket: (ticketId: Ticket['id']) =>
+      set((state) => {
+        SocketClient.getInstance().emit(SLE_CHOOSE_TICKET, {
+          sessionId: state.id,
+          ticketId,
+        } as SLEChooseTicketPayload);
+        const ticket = state.tickets.find((ticket) => ticket.id === ticketId);
+        if (!ticket) {
+          return state;
+        }
+        return { ...state, currentTicketId: ticket.id };
       }),
     setIsRevealed: (isRevealed: SessionState['isRevealed']) => {
       set((state) => {

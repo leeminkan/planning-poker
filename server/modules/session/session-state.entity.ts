@@ -12,6 +12,7 @@ export class SessionState implements SessionStateInterface {
   tickets: Ticket[] = [];
   // eventually-persisted state
   // game state
+  currentTicketId?: Ticket['id'];
   players: Player[] = [];
   isRevealed: boolean = false;
   averagePoint: number = 0;
@@ -86,6 +87,16 @@ export class SessionState implements SessionStateInterface {
       return;
     }
     player.currentCard = card;
+    this.updatedAt = new Date();
+    return this;
+  }
+
+  setCurrentTicket(ticketId: string) {
+    const ticket = this.tickets.find((ticket) => ticket.id === ticketId);
+    if (!ticket) {
+      return;
+    }
+    this.currentTicketId = ticket.id;
     this.updatedAt = new Date();
     return this;
   }

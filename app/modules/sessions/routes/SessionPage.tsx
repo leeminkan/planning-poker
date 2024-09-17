@@ -47,7 +47,7 @@ export const GameLayout = ({ id }: { id: string }) => {
     isRevealed,
     players,
     averagePoint,
-    tickets,
+    currentTicketId,
     actions: { chooseCardByPlayerId, setIsRevealed, syncSessionState, reset },
   } = useSessionStore();
   const {
@@ -109,68 +109,75 @@ export const GameLayout = ({ id }: { id: string }) => {
           title="page-body-main"
           className={cn(['basis-1/2', 'flex flex-col justify-center'])}
         >
-          {/* TOP */}
-          <div
-            className={cn(['basis-1/4', 'flex justify-center items-center'])}
-          >
-            {!isRevealed ? (
-              <Button
-                onClick={() => {
-                  setIsRevealed(true);
-                }}
-              >
-                Reveal
-              </Button>
-            ) : (
-              <ResultForm
-                averagePoint={averagePoint}
-                onReset={() => {
-                  reset();
-                }}
-              ></ResultForm>
-            )}
-          </div>
-          {/* CENTER */}
-          <div className={cn(['basis-1/2', 'flex gap-2 justify-center'])}>
-            {players.map((player) => (
+          {currentTicketId && (
+            <>
+              {/* TOP */}
               <div
-                key={player.id}
                 className={cn([
-                  'flex flex-col gap-2 justify-center items-center',
+                  'basis-1/4',
+                  'flex justify-center items-center',
                 ])}
               >
-                <PointCard
-                  isFlipped={isRevealed}
-                  content={player.currentCard}
-                ></PointCard>
-                <div>{player.name || 'Anonymous user'}</div>
+                {!isRevealed ? (
+                  <Button
+                    onClick={() => {
+                      setIsRevealed(true);
+                    }}
+                  >
+                    Reveal
+                  </Button>
+                ) : (
+                  <ResultForm
+                    averagePoint={averagePoint}
+                    onReset={() => {
+                      reset();
+                    }}
+                  ></ResultForm>
+                )}
               </div>
-            ))}
-          </div>
-          {/* BOTTOM */}
-          <div className={cn(['flex justify-center basis-1/4'])}>
-            {!isRevealed && (
-              <div className={cn(['flex gap-2 justify-center'])}>
-                {cards.map((card) => (
-                  <PointCard
-                    key={card}
-                    isFlipped={true}
-                    isActive={player?.currentCard === card}
-                    content={card}
-                    onClick={() =>
-                      player && chooseCardByPlayerId(player.id, card)
-                    }
-                  ></PointCard>
+              {/* CENTER */}
+              <div className={cn(['basis-1/2', 'flex gap-2 justify-center'])}>
+                {players.map((player) => (
+                  <div
+                    key={player.id}
+                    className={cn([
+                      'flex flex-col gap-2 justify-center items-center',
+                    ])}
+                  >
+                    <PointCard
+                      isFlipped={isRevealed}
+                      content={player.currentCard}
+                    ></PointCard>
+                    <div>{player.name || 'Anonymous user'}</div>
+                  </div>
                 ))}
               </div>
-            )}
-          </div>
+              {/* BOTTOM */}
+              <div className={cn(['flex justify-center basis-1/4'])}>
+                {!isRevealed && (
+                  <div className={cn(['flex gap-2 justify-center'])}>
+                    {cards.map((card) => (
+                      <PointCard
+                        key={card}
+                        isFlipped={true}
+                        isActive={player?.currentCard === card}
+                        content={card}
+                        onClick={() =>
+                          player && chooseCardByPlayerId(player.id, card)
+                        }
+                      ></PointCard>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </>
+          )}
         </div>
         <div
           title="page-body-right"
           className={cn(['basis-1/4', 'flex flex-col justify-center'])}
         >
-          <TicketList tickets={tickets} sessionId={id} />
+          <TicketList sessionId={id} />
         </div>
       </div>
     </div>

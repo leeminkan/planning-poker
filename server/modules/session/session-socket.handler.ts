@@ -3,6 +3,7 @@ import { Namespace, Socket } from 'socket.io';
 
 import {
   SLE_CHOOSE_CARD,
+  SLE_CHOOSE_TICKET,
   SLE_DISCONNECT,
   SLE_JOIN_SESSION,
   SLE_PING,
@@ -15,6 +16,7 @@ import {
 } from '~/shared/socket-event';
 import {
   SLEChooseCardPayload,
+  SLEChooseTicketPayload,
   SLEJoinSessionPayload,
   SLEResetSessionPayload,
   SLESetIsRevealedSessionPayload,
@@ -137,6 +139,28 @@ export class SessionSocket implements SocketHandlerInterface {
         }
 
         sessionState.chooseCardByPlayerId(socketWithUser.user.id, card);
+
+        const socketRoomId = getFormattedSessionRoom(sessionState.id);
+        socketWithUser.nsp
+          .to(socketRoomId)
+          .emit(SSE_SYNC_SESSION, sessionState as SSESyncSessionPayload);
+      },
+    );
+
+    socketWithUser.on(
+      SLE_CHOOSE_TICKET,
+      ({ sessionId, ticketId }: SLEChooseTicketPayload) => {
+        console.log('SLE_CHOOSE_TICKET', { sessionId, ticketId });
+        // validate
+        if (!sessionId) return;
+
+        const sessionState = sessionStateRepository.findById(sessionId);
+
+        if (!sessionState) {
+          return;
+        }
+
+        sessionState.setCurrentTicket(ticketId);
 
         const socketRoomId = getFormattedSessionRoom(sessionState.id);
         socketWithUser.nsp
