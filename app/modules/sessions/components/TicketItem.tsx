@@ -25,7 +25,7 @@ export const TicketItem = ({
   isChosen: boolean;
 }) => {
   return (
-    <Card className={cn([isChosen ? 'bg-slate-500' : ''])}>
+    <Card className={cn([isChosen ? 'bg-purple-200' : ''])}>
       <CardHeader>
         <CardTitle>{ticket.title}</CardTitle>
       </CardHeader>

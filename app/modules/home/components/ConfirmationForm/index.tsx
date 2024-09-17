@@ -51,9 +51,9 @@ export function ConfirmationForm() {
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className={cn([
-          ' p-4 max-w-40',
+          'p-4 w-[500px]',
           'border-solid border-2',
-          'flex flex-col gap-2',
+          'flex flex-col gap-4',
         ])}
       >
         <FormField

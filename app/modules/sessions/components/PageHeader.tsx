@@ -16,7 +16,7 @@ export const PageHeader = ({ id }: { id: string }) => {
         'bg-white shadow-md',
       ])}
     >
-      <Button onClick={() => navigate(-1)}>Back</Button>
+      <Button onClick={() => navigate('/')}>Home</Button>
       <div>Session: {id}</div>
       <div>
         <Button
