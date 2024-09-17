@@ -4,7 +4,11 @@ import { toast } from 'react-toastify';
 import { Button } from '~/components/ui/button';
 import { cn } from '~/lib/utils';
 
-export const PageHeader = ({ id }: { id: string }) => {
+import { useSessionStore } from '../stores/session.store';
+import { UpdateSessionBtnDialog } from './UpdateSessionBtnDialog';
+
+export const PageHeader = () => {
+  const { name, id } = useSessionStore();
   const navigate = useNavigate();
 
   return (
@@ -17,8 +21,9 @@ export const PageHeader = ({ id }: { id: string }) => {
       ])}
     >
       <Button onClick={() => navigate('/')}>Home</Button>
-      <div>Session: {id}</div>
-      <div>
+      <div>{name || `Session: ${id}`}</div>
+      <div className="flex gap-2">
+        <UpdateSessionBtnDialog />
         <Button
           onClick={() => {
             navigator.clipboard

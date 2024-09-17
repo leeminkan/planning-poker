@@ -1,12 +1,12 @@
-import { json, type LoaderFunction, type MetaFunction } from '@remix-run/node';
+import { type LoaderFunction, type MetaFunction, json } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 
 import { SessionPage } from '~/modules/sessions/routes/SessionPage';
 
 export const meta: MetaFunction = () => {
   return [
-    { title: 'New Remix App' },
-    { name: 'description', content: 'Welcome to Remix!' },
+    { title: 'Planning Poker' },
+    { name: 'description', content: 'Welcome to Planning Poker!' },
   ];
 };
 

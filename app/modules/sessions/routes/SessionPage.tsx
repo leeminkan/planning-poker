@@ -104,7 +104,7 @@ export const GameLayout = ({ id }: { id: string }) => {
 
   return (
     <div className={cn('h-screen', 'flex flex-col')}>
-      <PageHeader id={id} />
+      <PageHeader />
       <div title="page-body" className={cn(['grow mt-2', 'flex'])}>
         <div
           title="page-body-left"

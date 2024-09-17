@@ -11,6 +11,7 @@ export interface Ticket {
 }
 export interface SessionStateInterface {
   id: string;
+  name: string;
   isRevealed: boolean;
   players: Player[];
   tickets: Ticket[];

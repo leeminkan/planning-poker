@@ -34,6 +34,7 @@ type SessionStore = SessionState & {
 };
 export const useSessionStore = create<SessionStore>((set) => ({
   id: '',
+  name: '',
   currentTicketId: undefined,
   activeCard: null,
   isRevealed: false,
@@ -109,6 +110,7 @@ export const useSessionStore = create<SessionStore>((set) => ({
         });
         return {
           ...state,
+          name: '',
           isRevealed: false,
           averagePoint: 0,
           players,

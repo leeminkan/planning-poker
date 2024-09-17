@@ -9,5 +9,6 @@ export type Response<T> = {
 
 export type GetSessionStateResponse = Response<SessionStateInterface>;
 export type CreateSessionStateResponse = Response<SessionStateInterface>;
+export type UpdateSessionStateResponse = Response<SessionStateInterface>;
 export type CreateTicketResponse = Response<Ticket>;
 export type UpdateTicketResponse = Response<Ticket>;

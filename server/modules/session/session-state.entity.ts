@@ -66,6 +66,12 @@ export class SessionState implements SessionStateInterface {
     return this;
   }
 
+  update(session: Partial<SessionStateInterface>) {
+    Object.assign(this, session);
+    this.updatedAt = new Date();
+    return this;
+  }
+
   setIsRevealed(isRevealed: boolean) {
     this.isRevealed = isRevealed;
     const filteredPlayers = this.players.filter(
