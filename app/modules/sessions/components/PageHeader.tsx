@@ -16,13 +16,17 @@ export const PageHeader = () => {
       title="page-header"
       className={cn([
         'p-4',
-        'flex items-center justify-between',
+        'flex items-center justify-between gap-2',
         'bg-white shadow-md',
       ])}
     >
-      <Button onClick={() => navigate('/')}>Home</Button>
-      <div>{name || `Session: ${id}`}</div>
-      <div className="flex gap-2">
+      <div className="flex basis-1/4 justify-start">
+        <Button onClick={() => navigate('/')}>Home</Button>
+      </div>
+      <div className="flex basis-1/2 justify-center text-center">
+        {name || `Session: ${id}`}
+      </div>
+      <div className="flex gap-2 basis-1/4 justify-end">
         <UpdateSessionBtnDialog />
         <Button
           onClick={() => {
