@@ -6,6 +6,8 @@ import {
   Ticket,
 } from '~/shared/session-state.interface';
 
+import { removeUndefinedValuesFromObject } from './utils';
+
 export class SessionState implements SessionStateInterface {
   id: string;
   // persisted state
@@ -20,9 +22,18 @@ export class SessionState implements SessionStateInterface {
   createdAt: Date;
   updatedAt: Date;
 
-  constructor({ id, tickets }: { id?: string; tickets?: Ticket[] }) {
+  constructor({
+    id,
+    name,
+    tickets,
+  }: {
+    id?: string;
+    name?: string;
+    tickets?: Ticket[];
+  }) {
     this.id = id ?? uuidV4();
     this.tickets = tickets ?? [];
+    this.name = name ?? '';
     this.createdAt = new Date();
     this.updatedAt = new Date();
   }
@@ -68,7 +79,7 @@ export class SessionState implements SessionStateInterface {
   }
 
   update(session: Partial<SessionStateInterface>) {
-    Object.assign(this, session);
+    Object.assign(this, removeUndefinedValuesFromObject(session));
     this.updatedAt = new Date();
     return this;
   }

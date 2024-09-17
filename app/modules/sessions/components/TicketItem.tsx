@@ -24,7 +24,6 @@ export const TicketItem = ({
   reset: () => void;
   isChosen: boolean;
 }) => {
-  console.log('test', ticket.description);
   return (
     <Card className={cn([isChosen ? 'bg-purple-200' : ''])}>
       <CardHeader>

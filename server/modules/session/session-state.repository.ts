@@ -7,8 +7,12 @@ class SessionStateRepository {
     [key in string]: SessionState;
   } = {};
 
-  create({ id, tickets }: { id?: string; tickets?: Ticket[] } = {}) {
-    const newSession = new SessionState({ id, tickets });
+  create({
+    id,
+    name,
+    tickets,
+  }: { id?: string; name?: string; tickets?: Ticket[] } = {}) {
+    const newSession = new SessionState({ id, name, tickets });
     this.stores[newSession.id] = newSession;
     return this.stores[newSession.id];
   }

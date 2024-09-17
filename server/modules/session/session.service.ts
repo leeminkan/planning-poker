@@ -14,6 +14,7 @@ class SessionService {
     const tickets = await ticketRepository.findAllBySessionId(sessionId);
     const sessionState = sessionStateRepository.create({
       id: sessionId,
+      name: persistedSession.name,
       tickets,
     });
     return sessionState;
