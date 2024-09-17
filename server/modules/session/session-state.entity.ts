@@ -8,10 +8,13 @@ import {
 
 export class SessionState implements SessionStateInterface {
   id: string;
+  // persisted state
+  tickets: Ticket[] = [];
+  // eventually-persisted state
+  // game state
   players: Player[] = [];
   isRevealed: boolean = false;
   averagePoint: number = 0;
-  tickets: Ticket[] = [];
   createdAt: Date;
   updatedAt: Date;
 
@@ -48,6 +51,15 @@ export class SessionState implements SessionStateInterface {
     );
     if (!isExisted) {
       this.tickets.push(ticketParam);
+    }
+    this.updatedAt = new Date();
+    return this;
+  }
+
+  updateTicket(ticketParam: Ticket) {
+    const ticket = this.tickets.find((ticket) => ticket.id === ticketParam.id);
+    if (ticket) {
+      Object.assign(ticket, ticketParam);
     }
     this.updatedAt = new Date();
     return this;

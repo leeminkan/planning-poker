@@ -23,6 +23,19 @@ class TicketRepository {
   async create(payload: DeepPartial<TicketEntity>) {
     return await this.repository.save(payload);
   }
+
+  async save(ticket: TicketEntity) {
+    return await this.repository.save(ticket);
+  }
+
+  async updateById(id: string, payload: DeepPartial<TicketEntity>) {
+    return await this.repository.update(
+      {
+        id,
+      },
+      payload,
+    );
+  }
 }
 
 export const ticketRepository = new TicketRepository();

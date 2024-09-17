@@ -11,9 +11,9 @@ import {
   FormLabel,
 } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
+import { cn } from '~/lib/utils';
 
 import { formSchema } from './types';
-import { cn } from '~/lib/utils';
 
 type ResultFormParams = {
   averagePoint: number;
