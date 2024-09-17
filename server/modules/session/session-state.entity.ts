@@ -10,6 +10,7 @@ export class SessionState implements SessionStateInterface {
   id: string;
   // persisted state
   tickets: Ticket[] = [];
+  name: string;
   // eventually-persisted state
   // game state
   currentTicketId?: Ticket['id'];

@@ -9,6 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from '~/components/ui/card';
+import { ScrollArea } from '~/components/ui/scroll-area';
 import { cn } from '~/lib/utils';
 
 import { UpdateTicketBtnDialog } from './UpdateTicketBtnDialog';
@@ -24,12 +25,23 @@ export const TicketItem = ({
   reset: () => void;
   isChosen: boolean;
 }) => {
+  console.log('test', ticket.description);
   return (
     <Card className={cn([isChosen ? 'bg-purple-200' : ''])}>
       <CardHeader>
         <CardTitle>{ticket.title}</CardTitle>
       </CardHeader>
-      <CardContent>{ticket.description}</CardContent>
+      <CardContent>
+        <div
+          className={cn([
+            'max-h-60 p-2',
+            'whitespace-pre-wrap overflow-scroll ',
+            'border-solid border-2 rounded-md',
+          ])}
+        >
+          {ticket.description}
+        </div>
+      </CardContent>
       <CardFooter
         className={cn(['flex flex-row gap-2 items-center justify-between'])}
       >

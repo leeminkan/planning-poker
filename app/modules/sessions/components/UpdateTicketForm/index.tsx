@@ -13,6 +13,7 @@ import {
   FormLabel,
 } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
+import { Textarea } from '~/components/ui/textarea';
 import { cn } from '~/lib/utils';
 
 import { useUpdateTicketMutation } from '../../mutations/useUpdateTicketMutation';
@@ -64,7 +65,11 @@ export function UpdateTicketForm({
               <FormItem className="w-full">
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Input placeholder="Description" {...field} />
+                  <Textarea
+                    placeholder="Description"
+                    className="resize-none"
+                    {...field}
+                  />
                 </FormControl>
               </FormItem>
             )}
