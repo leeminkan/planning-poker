@@ -114,6 +114,7 @@ export const useSessionStore = create<SessionStore>((set) => ({
           isRevealed: false,
           averagePoint: 0,
           players,
+          currentTicketId: undefined,
         };
       }),
   },

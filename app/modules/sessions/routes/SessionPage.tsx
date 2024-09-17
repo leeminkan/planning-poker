@@ -98,9 +98,10 @@ export const GameLayout = ({ id }: { id: string }) => {
     });
 
     return () => {
+      reset();
       SocketClient.disconnect();
     };
-  }, [id, name, syncSessionState, syncUser]);
+  }, [id, name, reset, syncSessionState, syncUser]);
 
   return (
     <div className={cn('h-screen', 'flex flex-col')}>
