@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  planning-poker:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - '3000:3000'
+    env_file:
+      - .env
+    entrypoint: ./start.sh
