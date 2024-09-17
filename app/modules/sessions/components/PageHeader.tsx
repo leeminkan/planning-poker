@@ -31,7 +31,7 @@ export const PageHeader = () => {
         <Button
           onClick={() => {
             navigator.clipboard
-              .writeText(`http://localhost:3000/sessions/${id}`)
+              .writeText(`${window.ENV.HOST}/sessions/${id}`)
               .then(() => {
                 toast('Copy successfully!');
               });

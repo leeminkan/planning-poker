@@ -1,21 +1,31 @@
+import type { LinksFunction } from '@remix-run/node';
 import {
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
+  json,
+  useLoaderData,
 } from '@remix-run/react';
-import type { LinksFunction } from '@remix-run/node';
-
-import styles from './tailwind.css?url';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ToastContainer } from 'react-toastify';
 import toastStyles from 'react-toastify/dist/ReactToastify.css?url';
+
+import styles from './tailwind.css?url';
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: styles },
   { rel: 'stylesheet', href: toastStyles },
 ];
+
+export async function loader() {
+  return json({
+    ENV: {
+      HOST: process.env.HOST,
+    },
+  });
+}
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -50,9 +60,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
 const queryClient = new QueryClient();
 
 export default function App() {
+  const data = useLoaderData<typeof loader>();
+
   return (
     <QueryClientProvider client={queryClient}>
       <Outlet />
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `window.ENV = ${JSON.stringify(data.ENV)}`,
+        }}
+      />
     </QueryClientProvider>
   );
 }

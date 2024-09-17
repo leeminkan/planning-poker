@@ -65,7 +65,7 @@ export const GameLayout = ({ id }: { id: string }) => {
   const player = players.find((player) => player.id === userId);
 
   useEffect(() => {
-    const socket = SocketClient.init('http://localhost:3000/sessions');
+    const socket = SocketClient.init(`${window.ENV.HOST}/sessions`);
 
     socket.on('connect', () => {
       socket.emit(SLE_PING, 'Ping from client!');
