@@ -15,6 +15,11 @@ class TicketRepository {
     return data ?? null;
   }
 
+  async findAllBySessionId(sessionId: string) {
+    const data = await this.repository.find({ where: { sessionId } });
+    return data;
+  }
+
   async create(payload: DeepPartial<TicketEntity>) {
     return await this.repository.save(payload);
   }

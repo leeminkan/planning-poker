@@ -6,7 +6,7 @@ const config = {
   semi: true,
   plugins: [require.resolve('@trivago/prettier-plugin-sort-imports')],
   importOrder: ['^~/shared/(.*)$', '^~/server/(.*)$', '^~/(.*)$', '^[./]'],
-  importOrderParserPlugins: ['typescript', 'decorators-legacy'],
+  importOrderParserPlugins: ['typescript', 'decorators-legacy', 'jsx'],
   importOrderSeparation: true,
   importOrderSortSpecifiers: true,
 };

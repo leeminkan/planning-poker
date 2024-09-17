@@ -2,6 +2,7 @@ import { Request, Response, Router } from 'express';
 
 import { sessionStateRepository } from './session-state.repository';
 import { sessionRepository } from './session.repository';
+import { sessionService } from './session.service';
 
 const sessionRouter = Router();
 
@@ -12,16 +13,15 @@ sessionRouter.get('/:id', async (req: Request, res: Response) => {
     });
   }
 
-  let sessionState = sessionStateRepository.findById(req.params.id);
+  const sessionState =
+    await sessionService.getOrCreateSessionStateFromPersistedSession({
+      sessionId: req.params.id,
+    });
 
   if (!sessionState) {
-    const persistedSession = await sessionRepository.findById(req.params.id);
-    if (!persistedSession) {
-      return res.status(404).send({
-        message: 'Not found!',
-      });
-    }
-    sessionState = sessionStateRepository.create({ id: req.params.id });
+    return res.status(404).send({
+      message: 'Not found!',
+    });
   }
 
   return res.send({

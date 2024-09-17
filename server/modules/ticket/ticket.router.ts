@@ -1,12 +1,12 @@
 import { Request, Response, Router } from 'express';
 
 import { SSE_SYNC_SESSION } from '~/shared/socket-event';
+import { CreateTicketDto, createTicketSchema } from '~/shared/ticket.dto';
 
 import { sessionEventEmitter } from '../session/session-socket.handler';
 import { sessionStateRepository } from '../session/session-state.repository';
 import { sessionRepository } from '../session/session.repository';
 import { ticketRepository } from './ticket.repository';
-import { CreateTicketDto, createTicketSchema } from './validate-schema';
 
 const ticketRouter = Router();
 

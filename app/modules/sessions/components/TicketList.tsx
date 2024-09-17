@@ -1,10 +1,18 @@
-import { cn } from '~/lib/utils';
-import { Button } from '~/components/ui/button';
-import { ScrollArea } from '~/components/ui/scroll-area';
-import { TicketItem } from '../components/TicketItem';
 import { Ticket } from '~/shared/session-state.interface';
 
-export const TicketList = ({ tickets }: { tickets: Ticket[] }) => {
+import { ScrollArea } from '~/components/ui/scroll-area';
+import { cn } from '~/lib/utils';
+
+import { TicketItem } from '../components/TicketItem';
+import { CreateTicketBtnDialog } from './CreateTicketBtnDialog';
+
+export const TicketList = ({
+  tickets,
+  sessionId,
+}: {
+  tickets: Ticket[];
+  sessionId: string;
+}) => {
   return (
     <>
       <div className={cn(['w-full mb-2', 'flex justify-center'])}>Tickets</div>
@@ -14,13 +22,13 @@ export const TicketList = ({ tickets }: { tickets: Ticket[] }) => {
           className={cn(['h-[700px]', 'flex gap-4 flex-col'])}
         >
           {tickets.map((ticket) => (
-            <>
-              <TicketItem key={ticket.id} ticket={ticket} />
+            <div key={ticket.id}>
+              <TicketItem ticket={ticket} />
               <div className="p-2"></div>
-            </>
+            </div>
           ))}
         </ScrollArea>
-        <Button className={cn(['w-full mt-2'])}>Add</Button>
+        <CreateTicketBtnDialog sessionId={sessionId} />
       </div>
     </>
   );

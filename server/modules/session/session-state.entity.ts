@@ -15,8 +15,9 @@ export class SessionState implements SessionStateInterface {
   createdAt: Date;
   updatedAt: Date;
 
-  constructor({ id }: { id?: string }) {
+  constructor({ id, tickets }: { id?: string; tickets?: Ticket[] }) {
     this.id = id ?? uuidV4();
+    this.tickets = tickets ?? [];
     this.createdAt = new Date();
     this.updatedAt = new Date();
   }
@@ -43,7 +44,7 @@ export class SessionState implements SessionStateInterface {
 
   addTicket(ticketParam: Ticket) {
     const isExisted = this.tickets.find(
-      (player) => player.id === ticketParam.id,
+      (ticket) => ticket.id === ticketParam.id,
     );
     if (!isExisted) {
       this.tickets.push(ticketParam);

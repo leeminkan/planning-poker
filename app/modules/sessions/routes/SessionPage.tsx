@@ -1,7 +1,5 @@
 import { useEffect } from 'react';
 
-import { cn } from '~/lib/utils';
-import { Button } from '~/components/ui/button';
 import {
   SLE_JOIN_SESSION,
   SLE_PING,
@@ -16,16 +14,19 @@ import {
   SSESyncSessionPayload,
   SSESyncUserPayload,
 } from '~/shared/socket-event.types';
+
+import { Button } from '~/components/ui/button';
+import { cn } from '~/lib/utils';
 import { useUserSessionStore } from '~/modules/user-session/stores/user-session.store';
 
+import { PageHeader } from '../components/PageHeader';
 import { PointCard } from '../components/PointCard';
 import { ResultForm } from '../components/ResultForm';
-import { useSessionStore } from '../stores/session.store';
+import { TicketList } from '../components/TicketList';
 import { cards } from '../constants';
 import { useSessionState } from '../queries/useSessionState';
 import SocketClient from '../socket-client';
-import { TicketList } from '../components/TicketList';
-import { PageHeader } from '../components/PageHeader';
+import { useSessionStore } from '../stores/session.store';
 
 export const SessionPage = ({ id }: { id: string }) => {
   const { isLoading, isError } = useSessionState({ id });
@@ -169,7 +170,7 @@ export const GameLayout = ({ id }: { id: string }) => {
           title="page-body-right"
           className={cn(['basis-1/4', 'flex flex-col justify-center'])}
         >
-          <TicketList tickets={tickets} />
+          <TicketList tickets={tickets} sessionId={id} />
         </div>
       </div>
     </div>
