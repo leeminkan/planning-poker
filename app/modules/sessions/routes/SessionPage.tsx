@@ -102,9 +102,7 @@ export const GameLayout = ({ id }: { id: string }) => {
         <div
           title="page-body-left"
           className={cn(['basis-1/4', 'flex justify-center'])}
-        >
-          <div>LEFT</div>
-        </div>
+        ></div>
         <div
           title="page-body-main"
           className={cn(['basis-1/2', 'flex flex-col justify-center'])}
