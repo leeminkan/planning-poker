@@ -11,6 +11,7 @@ import {
 } from '~/components/ui/card';
 import { cn } from '~/lib/utils';
 
+import { useDeleteTicketMutation } from '../mutations/useDeleteTicketMutation';
 import { UpdateTicketBtnDialog } from './UpdateTicketBtnDialog';
 
 export const TicketItem = ({
@@ -24,6 +25,9 @@ export const TicketItem = ({
   reset: () => void;
   isChosen: boolean;
 }) => {
+  const { isLoading, mutate } = useDeleteTicketMutation({
+    onSuccess: () => {},
+  });
   return (
     <Card className={cn([isChosen ? 'bg-purple-200' : ''])}>
       <CardHeader>
@@ -46,11 +50,20 @@ export const TicketItem = ({
         {ticket.point ? <Badge>{ticket.point}</Badge> : <div></div>}
         <div className="flex gap-2">
           {isChosen ? (
-            <Button onClick={() => reset()}>Reset</Button>
+            <Button variant="outline" onClick={() => reset()}>
+              Reset
+            </Button>
           ) : (
             <Button onClick={() => chooseTicket(ticket.id)}>Vote</Button>
           )}
           <UpdateTicketBtnDialog ticket={ticket} />
+          <Button
+            variant="destructive"
+            onClick={() => mutate({ id: ticket.id })}
+            disabled={isLoading}
+          >
+            Remove
+          </Button>
         </div>
       </CardFooter>
     </Card>

@@ -72,4 +72,31 @@ ticketRouter.put('/:id', async (req: Request, res: Response, next) => {
   }
 });
 
+ticketRouter.delete('/:id', async (req: Request, res: Response, next) => {
+  try {
+    const persistedTicket = await ticketRepository.findById(req.params.id);
+    if (!persistedTicket) {
+      return res.status(404).send({
+        message: 'Ticket not found!',
+      });
+    }
+
+    await ticketRepository.removeById(req.params.id);
+
+    const sessionState = sessionStateRepository.findById(
+      persistedTicket.sessionId,
+    );
+    if (sessionState) {
+      sessionState.removeTicket(persistedTicket.id);
+      sessionEventEmitter.emit(SSE_SYNC_SESSION, sessionState);
+    }
+
+    return res.send({
+      message: 'Ok',
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 export { ticketRouter };

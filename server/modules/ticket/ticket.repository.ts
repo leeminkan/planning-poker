@@ -36,6 +36,12 @@ class TicketRepository {
       payload,
     );
   }
+
+  async removeById(id: string) {
+    return await this.repository.delete({
+      id,
+    });
+  }
 }
 
 export const ticketRepository = new TicketRepository();

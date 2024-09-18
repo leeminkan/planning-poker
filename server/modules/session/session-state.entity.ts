@@ -87,6 +87,12 @@ export class SessionState implements SessionStateInterface {
     return this;
   }
 
+  removeTicket(ticketId: string) {
+    this.tickets = this.tickets.filter((ticket) => ticket.id !== ticketId);
+    this.updatedAt = new Date();
+    return this;
+  }
+
   update(session: Partial<SessionStateInterface>) {
     Object.assign(this, removeUndefinedValuesFromObject(session));
     this.updatedAt = new Date();

@@ -22,3 +22,8 @@ export const updateTicketApi = async ({
   );
   return res.data.data;
 };
+
+export const deleteTicketApi = async ({ id }: { id: string }) => {
+  const res = await axiosInstance.delete(`/api/tickets/${id}`);
+  return res.data.data;
+};
