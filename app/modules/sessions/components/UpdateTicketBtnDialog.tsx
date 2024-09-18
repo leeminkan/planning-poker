@@ -22,7 +22,7 @@ export const UpdateTicketBtnDialog = ({ ticket }: { ticket: Ticket }) => {
       <DialogTrigger asChild>
         <Button className={cn(['m-0'])}>Edit</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[700px]">
         <DialogHeader>
           <DialogTitle>Edit Ticket</DialogTitle>
         </DialogHeader>

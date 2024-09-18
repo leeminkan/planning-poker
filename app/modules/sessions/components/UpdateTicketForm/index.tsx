@@ -65,11 +65,7 @@ export function UpdateTicketForm({
               <FormItem className="w-full">
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Textarea
-                    placeholder="Description"
-                    className="resize-none"
-                    {...field}
-                  />
+                  <Textarea placeholder="Description" {...field} />
                 </FormControl>
               </FormItem>
             )}
