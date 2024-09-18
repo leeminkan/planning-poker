@@ -17,7 +17,10 @@ export const useCreateTicketMutation = ({
     mutationFn: async (payload: CreateTicketDto) => {
       return await createTicketApi(payload);
     },
-    onSuccess: onSuccess,
+    onSuccess: (data) => {
+      toast.info('Add ticket successfully!');
+      onSuccess(data);
+    },
     onError: (error: AxiosError) => {
       console.error(error);
       toast.error('Some thing was wrong!');

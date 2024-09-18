@@ -2,20 +2,22 @@ import { AxiosError } from 'axios';
 import { useMutation } from 'react-query';
 import { toast } from 'react-toastify';
 
-import { deleteTicketApi } from '../services/ticket.service';
+import { SetupApiKeyDto } from '~/shared/jira.dto';
 
-type DeleteTicketMutationParams = {
+import { setupJiraApiKeyApi } from '../services/jira.service';
+
+type SetupJiraApiKeyApiMutationParams = {
   onSuccess: () => void;
 };
-export const useDeleteTicketMutation = ({
+export const useSetupJiraApiKeyApiMutation = ({
   onSuccess,
-}: DeleteTicketMutationParams) => {
+}: SetupJiraApiKeyApiMutationParams) => {
   const mutation = useMutation({
-    mutationFn: async (payload: { id: string }) => {
-      return await deleteTicketApi(payload);
+    mutationFn: async (payload: SetupApiKeyDto) => {
+      return await setupJiraApiKeyApi(payload);
     },
     onSuccess: () => {
-      toast.info('Delete ticket successfully!');
+      toast.info('Setup successfully!');
       onSuccess();
     },
     onError: (error: AxiosError) => {

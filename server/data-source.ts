@@ -5,6 +5,7 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { fileURLToPath } from 'url';
 
 import { databaseConfig } from './configs';
+import { JiraEntity } from './modules/jira/jira.entity';
 import { SessionEntity } from './modules/session/session.entity';
 import { TicketEntity } from './modules/ticket/ticket.entity';
 
@@ -19,7 +20,7 @@ export const AppDataSource = new DataSource({
   password: databaseConfig.password,
   database: databaseConfig.database,
   logging: true,
-  entities: [SessionEntity, TicketEntity],
+  entities: [SessionEntity, TicketEntity, JiraEntity],
   synchronize: true,
   namingStrategy: new SnakeNamingStrategy(),
   migrations: [join(__dirname, 'migrations/**/*{.ts,.js}')],

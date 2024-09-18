@@ -39,7 +39,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <body className="bg-gray-100">
         {children}
         <ToastContainer
-          position="bottom-right"
+          position="bottom-left"
           autoClose={5000}
           hideProgressBar={false}
           newestOnTop={false}

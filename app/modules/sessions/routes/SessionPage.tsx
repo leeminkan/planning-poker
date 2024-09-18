@@ -105,15 +105,9 @@ export const GameLayout = ({ id }: { id: string }) => {
   return (
     <div className={cn('h-screen', 'flex flex-col')}>
       <PageHeader />
-      <div title="page-body" className={cn(['grow mt-2', 'flex'])}>
-        <div
-          title="page-body-left"
-          className={cn(['basis-1/4', 'flex justify-center'])}
-        ></div>
-        <div
-          title="page-body-main"
-          className={cn(['basis-1/2', 'flex flex-col justify-center'])}
-        >
+      <div className={cn(['grow mt-2', 'flex'])}>
+        <div className={cn(['basis-1/4', 'flex justify-center'])}></div>
+        <div className={cn(['basis-1/2', 'flex flex-col justify-center'])}>
           {currentTicketId && (
             <>
               {/* TOP */}
@@ -187,10 +181,7 @@ export const GameLayout = ({ id }: { id: string }) => {
             </>
           )}
         </div>
-        <div
-          title="page-body-right"
-          className={cn(['basis-1/4', 'flex flex-col justify-center'])}
-        >
+        <div className={cn(['basis-1/4', 'flex flex-col justify-center'])}>
           <TicketList sessionId={id} />
         </div>
       </div>

@@ -17,7 +17,10 @@ export const useUpdateTicketMutation = ({
     mutationFn: async (payload: UpdateTicketDto & { id: string }) => {
       return await updateTicketApi(payload);
     },
-    onSuccess: onSuccess,
+    onSuccess: (data) => {
+      toast.info('Update successfully!');
+      onSuccess(data);
+    },
     onError: (error: AxiosError) => {
       console.error(error);
       toast.error('Some thing was wrong!');

@@ -14,7 +14,6 @@ export const PageHeader = () => {
 
   return (
     <header
-      title="page-header"
       className={cn([
         'p-4',
         'flex items-center justify-between gap-2',

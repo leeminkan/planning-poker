@@ -17,7 +17,10 @@ export const useUpdateSessionStateMutation = ({
     mutationFn: async (payload: UpdateSessionDto & { id: string }) => {
       return await updateSessionStateApi(payload);
     },
-    onSuccess: onSuccess,
+    onSuccess: (data) => {
+      toast.info('Update successfully!');
+      onSuccess(data);
+    },
     onError: (error: AxiosError) => {
       console.error(error);
       toast.error('Some thing was wrong!');

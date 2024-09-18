@@ -18,7 +18,6 @@ export const HomePage = () => {
   return (
     <div className="w-full">
       <header
-        title="page-header"
         className={cn([
           'w-full p-4',
           'bg-white shadow-md',
@@ -36,7 +35,6 @@ export const HomePage = () => {
         </Button>
       </header>
       <div
-        title="page-body"
         className={cn([
           'w-full h-full mt-4',
           'flex flex-col gap-2 items-center justify-center',

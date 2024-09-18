@@ -7,6 +7,7 @@ import morgan from 'morgan';
 import { ZodError } from 'zod';
 
 import { AppDataSource } from './data-source';
+import { jiraRouter } from './modules/jira/jira.route';
 import { sessionRouter } from './modules/session/session.router';
 import { ticketRouter } from './modules/ticket/ticket.router';
 import { userSessionRouter } from './modules/user-session/user-session.router';
@@ -73,6 +74,7 @@ const rootRouter = Router();
 rootRouter.use('/sessions', sessionRouter);
 rootRouter.use('/tickets', ticketRouter);
 rootRouter.use('/user-sessions', userSessionRouter);
+rootRouter.use('/jira', jiraRouter);
 app.use('/api', rootRouter);
 
 // handle SSR requests
