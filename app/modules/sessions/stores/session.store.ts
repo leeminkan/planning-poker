@@ -110,6 +110,7 @@ export const useSessionStore = create<SessionStore>((set) => ({
         });
         return {
           ...state,
+          id: '',
           name: '',
           isRevealed: false,
           averagePoint: 0,

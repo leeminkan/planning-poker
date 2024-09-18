@@ -7,10 +7,12 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
+import { SessionEntityInterface } from '~/shared/session-state.interface';
+
 import { TicketEntity } from '../ticket/ticket.entity';
 
 @Entity({ name: 'sessions' })
-export class SessionEntity {
+export class SessionEntity implements SessionEntityInterface {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

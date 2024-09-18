@@ -4,6 +4,7 @@ import { axiosInstance } from '~/axios';
 
 import {
   CreateSessionStateResponse,
+  GetRecentSessionsResponse,
   GetSessionStateResponse,
   UpdateSessionStateResponse,
 } from './types';
@@ -29,6 +30,13 @@ export const updateSessionStateApi = async ({
   const res = await axiosInstance.put<UpdateSessionStateResponse>(
     `/api/sessions/${id}`,
     payload,
+  );
+  return res.data.data;
+};
+
+export const getRecentSessions = async () => {
+  const res = await axiosInstance.get<GetRecentSessionsResponse>(
+    `/api/sessions/recent`,
   );
   return res.data.data;
 };

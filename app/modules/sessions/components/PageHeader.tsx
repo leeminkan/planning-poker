@@ -24,7 +24,7 @@ export const PageHeader = () => {
         <Button onClick={() => navigate('/')}>Home</Button>
       </div>
       <div className="flex basis-1/2 justify-center text-center">
-        {name || `Session: ${id}`}
+        {name || (id && `Session: ${id}`)}
       </div>
       <div className="flex gap-2 basis-1/4 justify-end">
         <UpdateSessionBtnDialog />

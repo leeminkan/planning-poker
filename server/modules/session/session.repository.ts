@@ -10,6 +10,16 @@ class SessionRepository {
     this.repository = AppDataSource.getRepository(SessionEntity);
   }
 
+  async getRecentSessions() {
+    const data = await this.repository.find({
+      take: 5,
+      order: {
+        createdAt: 'DESC',
+      },
+    });
+    return data;
+  }
+
   async findById(id: string) {
     const data = await this.repository.findOne({ where: { id } });
     return data ?? null;

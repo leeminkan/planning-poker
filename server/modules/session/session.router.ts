@@ -10,6 +10,14 @@ import { sessionService } from './session.service';
 
 const sessionRouter = Router();
 
+sessionRouter.get('/recent', async (req: Request, res: Response) => {
+  const sessionStates = await sessionRepository.getRecentSessions();
+
+  return res.send({
+    data: sessionStates,
+  });
+});
+
 sessionRouter.get('/:id', async (req: Request, res: Response) => {
   if (!req.params.id) {
     return res.status(404).send({

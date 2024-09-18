@@ -5,6 +5,7 @@ import { cn } from '~/lib/utils';
 import { useStartNewSessionMutation } from '~/modules/sessions/mutations/useCreateSession';
 
 import { ConfirmationForm } from '../components/ConfirmationForm';
+import { RecentSessionList } from '../components/RecentSessionList';
 
 export const HomePage = () => {
   const navigate = useNavigate();
@@ -38,10 +39,11 @@ export const HomePage = () => {
         title="page-body"
         className={cn([
           'w-full h-full mt-4',
-          'flex items-center justify-center',
+          'flex flex-col gap-2 items-center justify-center',
         ])}
       >
         <ConfirmationForm />
+        <RecentSessionList />
       </div>
     </div>
   );

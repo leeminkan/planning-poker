@@ -20,3 +20,18 @@ export interface SessionStateInterface {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface TicketEntityInterface {
+  id: string;
+  title: string;
+  description: string;
+  point?: number;
+}
+
+export interface SessionEntityInterface {
+  id: string;
+  name: string;
+  tickets: TicketEntityInterface[];
+  createdAt: Date;
+  updatedAt: Date;
+}
