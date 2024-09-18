@@ -65,8 +65,7 @@ export const GameLayout = ({ id }: { id: string }) => {
   const player = players.find((player) => player.id === userId);
 
   useEffect(() => {
-    const socket = SocketClient.init(`${window.ENV.HOST}/sessions`);
-
+    const socket = SocketClient.init(`${window.ENV.HOST}/sessions`, userId);
     socket.on('connect', () => {
       socket.emit(SLE_PING, 'Ping from client!');
       socket.emit(SLE_JOIN_SESSION, {
@@ -101,7 +100,7 @@ export const GameLayout = ({ id }: { id: string }) => {
       reset();
       SocketClient.disconnect();
     };
-  }, [id, name, reset, syncSessionState, syncUser]);
+  }, [id, name, reset, syncSessionState, syncUser, userId]);
 
   return (
     <div className={cn('h-screen', 'flex flex-col')}>

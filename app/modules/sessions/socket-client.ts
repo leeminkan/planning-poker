@@ -3,9 +3,13 @@ import { Socket, io } from 'socket.io-client';
 class SocketClient extends Socket {
   private static socket: Socket | null = null;
 
-  public static init(host: string): Socket {
+  public static init(host: string, token: string): Socket {
     if (!SocketClient.socket) {
-      SocketClient.socket = io(host);
+      SocketClient.socket = io(host, {
+        auth: {
+          token,
+        },
+      });
     }
     return SocketClient.socket;
   }

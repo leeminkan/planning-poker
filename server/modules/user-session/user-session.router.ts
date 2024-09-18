@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express';
 
-import { SSE_SYNC_SESSION } from '~/shared/socket-event';
+import { SSE_SYNC_SESSION, SSE_SYNC_USER } from '~/shared/socket-event';
 import {
   UpdateUserSessionDto,
   updateUserSessionSchema,
@@ -35,6 +35,8 @@ userSessionRouter.put('/:id', async (req: Request, res: Response, next) => {
         sessionEventEmitter.emit(SSE_SYNC_SESSION, sessionState);
       }
     }
+
+    sessionEventEmitter.emit(SSE_SYNC_USER, userSession);
 
     return res.send({
       data: userSession,

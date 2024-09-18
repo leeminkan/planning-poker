@@ -32,18 +32,18 @@ import { userSessionStateRepository } from '../user-session/user-session-state.r
 import { SocketWithUser } from './session-socket.types';
 import { sessionStateRepository } from './session-state.repository';
 import { sessionService } from './session.service';
-import { getFormattedSessionRoom } from './utils';
+import { getFormattedSessionRoom, getFormattedUserSessionRoom } from './utils';
 
 export const sessionEventEmitter = new EventEmitter();
 
 export class SessionSocket implements SocketHandlerInterface {
-  handleConnection(socket: Socket) {
-    const socketWithUser = this.initUser(socket);
-
+  handleConnection(socketWithUser: SocketWithUser) {
     socketWithUser.emit(SSE_PING, 'Ping from server!');
     socketWithUser.on(SLE_PING, (value) => {
       console.log('Received', value);
     });
+    socketWithUser.emit(SSE_SYNC_USER, socketWithUser.user);
+    socketWithUser.join(getFormattedUserSessionRoom(socketWithUser.user.id));
 
     socketWithUser.on(
       SLE_JOIN_SESSION,
@@ -193,14 +193,20 @@ export class SessionSocket implements SocketHandlerInterface {
       },
     );
 
-    socketWithUser.on(SLE_DISCONNECT, () => {
+    socketWithUser.on(SLE_DISCONNECT, async () => {
       console.log('CLIENT DISCONNECT', socketWithUser.user.id);
       if (socketWithUser.user.currentSessionId) {
         const sessionState = sessionStateRepository.findById(
           socketWithUser.user.currentSessionId,
         );
         if (!sessionState) return;
-        sessionState.removePlayer(socketWithUser.user.id);
+        const sockets = await socketWithUser
+          .in(getFormattedUserSessionRoom(socketWithUser.user.id))
+          .fetchSockets();
+        if (sockets.length === 0) {
+          console.log('LAST SOCKET OF USER', socketWithUser.user.id);
+          sessionState.removePlayer(socketWithUser.user.id);
+        }
 
         const socketRoomId = getFormattedSessionRoom(sessionState.id);
         socketWithUser.nsp
@@ -213,6 +219,15 @@ export class SessionSocket implements SocketHandlerInterface {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   middlewareImplementation(socket: Socket, next: any) {
     //Implement your middleware for session here
+    const token = socket.handshake.auth.token;
+    let user = token
+      ? userSessionStateRepository.findById(token)
+      : userSessionStateRepository.create();
+
+    if (!user) {
+      user = userSessionStateRepository.create();
+    }
+    (socket as SocketWithUser).user = user;
     return next();
   }
 
@@ -226,12 +241,13 @@ export class SessionSocket implements SocketHandlerInterface {
           .emit(SSE_SYNC_SESSION, payload);
       },
     );
-  }
-
-  initUser(socket: Socket): SocketWithUser {
-    const user = userSessionStateRepository.create();
-    (socket as SocketWithUser).user = user;
-    socket.emit(SSE_SYNC_USER, user as SSESyncUserPayload);
-    return socket as SocketWithUser;
+    sessionEventEmitter.on(
+      SSE_SYNC_USER,
+      async (payload: SSESyncUserPayload) => {
+        namespace
+          .to(getFormattedUserSessionRoom(payload.id))
+          .emit(SSE_SYNC_USER, payload);
+      },
+    );
   }
 }
