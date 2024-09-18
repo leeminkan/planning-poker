@@ -27,13 +27,13 @@ export const TicketItem = ({
   return (
     <Card className={cn([isChosen ? 'bg-purple-200' : ''])}>
       <CardHeader>
-        <CardTitle>{ticket.title}</CardTitle>
+        <CardTitle className="break-all">{ticket.title}</CardTitle>
       </CardHeader>
       <CardContent>
         <div
           className={cn([
             'max-h-60 p-2',
-            'whitespace-pre-wrap overflow-scroll ',
+            'whitespace-pre-wrap break-all overflow-scroll ',
             'border-solid border-2 rounded-md',
           ])}
         >
