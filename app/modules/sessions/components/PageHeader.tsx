@@ -6,6 +6,7 @@ import { cn } from '~/lib/utils';
 
 import { useSessionStore } from '../stores/session.store';
 import { UpdateSessionBtnDialog } from './UpdateSessionBtnDialog';
+import { UpdateUserSessionBtnDialog } from './UpdateUserSessionBtnDialog';
 
 export const PageHeader = () => {
   const { name, id } = useSessionStore();
@@ -27,6 +28,7 @@ export const PageHeader = () => {
         {name || (id && `Session: ${id}`)}
       </div>
       <div className="flex gap-2 basis-1/4 justify-end">
+        <UpdateUserSessionBtnDialog />
         <UpdateSessionBtnDialog />
         <Button
           onClick={() => {

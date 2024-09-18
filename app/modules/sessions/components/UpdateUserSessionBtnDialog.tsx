@@ -9,25 +9,32 @@ import {
   DialogTrigger,
 } from '~/components/ui/dialog';
 import { cn } from '~/lib/utils';
+import { useUserSessionStore } from '~/modules/user-session/stores/user-session.store';
 
-import { useSessionStore } from '../stores/session.store';
-import { UpdateSessionForm } from './UpdateSessionForm';
+import { UpdateUserSessionForm } from './UpdateUserSessionForm';
 
-export const UpdateSessionBtnDialog = () => {
-  const { id, name } = useSessionStore();
+export const UpdateUserSessionBtnDialog = () => {
+  const {
+    id,
+    name,
+    actions: { syncUser },
+  } = useUserSessionStore();
   const [open, setOpen] = React.useState(false);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className={cn(['m-0'])}>Edit Session</Button>
+        <Button className={cn(['m-0'])}>Change Profile</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Edit Session</DialogTitle>
+          <DialogTitle>Change Profile</DialogTitle>
         </DialogHeader>
-        <UpdateSessionForm
-          onSuccess={() => setOpen(false)}
+        <UpdateUserSessionForm
+          onSuccess={(data) => {
+            setOpen(false);
+            syncUser(data);
+          }}
           defaultValues={{ id, name }}
         />
       </DialogContent>

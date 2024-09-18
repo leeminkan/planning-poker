@@ -2,6 +2,8 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { UserSessionStateInterface } from '~/shared/user-session.interface';
 
+import { removeUndefinedValuesFromObject } from '../session/utils';
+
 export class UserSessionState implements UserSessionStateInterface {
   id: string;
   name?: string = undefined;
@@ -17,5 +19,9 @@ export class UserSessionState implements UserSessionStateInterface {
 
   setName(name: string) {
     this.name = name;
+  }
+
+  update(session: Partial<UserSessionState>) {
+    return Object.assign(this, removeUndefinedValuesFromObject(session));
   }
 }

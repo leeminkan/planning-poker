@@ -58,6 +58,15 @@ export class SessionState implements SessionStateInterface {
     return this;
   }
 
+  updatePlayer(playerParam: Partial<Player>) {
+    const player = this.players.find((player) => player.id === playerParam.id);
+    if (player) {
+      Object.assign(player, removeUndefinedValuesFromObject(playerParam));
+    }
+    this.updatedAt = new Date();
+    return this;
+  }
+
   addTicket(ticketParam: Ticket) {
     const isExisted = this.tickets.find(
       (ticket) => ticket.id === ticketParam.id,
@@ -72,7 +81,7 @@ export class SessionState implements SessionStateInterface {
   updateTicket(ticketParam: Ticket) {
     const ticket = this.tickets.find((ticket) => ticket.id === ticketParam.id);
     if (ticket) {
-      Object.assign(ticket, ticketParam);
+      Object.assign(ticket, removeUndefinedValuesFromObject(ticketParam));
     }
     this.updatedAt = new Date();
     return this;

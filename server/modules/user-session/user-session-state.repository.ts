@@ -7,7 +7,7 @@ class UserSessionStateRepository {
 
   create() {
     const user = new UserSessionState();
-    this.stores[user.id] = new UserSessionState();
+    this.stores[user.id] = user;
     return user;
   }
 

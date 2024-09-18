@@ -9,6 +9,7 @@ import { ZodError } from 'zod';
 import { AppDataSource } from './data-source';
 import { sessionRouter } from './modules/session/session.router';
 import { ticketRouter } from './modules/ticket/ticket.router';
+import { userSessionRouter } from './modules/user-session/user-session.router';
 
 const viteDevServer =
   process.env.NODE_ENV === 'production'
@@ -71,6 +72,7 @@ await AppDataSource.initialize();
 const rootRouter = Router();
 rootRouter.use('/sessions', sessionRouter);
 rootRouter.use('/tickets', ticketRouter);
+rootRouter.use('/user-sessions', userSessionRouter);
 app.use('/api', rootRouter);
 
 // handle SSR requests
