@@ -15,6 +15,7 @@ import { cn } from '~/lib/utils';
 import { useSessionStore } from '~/modules/sessions/stores/session.store';
 
 import { useSetupJiraApiKeyApiMutation } from '../../mutations/useSetupJiraApiKeyApiMutation';
+import { createEmptyObjectFromZodSchema } from '../../utils';
 import { FormSchema, formSchema } from './types';
 
 type SetupJiraApiKeyFormParams = {
@@ -29,9 +30,13 @@ export function SetupJiraApiKeyForm({
   const { mutate, isLoading } = useSetupJiraApiKeyApiMutation({ onSuccess });
 
   // 1. Define your form.
+  const emptyDefaultValue = createEmptyObjectFromZodSchema(formSchema);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues,
+    defaultValues: {
+      ...emptyDefaultValue,
+      ...defaultValues,
+    },
   });
 
   // 2. Define a submit handler.

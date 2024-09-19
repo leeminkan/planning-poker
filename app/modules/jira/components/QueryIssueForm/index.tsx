@@ -17,23 +17,21 @@ import { cn } from '~/lib/utils';
 import { useSessionStore } from '~/modules/sessions/stores/session.store';
 
 import { useQueryIssueMutation } from '../../mutations/useQueryIssueMutation';
-import { FormSchema, formSchema } from './types';
+import { formSchema } from './types';
 
 type QueryIssueFormParams = {
   onSuccess: (issues: JiraIssue[]) => void;
-  defaultValues: Partial<FormSchema>;
 };
-export function QueryIssueForm({
-  onSuccess,
-  defaultValues,
-}: QueryIssueFormParams) {
+export function QueryIssueForm({ onSuccess }: QueryIssueFormParams) {
   const { id } = useSessionStore();
   const { mutate, isLoading } = useQueryIssueMutation({ onSuccess });
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues,
+    defaultValues: {
+      jql: '',
+    },
   });
 
   // 2. Define a submit handler.

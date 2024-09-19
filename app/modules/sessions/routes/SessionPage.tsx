@@ -56,6 +56,7 @@ export const GameLayout = ({ id }: { id: string }) => {
       setIsRevealed,
       syncSessionState,
       reset,
+      resetRound,
     },
   } = useSessionStore();
   const {
@@ -133,10 +134,10 @@ export const GameLayout = ({ id }: { id: string }) => {
                     currentTicketId={currentTicketId}
                     averagePoint={averagePoint}
                     onReset={() => {
-                      reset();
+                      resetRound();
                     }}
                     onSuccess={() => {
-                      reset();
+                      resetRound();
                     }}
                   ></ResultForm>
                 )}

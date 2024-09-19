@@ -20,7 +20,7 @@ export const CreateTicketBtnDialog = ({ sessionId }: { sessionId: string }) => {
       <DialogTrigger asChild>
         <Button className={cn(['w-full mt-2'])}>Add</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px]" aria-describedby={undefined}>
         <DialogHeader>
           <DialogTitle>Add New Ticket</DialogTitle>
         </DialogHeader>

@@ -9,7 +9,7 @@ export const TicketList = ({ sessionId }: { sessionId: string }) => {
   const {
     tickets,
     currentTicketId,
-    actions: { chooseTicket, reset },
+    actions: { chooseTicket, resetRound },
   } = useSessionStore();
 
   return (
@@ -26,7 +26,7 @@ export const TicketList = ({ sessionId }: { sessionId: string }) => {
                   ticket={ticket}
                   isChosen={currentTicketId === ticket.id}
                   chooseTicket={chooseTicket}
-                  reset={reset}
+                  reset={resetRound}
                 />
                 <div className="p-2"></div>
               </div>

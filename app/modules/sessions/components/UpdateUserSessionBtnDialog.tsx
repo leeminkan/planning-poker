@@ -26,7 +26,7 @@ export const UpdateUserSessionBtnDialog = () => {
       <DialogTrigger asChild>
         <Button className={cn(['m-0'])}>Change Profile</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px]" aria-describedby={undefined}>
         <DialogHeader>
           <DialogTitle>Change Profile</DialogTitle>
         </DialogHeader>

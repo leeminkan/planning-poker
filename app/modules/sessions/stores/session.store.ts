@@ -28,6 +28,7 @@ type SessionAction = {
   chooseTicket: (ticketId: Ticket['id']) => void;
   syncSessionState: (sessionState: SessionStateInterface) => void;
   reset: () => void;
+  resetRound: () => void;
 };
 type SessionStore = SessionState & {
   actions: SessionAction;
@@ -112,6 +113,23 @@ export const useSessionStore = create<SessionStore>((set) => ({
           ...state,
           id: '',
           name: '',
+          isRevealed: false,
+          averagePoint: 0,
+          players,
+          currentTicketId: undefined,
+        };
+      }),
+    resetRound: () =>
+      set((state) => {
+        SocketClient.getInstance().emit(SLE_RESET_SESSION, {
+          sessionId: state.id,
+        } as SLEResetSessionPayload);
+        const players = state.players.map((player) => {
+          player.currentCard = null;
+          return player;
+        });
+        return {
+          ...state,
           isRevealed: false,
           averagePoint: 0,
           players,

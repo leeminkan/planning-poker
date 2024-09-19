@@ -35,7 +35,7 @@ export const QueryIssueBtnDialog = () => {
       <DialogTrigger asChild>
         <Button className={cn(['m-0'])}>Query Issues</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[800px]">
+      <DialogContent className="sm:max-w-[800px]" aria-describedby={undefined}>
         <DialogHeader>
           <DialogTitle>Query Issues</DialogTitle>
         </DialogHeader>
@@ -43,7 +43,6 @@ export const QueryIssueBtnDialog = () => {
           onSuccess={(data) => {
             setIssues(data);
           }}
-          defaultValues={{}}
         />
         <div className="w-full flex flex-col items-center justify-center">
           {issues.length ? (

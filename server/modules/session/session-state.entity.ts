@@ -150,7 +150,9 @@ export class SessionState implements SessionStateInterface {
       return player;
     });
     this.isRevealed = false;
+    this.isRevealed = false;
     this.averagePoint = 0;
+    this.currentTicketId = undefined;
     this.updatedAt = new Date();
     return this;
   }

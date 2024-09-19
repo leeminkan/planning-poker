@@ -22,7 +22,7 @@ export const UpdateSessionBtnDialog = () => {
       <DialogTrigger asChild>
         <Button className={cn(['m-0'])}>Edit Session</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px]" aria-describedby={undefined}>
         <DialogHeader>
           <DialogTitle>Edit Session</DialogTitle>
         </DialogHeader>
