@@ -12,6 +12,7 @@ import {
 } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
 import { cn } from '~/lib/utils';
+import { useSessionStore } from '~/modules/sessions/stores/session.store';
 
 import { useSetupJiraApiKeyApiMutation } from '../../mutations/useSetupJiraApiKeyApiMutation';
 import { FormSchema, formSchema } from './types';
@@ -24,6 +25,7 @@ export function SetupJiraApiKeyForm({
   onSuccess,
   defaultValues,
 }: SetupJiraApiKeyFormParams) {
+  const { id } = useSessionStore();
   const { mutate, isLoading } = useSetupJiraApiKeyApiMutation({ onSuccess });
 
   // 1. Define your form.
@@ -34,7 +36,7 @@ export function SetupJiraApiKeyForm({
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
-    mutate(values);
+    mutate({ sessionId: id, ...values });
   }
 
   return (

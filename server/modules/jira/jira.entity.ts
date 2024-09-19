@@ -51,4 +51,9 @@ export class JiraEntity implements JiraEntityInterface {
     type: 'uuid',
   })
   userId: string;
+
+  @Column({
+    type: 'uuid',
+  })
+  sessionId: string;
 }

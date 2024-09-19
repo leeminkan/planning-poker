@@ -13,6 +13,7 @@ import {
 import { Input } from '~/components/ui/input';
 import { Switch } from '~/components/ui/switch';
 import { cn } from '~/lib/utils';
+import { useSessionStore } from '~/modules/sessions/stores/session.store';
 
 import { useSetupJiraSyncApiMutation } from '../../mutations/useSetupJiraSyncApiMutation';
 import { FormSchema, formSchema } from './types';
@@ -25,6 +26,7 @@ export function SetupJiraSyncForm({
   onSuccess,
   defaultValues,
 }: SetupJiraSyncFormParams) {
+  const { id } = useSessionStore();
   const { mutate, isLoading } = useSetupJiraSyncApiMutation({ onSuccess });
 
   // 1. Define your form.
@@ -38,7 +40,7 @@ export function SetupJiraSyncForm({
     enableSync,
     ...mappingFields
   }: z.infer<typeof formSchema>) {
-    mutate({ enableSync, mappingFields });
+    mutate({ sessionId: id, enableSync, mappingFields });
   }
 
   return (

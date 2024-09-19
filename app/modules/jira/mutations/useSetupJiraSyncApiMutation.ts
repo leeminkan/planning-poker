@@ -18,8 +18,10 @@ export const useSetupJiraSyncApiMutation = ({
     mutationFn: async (payload: SetupSyncDto) => {
       return await setupJiraSyncApi(payload);
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['@@jira', 'detail'] });
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: ['@@session', data.sessionId, 'jira'],
+      });
       toast.info('Setup successfully!');
       onSuccess();
     },

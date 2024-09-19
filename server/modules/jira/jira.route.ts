@@ -20,22 +20,6 @@ import { JiraService } from './jira.service';
 
 const jiraRouter = Router();
 
-jiraRouter.get(
-  '/setup',
-  authenticateMiddleware,
-  async (req: Request, res: Response, next) => {
-    const reqWithUser = req as RequestWithUser;
-    try {
-      const jira = await jiraRepository.findOneByUserId(reqWithUser.user.id);
-      return res.send({
-        data: jira,
-      });
-    } catch (error) {
-      next(error);
-    }
-  },
-);
-
 jiraRouter.post(
   '/setup-api-key',
   authenticateMiddleware,
@@ -51,7 +35,7 @@ jiraRouter.post(
         });
       }
 
-      let jira = await jiraRepository.findOneByUserId(reqWithUser.user.id);
+      let jira = await jiraRepository.findOneBySessionId(body.sessionId);
 
       if (!jira) {
         jira = await jiraRepository.create({
@@ -75,10 +59,9 @@ jiraRouter.post(
   '/setup-sync',
   authenticateMiddleware,
   async (req: Request, res: Response, next) => {
-    const reqWithUser = req as RequestWithUser;
     try {
       const body: SetupSyncDto = setupSyncSchema.parse(req.body);
-      const jira = await jiraRepository.findOneByUserId(reqWithUser.user.id);
+      const jira = await jiraRepository.findOneBySessionId(body.sessionId);
 
       if (!jira) {
         return res.status(404).send({
@@ -101,10 +84,9 @@ jiraRouter.post(
   '/issues',
   authenticateMiddleware,
   async (req: Request, res: Response, next) => {
-    const reqWithUser = req as RequestWithUser;
     try {
       const body: QueryIssueDto = queryIssueSchema.parse(req.body);
-      const jira = await jiraRepository.findOneByUserId(reqWithUser.user.id);
+      const jira = await jiraRepository.findOneBySessionId(body.sessionId);
       if (!jira) {
         return res.status(404).send({
           message: 'Not found!',

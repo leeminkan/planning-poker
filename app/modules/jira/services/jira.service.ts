@@ -4,7 +4,6 @@ import { getAuthAxiosInstance } from '~/axios';
 
 import {
   GetJiraIssueResponse,
-  GetJiraResponse,
   SetupApiKeyResponse,
   SetupSyncResponse,
 } from './types';
@@ -29,13 +28,6 @@ export const getJiraIssueApi = async (payload: QueryIssueDto) => {
   const res = await getAuthAxiosInstance().post<GetJiraIssueResponse>(
     `/api/jira/issues`,
     payload,
-  );
-  return res.data.data;
-};
-
-export const getJiraApi = async () => {
-  const res = await getAuthAxiosInstance().get<GetJiraResponse>(
-    `/api/jira/setup`,
   );
   return res.data.data;
 };

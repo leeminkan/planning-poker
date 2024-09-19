@@ -14,6 +14,7 @@ import {
 } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
 import { cn } from '~/lib/utils';
+import { useSessionStore } from '~/modules/sessions/stores/session.store';
 
 import { useQueryIssueMutation } from '../../mutations/useQueryIssueMutation';
 import { FormSchema, formSchema } from './types';
@@ -26,6 +27,7 @@ export function QueryIssueForm({
   onSuccess,
   defaultValues,
 }: QueryIssueFormParams) {
+  const { id } = useSessionStore();
   const { mutate, isLoading } = useQueryIssueMutation({ onSuccess });
 
   // 1. Define your form.
@@ -36,7 +38,7 @@ export function QueryIssueForm({
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
-    mutate(values);
+    mutate({ sessionId: id, ...values });
   }
 
   return (

@@ -10,16 +10,18 @@ import {
 } from '~/components/ui/card';
 import { cn } from '~/lib/utils';
 import { useCreateTicketMutation } from '~/modules/sessions/mutations/useCreateTicketMutation';
+import { useSessionJira } from '~/modules/sessions/queries/useSessionJira';
 import { useSessionStore } from '~/modules/sessions/stores/session.store';
-
-import { useJira } from '../queries/useJira';
 
 export const IssueItem = ({ issue }: { issue: JiraIssue }) => {
   const { id } = useSessionStore();
-  const { data: jiraData } = useJira();
+  const { data: jiraData } = useSessionJira({ sessionId: id });
   const { mutate, isLoading } = useCreateTicketMutation({
     onSuccess: () => {},
   });
+  if (!id) {
+    throw Error('This component belongs to Session');
+  }
 
   return (
     <Card>
@@ -41,20 +43,22 @@ export const IssueItem = ({ issue }: { issue: JiraIssue }) => {
         </a>
       </CardContent>
       <CardFooter>
-        <Button
-          onClick={() =>
-            mutate({
-              sessionId: id,
-              title: `[${issue.key}] ${issue.fields.summary}`,
-              description: issue.self,
-              jiraId: jiraData?.id,
-              jiraIssueId: issue.id,
-            })
-          }
-          disabled={isLoading}
-        >
-          Add
-        </Button>
+        {jiraData && (
+          <Button
+            onClick={() =>
+              mutate({
+                sessionId: jiraData.sessionId,
+                title: `[${issue.key}] ${issue.fields.summary}`,
+                description: issue.self,
+                jiraId: jiraData.id,
+                jiraIssueId: issue.id,
+              })
+            }
+            disabled={isLoading}
+          >
+            Add
+          </Button>
+        )}
       </CardFooter>
     </Card>
   );

@@ -45,6 +45,7 @@ export const SessionPage = ({ id }: { id: string }) => {
 
 export const GameLayout = ({ id }: { id: string }) => {
   const {
+    id: sessionId,
     isRevealed,
     players,
     averagePoint,
@@ -182,7 +183,7 @@ export const GameLayout = ({ id }: { id: string }) => {
           )}
         </div>
         <div className={cn(['basis-1/4', 'flex flex-col justify-center'])}>
-          <TicketList sessionId={id} />
+          {sessionId && <TicketList sessionId={sessionId} />}
         </div>
       </div>
     </div>

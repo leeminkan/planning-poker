@@ -1,3 +1,4 @@
+import { JiraEntityInterface } from '~/shared/jira.interface';
 import {
   SessionEntityInterface,
   SessionStateInterface,
@@ -15,3 +16,4 @@ export type CreateTicketResponse = Response<Ticket>;
 export type UpdateTicketResponse = Response<Ticket>;
 
 export type GetRecentSessionsResponse = Response<SessionEntityInterface[]>;
+export type GetJiraResponse = Response<JiraEntityInterface>;

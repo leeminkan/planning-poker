@@ -15,8 +15,8 @@ class JiraRepository {
     return data ?? null;
   }
 
-  async findOneByUserId(userId: string) {
-    const data = await this.repository.findOne({ where: { userId } });
+  async findOneBySessionId(sessionId: string) {
+    const data = await this.repository.findOne({ where: { sessionId } });
     return data;
   }
 

@@ -170,6 +170,7 @@ export interface JiraEntityInterface {
   token: string;
   enableSync: boolean;
   mappingFields: JiraMappingFields;
+  sessionId: string;
   createdAt: Date;
   updatedAt: Date;
 }

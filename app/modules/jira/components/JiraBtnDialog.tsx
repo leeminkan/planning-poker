@@ -4,14 +4,19 @@ import { Button } from '~/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '~/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 import { cn } from '~/lib/utils';
+import { useSessionJira } from '~/modules/sessions/queries/useSessionJira';
+import { useSessionStore } from '~/modules/sessions/stores/session.store';
 
-import { useJira } from '../queries/useJira';
 import { SetupJiraApiKeyForm } from './SetupJiraApiKeyForm';
 import { SetupJiraSyncForm } from './SetupJiraSyncForm';
 
 export const JiraBtnDialog = () => {
+  const { id } = useSessionStore();
   const [open, setOpen] = React.useState(false);
-  const { isLoading, data } = useJira();
+  const { isLoading, data } = useSessionJira({ sessionId: id });
+  if (!id) {
+    throw Error('This component belongs to Session');
+  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
