@@ -104,7 +104,17 @@ jiraRouter.post(
         jira.email,
         jira.token,
       );
-      const issues = await jiraHttpService.fetchIssuesByJql(body.jql);
+      const issues = await jiraHttpService
+        .fetchIssuesByJql(body.jql)
+        .catch((error) => {
+          if (error.status === 400) {
+            return res.status(400).send({
+              message: error.response?.data?.errorMessages?.[0],
+              data: error.response?.data,
+            });
+          }
+          throw error;
+        });
 
       return res.send({
         data: issues,

@@ -22,8 +22,13 @@ export const useQueryIssueMutation = ({
       onSuccess(data);
     },
     onError: (error: AxiosError) => {
-      console.error(error);
-      toast.error('Some thing was wrong!');
+      if (error.status === 400) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        toast.error((error.response?.data as any)?.message);
+      } else {
+        console.error(error);
+        toast.error('Some thing was wrong!');
+      }
     },
   });
 

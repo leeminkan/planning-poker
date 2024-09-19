@@ -4,6 +4,7 @@ import { JiraIssue } from '~/shared/jira.interface';
 
 export class JiraHttpService {
   private axiosInstance: AxiosInstance;
+  private apiUrl = `rest/api/2`;
 
   constructor(baseUrl: string, username: string, password: string) {
     this.axiosInstance = axios.create({
@@ -17,7 +18,7 @@ export class JiraHttpService {
 
   async checkValid(): Promise<boolean> {
     try {
-      await this.axiosInstance.get('/rest/api/2/myself');
+      await this.axiosInstance.get(`${this.apiUrl}/myself`);
       return true;
     } catch (_) {
       return false;
@@ -26,7 +27,7 @@ export class JiraHttpService {
 
   async fetchIssuesByJql(jqlQuery: string): Promise<JiraIssue[]> {
     try {
-      const response = await this.axiosInstance.get('/rest/api/2/search', {
+      const response = await this.axiosInstance.get(`${this.apiUrl}/search`, {
         params: {
           jql: jqlQuery,
         },
@@ -44,7 +45,7 @@ export class JiraHttpService {
     { fields }: { fields: { [key in string]: any } },
   ) {
     try {
-      await this.axiosInstance.put(`/rest/api/2/issue/${issueId}`, {
+      await this.axiosInstance.put(`${this.apiUrl}/issue/${issueId}`, {
         fields,
       });
     } catch (error) {
