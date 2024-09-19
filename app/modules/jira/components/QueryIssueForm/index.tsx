@@ -19,12 +19,10 @@ import { useQueryIssueMutation } from '../../mutations/useQueryIssueMutation';
 import { FormSchema, formSchema } from './types';
 
 type QueryIssueFormParams = {
-  userId: string;
   onSuccess: (issues: JiraIssue[]) => void;
   defaultValues: Partial<FormSchema>;
 };
 export function QueryIssueForm({
-  userId,
   onSuccess,
   defaultValues,
 }: QueryIssueFormParams) {
@@ -38,7 +36,7 @@ export function QueryIssueForm({
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
-    mutate({ userId, ...values });
+    mutate(values);
   }
 
   return (

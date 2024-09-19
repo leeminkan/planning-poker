@@ -6,8 +6,11 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
+import { JiraEntityInterface } from '~/shared/jira.interface';
+import type { JiraMappingFields } from '~/shared/jira.interface';
+
 @Entity({ name: 'jira' })
-export class JiraEntity {
+export class JiraEntity implements JiraEntityInterface {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
@@ -25,6 +28,18 @@ export class JiraEntity {
     type: 'varchar',
   })
   token: string;
+
+  @Column({
+    type: 'boolean',
+    default: false,
+  })
+  enableSync: boolean;
+
+  @Column({
+    type: 'jsonb',
+    default: null,
+  })
+  mappingFields: JiraMappingFields;
 
   @CreateDateColumn()
   createdAt: Date;

@@ -158,3 +158,18 @@ export interface JiraIssue {
     };
   };
 }
+
+export type JiraMappingFields = {
+  [key in string]: string;
+};
+
+export interface JiraEntityInterface {
+  id: string;
+  host: string;
+  email: string;
+  token: string;
+  enableSync: boolean;
+  mappingFields: JiraMappingFields;
+  createdAt: Date;
+  updatedAt: Date;
+}

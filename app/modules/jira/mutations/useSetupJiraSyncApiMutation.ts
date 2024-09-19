@@ -2,21 +2,21 @@ import { AxiosError } from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
 import { toast } from 'react-toastify';
 
-import { SetupApiKeyDto } from '~/shared/jira.dto';
+import { SetupSyncDto } from '~/shared/jira.dto';
 
-import { setupJiraApiKeyApi } from '../services/jira.service';
+import { setupJiraSyncApi } from '../services/jira.service';
 
-type SetupJiraApiKeyApiMutationParams = {
+type SetupJiraSyncApiMutationParams = {
   onSuccess: () => void;
 };
-export const useSetupJiraApiKeyApiMutation = ({
+export const useSetupJiraSyncApiMutation = ({
   onSuccess,
-}: SetupJiraApiKeyApiMutationParams) => {
+}: SetupJiraSyncApiMutationParams) => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: async (payload: SetupApiKeyDto) => {
-      return await setupJiraApiKeyApi(payload);
+    mutationFn: async (payload: SetupSyncDto) => {
+      return await setupJiraSyncApi(payload);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['@@jira', 'detail'] });

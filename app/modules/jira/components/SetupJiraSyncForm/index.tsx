@@ -11,20 +11,21 @@ import {
   FormLabel,
 } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
+import { Switch } from '~/components/ui/switch';
 import { cn } from '~/lib/utils';
 
-import { useSetupJiraApiKeyApiMutation } from '../../mutations/useSetupJiraApiKeyApiMutation';
+import { useSetupJiraSyncApiMutation } from '../../mutations/useSetupJiraSyncApiMutation';
 import { FormSchema, formSchema } from './types';
 
-type SetupJiraApiKeyFormParams = {
+type SetupJiraSyncFormParams = {
   onSuccess: () => void;
   defaultValues: Partial<FormSchema>;
 };
-export function SetupJiraApiKeyForm({
+export function SetupJiraSyncForm({
   onSuccess,
   defaultValues,
-}: SetupJiraApiKeyFormParams) {
-  const { mutate, isLoading } = useSetupJiraApiKeyApiMutation({ onSuccess });
+}: SetupJiraSyncFormParams) {
+  const { mutate, isLoading } = useSetupJiraSyncApiMutation({ onSuccess });
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -33,8 +34,11 @@ export function SetupJiraApiKeyForm({
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    mutate(values);
+  function onSubmit({
+    enableSync,
+    ...mappingFields
+  }: z.infer<typeof formSchema>) {
+    mutate({ enableSync, mappingFields });
   }
 
   return (
@@ -45,36 +49,27 @@ export function SetupJiraApiKeyForm({
         >
           <FormField
             control={form.control}
-            name="host"
+            name="enableSync"
             render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>Host</FormLabel>
+              <FormItem className="w-full flex flex-col gap-1">
+                <FormLabel>Enable Sync</FormLabel>
                 <FormControl>
-                  <Input placeholder="Host" {...field} />
+                  <Switch
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
                 </FormControl>
               </FormItem>
             )}
           />
           <FormField
             control={form.control}
-            name="email"
+            name="pointField"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel>Email</FormLabel>
+                <FormLabel>Point Field</FormLabel>
                 <FormControl>
-                  <Input placeholder="Email" {...field} />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="token"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>Token</FormLabel>
-                <FormControl>
-                  <Input placeholder="Token" {...field} />
+                  <Input placeholder="customfield_10026" {...field} />
                 </FormControl>
               </FormItem>
             )}

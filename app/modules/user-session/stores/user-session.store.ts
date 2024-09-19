@@ -3,11 +3,7 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 
 import { UserSessionStateInterface } from '~/shared/user-session.interface';
 
-type UserSessionState = {
-  id: string;
-  name: string;
-  currentSessionId?: string;
-};
+type UserSessionState = UserSessionStateInterface;
 type UserSessionAction = {
   syncUser: (userSessionState: UserSessionStateInterface) => void;
   setName: (name: string) => void;

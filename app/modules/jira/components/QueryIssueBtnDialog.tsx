@@ -10,14 +10,12 @@ import {
 } from '~/components/ui/dialog';
 import { ScrollArea } from '~/components/ui/scroll-area';
 import { cn } from '~/lib/utils';
-import { useUserSessionStore } from '~/modules/user-session/stores/user-session.store';
 
 import { useJiraStore } from '../stores/issue.store';
 import { IssueItem } from './IssueItem';
 import { QueryIssueForm } from './QueryIssueForm';
 
 export const QueryIssueBtnDialog = () => {
-  const { id } = useUserSessionStore();
   const [open, setOpen] = React.useState(false);
   const {
     issues,
@@ -37,7 +35,6 @@ export const QueryIssueBtnDialog = () => {
           onSuccess={(data) => {
             setIssues(data);
           }}
-          userId={id}
           defaultValues={{}}
         />
         <div className="flex flex-col items-center justify-center">
@@ -66,7 +63,7 @@ export const QueryIssueBtnDialog = () => {
             <div
               className={cn(['h-[500px]', 'flex items-center justify-center'])}
             >
-              Please add ticket!
+              Please query issues with JQL!
             </div>
           )}
         </div>
