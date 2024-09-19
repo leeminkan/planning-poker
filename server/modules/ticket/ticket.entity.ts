@@ -54,6 +54,12 @@ export class TicketEntity {
   })
   jiraIssueId: string;
 
+  @Column({
+    type: 'varchar',
+    nullable: true,
+  })
+  jiraIssueLink: string;
+
   @ManyToOne(() => SessionEntity, (session) => session.tickets)
   @JoinColumn({ name: 'session_id' })
   session: SessionEntity;

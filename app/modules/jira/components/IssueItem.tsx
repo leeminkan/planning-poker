@@ -1,3 +1,5 @@
+import { SquareArrowOutUpRight } from 'lucide-react';
+
 import { JiraIssue } from '~/shared/jira.interface';
 
 import { Button } from '~/components/ui/button';
@@ -13,6 +15,8 @@ import { useCreateTicketMutation } from '~/modules/sessions/mutations/useCreateT
 import { useSessionJira } from '~/modules/sessions/queries/useSessionJira';
 import { useSessionStore } from '~/modules/sessions/stores/session.store';
 
+import { getJiraIssueLink } from '../utils';
+
 export const IssueItem = ({ issue }: { issue: JiraIssue }) => {
   const { id } = useSessionStore();
   const { data: jiraData } = useSessionJira({ sessionId: id });
@@ -26,21 +30,29 @@ export const IssueItem = ({ issue }: { issue: JiraIssue }) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="break-all">
-          [{issue.key}] {issue.fields.summary}
-        </CardTitle>
+        <div className="flex justify-between items-center">
+          <CardTitle className="break-all">
+            [{issue.key}] {issue.fields.summary}
+          </CardTitle>
+          <a
+            href={getJiraIssueLink(jiraData?.host, issue.key)}
+            rel="noreferrer"
+            target="_blank"
+          >
+            <SquareArrowOutUpRight />
+          </a>
+        </div>
       </CardHeader>
       <CardContent>
-        <a
-          href={issue.self}
+        <div
           className={cn([
-            'max-h-60 p-2',
-            'whitespace-pre-wrap break-all overflow-scroll ',
+            'max-h-80 p-2',
+            'whitespace-pre-wrap break-all overflow-scroll',
             'border-solid border-2 rounded-md',
           ])}
         >
-          {issue.self}
-        </a>
+          {issue.fields.description || ''}
+        </div>
       </CardContent>
       <CardFooter>
         {jiraData && (
@@ -49,9 +61,10 @@ export const IssueItem = ({ issue }: { issue: JiraIssue }) => {
               mutate({
                 sessionId: jiraData.sessionId,
                 title: `[${issue.key}] ${issue.fields.summary}`,
-                description: issue.self,
+                description: issue.fields.description || '',
                 jiraId: jiraData.id,
                 jiraIssueId: issue.id,
+                jiraIssueLink: getJiraIssueLink(jiraData?.host, issue.key),
               })
             }
             disabled={isLoading}

@@ -10,6 +10,7 @@ export interface Ticket {
   point?: number;
   jiraId?: string;
   jiraIssueId?: string;
+  jiraIssueLink?: string;
 }
 export interface SessionStateInterface {
   id: string;

@@ -7,6 +7,7 @@ export const createTicketSchema = z
     description: z.string(),
     jiraId: z.string().optional(),
     jiraIssueId: z.string().optional(),
+    jiraIssueLink: z.string().optional(),
   })
   .refine(
     (data) => {

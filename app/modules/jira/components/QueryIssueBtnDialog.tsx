@@ -45,9 +45,11 @@ export const QueryIssueBtnDialog = () => {
           }}
           defaultValues={{}}
         />
-        <div className="flex flex-col items-center justify-center">
+        <div className="w-full flex flex-col items-center justify-center">
           {issues.length ? (
-            <ScrollArea className={cn(['h-[500px]', 'flex gap-4 flex-col'])}>
+            <ScrollArea
+              className={cn(['h-[500px] w-full ', 'flex gap-4 flex-col'])}
+            >
               {issues.map((issue) => (
                 <div key={issue.id}>
                   <IssueItem issue={issue} />

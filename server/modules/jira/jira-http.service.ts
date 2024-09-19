@@ -17,7 +17,7 @@ export class JiraHttpService {
 
   async checkValid(): Promise<boolean> {
     try {
-      await this.axiosInstance.get('/rest/api/3/myself');
+      await this.axiosInstance.get('/rest/api/2/myself');
       return true;
     } catch (_) {
       return false;
@@ -26,7 +26,7 @@ export class JiraHttpService {
 
   async fetchIssuesByJql(jqlQuery: string): Promise<JiraIssue[]> {
     try {
-      const response = await this.axiosInstance.get('/rest/api/3/search', {
+      const response = await this.axiosInstance.get('/rest/api/2/search', {
         params: {
           jql: jqlQuery,
         },
@@ -44,7 +44,7 @@ export class JiraHttpService {
     { fields }: { fields: { [key in string]: any } },
   ) {
     try {
-      await this.axiosInstance.put(`/rest/api/3/issue/${issueId}`, {
+      await this.axiosInstance.put(`/rest/api/2/issue/${issueId}`, {
         fields,
       });
     } catch (error) {

@@ -1,3 +1,5 @@
+import { SquareArrowOutUpRight } from 'lucide-react';
+
 import { Ticket } from '~/shared/session-state.interface';
 
 import { Badge } from '~/components/ui/badge';
@@ -31,7 +33,14 @@ export const TicketItem = ({
   return (
     <Card className={cn([isChosen ? 'bg-purple-200' : ''])}>
       <CardHeader>
-        <CardTitle className="break-all">{ticket.title}</CardTitle>
+        <div className="flex justify-between items-center gap-2">
+          <CardTitle className="break-all">{ticket.title}</CardTitle>
+          {ticket.jiraIssueLink && (
+            <a href={ticket.jiraIssueLink} rel="noreferrer" target="_blank">
+              <SquareArrowOutUpRight />
+            </a>
+          )}
+        </div>
       </CardHeader>
       <CardContent>
         <div
@@ -48,11 +57,6 @@ export const TicketItem = ({
         className={cn(['flex flex-row gap-2 items-center justify-between'])}
       >
         {ticket.point ? <Badge>{ticket.point}</Badge> : <div></div>}
-        {ticket.jiraIssueId ? (
-          <Badge>JIRA-{ticket.jiraIssueId}</Badge>
-        ) : (
-          <div></div>
-        )}
         <div className="flex gap-2">
           {isChosen ? (
             <Button variant="outline" onClick={() => reset()}>
