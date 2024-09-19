@@ -3,9 +3,10 @@ import { toast } from 'react-toastify';
 
 import { Button } from '~/components/ui/button';
 import { cn } from '~/lib/utils';
+import { QueryIssueBtnDialog } from '~/modules/jira/components/QueryIssueBtnDialog';
+import { SetupBtnDialog } from '~/modules/jira/components/SetupBtnDialog';
 
 import { useSessionStore } from '../stores/session.store';
-import { UpdateSessionBtnDialog } from './UpdateSessionBtnDialog';
 import { UpdateUserSessionBtnDialog } from './UpdateUserSessionBtnDialog';
 
 export const PageHeader = () => {
@@ -27,8 +28,10 @@ export const PageHeader = () => {
         {name || (id && `Session: ${id}`)}
       </div>
       <div className="flex gap-2 basis-1/4 justify-end">
+        <QueryIssueBtnDialog />
+
+        <SetupBtnDialog />
         <UpdateUserSessionBtnDialog />
-        <UpdateSessionBtnDialog />
         <Button
           onClick={() => {
             navigator.clipboard

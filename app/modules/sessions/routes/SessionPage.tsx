@@ -103,6 +103,8 @@ export const GameLayout = ({ id }: { id: string }) => {
     };
   }, [id, name, reset, syncSessionState, syncUser, userId]);
 
+  if (!sessionId) return <div>Loading</div>;
+
   return (
     <div className={cn('h-screen', 'flex flex-col')}>
       <PageHeader />
@@ -183,7 +185,7 @@ export const GameLayout = ({ id }: { id: string }) => {
           )}
         </div>
         <div className={cn(['basis-1/4', 'flex flex-col justify-center'])}>
-          {sessionId && <TicketList sessionId={sessionId} />}
+          <TicketList sessionId={sessionId} />
         </div>
       </div>
     </div>

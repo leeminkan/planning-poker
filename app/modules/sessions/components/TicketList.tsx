@@ -1,7 +1,5 @@
 import { ScrollArea } from '~/components/ui/scroll-area';
 import { cn } from '~/lib/utils';
-import { JiraBtnDialog } from '~/modules/jira/components/JiraBtnDialog';
-import { QueryIssueBtnDialog } from '~/modules/jira/components/QueryIssueBtnDialog';
 
 import { TicketItem } from '../components/TicketItem';
 import { useSessionStore } from '../stores/session.store';
@@ -18,10 +16,6 @@ export const TicketList = ({ sessionId }: { sessionId: string }) => {
     <>
       <div className={cn(['w-full mb-2', 'flex items-center justify-around'])}>
         <div>Tickets</div>
-        <div className="flex gap-2">
-          <QueryIssueBtnDialog />
-          <JiraBtnDialog />
-        </div>
       </div>
       <div className={cn(['p-4', 'rounded-md border'])}>
         {tickets.length ? (
