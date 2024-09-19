@@ -66,7 +66,7 @@ export function SetupJiraSyncForm({
           />
           <FormField
             control={form.control}
-            name="pointField"
+            name="point"
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel>Point Field</FormLabel>

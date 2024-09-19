@@ -15,8 +15,8 @@ import {
 } from '~/server/auth.middleware';
 
 import { removeUndefinedValuesFromObject } from '../session/utils';
+import { JiraHttpService } from './jira-http.service';
 import { jiraRepository } from './jira.repository';
-import { JiraService } from './jira.service';
 
 const jiraRouter = Router();
 
@@ -27,8 +27,12 @@ jiraRouter.post(
     const reqWithUser = req as RequestWithUser;
     try {
       const body: SetupApiKeyDto = setupApiKeySchema.parse(req.body);
-      const jiraService = new JiraService(body.host, body.email, body.token);
-      const isValid = await jiraService.checkValid();
+      const jiraHttpService = new JiraHttpService(
+        body.host,
+        body.email,
+        body.token,
+      );
+      const isValid = await jiraHttpService.checkValid();
       if (!isValid) {
         return res.status(400).send({
           message: 'Invalid Params',
@@ -93,8 +97,12 @@ jiraRouter.post(
         });
       }
 
-      const jiraService = new JiraService(jira.host, jira.email, jira.token);
-      const issues = await jiraService.fetchIssuesByJql(body.jql);
+      const jiraHttpService = new JiraHttpService(
+        jira.host,
+        jira.email,
+        jira.token,
+      );
+      const issues = await jiraHttpService.fetchIssuesByJql(body.jql);
 
       return res.send({
         data: issues,

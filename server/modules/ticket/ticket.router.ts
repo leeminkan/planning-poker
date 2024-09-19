@@ -8,6 +8,7 @@ import {
   updateTicketSchema,
 } from '~/shared/ticket.dto';
 
+import { jiraSyncServer } from '../jira/jira-sync.service';
 import { sessionEventEmitter } from '../session/session-socket.handler';
 import { sessionStateRepository } from '../session/session-state.repository';
 import { sessionRepository } from '../session/session.repository';
@@ -76,6 +77,15 @@ ticketRouter.put('/:id', async (req: Request, res: Response, next) => {
     if (sessionState) {
       sessionState.updateTicket(updatedTicket);
       sessionEventEmitter.emit(SSE_SYNC_SESSION, sessionState);
+    }
+
+    // SYNC TO JIRA
+    if (updatedTicket.jiraId && updatedTicket.jiraIssueId) {
+      if (body.point) {
+        jiraSyncServer
+          .syncTicket(updatedTicket)
+          .catch(() => console.log('Sync ticket fail!'));
+      }
     }
 
     return res.send({

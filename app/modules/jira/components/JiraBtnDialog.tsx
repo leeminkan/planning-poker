@@ -40,7 +40,7 @@ export const JiraBtnDialog = () => {
               onSuccess={() => {}}
               defaultValues={{
                 enableSync: data?.enableSync,
-                pointField: data?.mappingFields?.pointField,
+                point: data?.mappingFields?.point,
               }}
             />
           </TabsContent>
