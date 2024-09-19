@@ -21,18 +21,25 @@ export const PageHeader = () => {
         'bg-white shadow-md',
       ])}
     >
-      <div className="flex basis-1/4 justify-start">
-        <Button onClick={() => navigate('/')}>Home</Button>
+      <div className="flex basis-2/5 justify-start">
+        <Button variant="outline" onClick={() => navigate('/')}>
+          Home
+        </Button>
       </div>
-      <div className="flex basis-1/2 justify-center text-center">
+      <div
+        className={cn([
+          'flex basis-1/5 justify-center text-center',
+          'text-primary font-bold text-2xl',
+        ])}
+      >
         {name || (id && `Session: ${id}`)}
       </div>
-      <div className="flex gap-2 basis-1/4 justify-end">
+      <div className="flex gap-2 basis-2/5 justify-end">
         <QueryIssueBtnDialog />
-
         <SetupBtnDialog />
         <UpdateUserSessionBtnDialog />
         <Button
+          variant="outline"
           onClick={() => {
             navigator.clipboard
               .writeText(`${window.ENV.HOST}/sessions/${id}`)

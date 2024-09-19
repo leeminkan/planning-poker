@@ -28,7 +28,9 @@ export const SetupBtnDialog = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className={cn(['m-0'])}>Setup</Button>
+        <Button variant="outline" className={cn(['m-0'])}>
+          Setup
+        </Button>
       </DialogTrigger>
       <DialogTitle></DialogTitle>
       <DialogContent

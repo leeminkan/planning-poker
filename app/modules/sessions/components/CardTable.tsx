@@ -32,7 +32,12 @@ export const CardTable = () => {
   );
 
   return (
-    <div className={cn(['flex flex-col gap-4 justify-center items-center'])}>
+    <div
+      className={cn([
+        'flex flex-col gap-4 justify-center items-center',
+        'text-black',
+      ])}
+    >
       <div className={cn(['flex items-center justify-center gap-2'])}>
         {playerPositions.top.map((player) => (
           <div
@@ -52,6 +57,7 @@ export const CardTable = () => {
           'w-[300px] h-[150px] p-2',
           'flex items-center justify-center',
           'border-solid border-2 bg-green-700 rounded-lg shadow-inner',
+          'text-primary-foreground font-bold',
         ])}
       >
         <p className="truncate">{selectedTicket?.title}</p>

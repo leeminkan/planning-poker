@@ -33,7 +33,9 @@ export const QueryIssueBtnDialog = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className={cn(['m-0'])}>Query Issues</Button>
+        <Button variant="outline" className={cn(['m-0'])}>
+          Query Issues
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[800px]" aria-describedby={undefined}>
         <DialogHeader>

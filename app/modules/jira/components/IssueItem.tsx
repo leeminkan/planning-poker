@@ -39,7 +39,7 @@ export const IssueItem = ({ issue }: { issue: JiraIssue }) => {
             rel="noreferrer"
             target="_blank"
           >
-            <SquareArrowOutUpRight />
+            <SquareArrowOutUpRight className="w-4 h-4" />
           </a>
         </div>
       </CardHeader>

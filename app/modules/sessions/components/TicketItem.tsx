@@ -31,13 +31,13 @@ export const TicketItem = ({
     onSuccess: () => {},
   });
   return (
-    <Card className={cn([isChosen ? 'bg-purple-200' : ''])}>
+    <Card className={cn([isChosen ? 'text-primary bg-purple-200' : ''])}>
       <CardHeader>
         <div className="flex justify-between items-center gap-2">
           <CardTitle className="break-all">{ticket.title}</CardTitle>
           {ticket.jiraIssueLink && (
             <a href={ticket.jiraIssueLink} rel="noreferrer" target="_blank">
-              <SquareArrowOutUpRight />
+              <SquareArrowOutUpRight className="w-4 h-4" />
             </a>
           )}
         </div>
@@ -48,6 +48,7 @@ export const TicketItem = ({
             'max-h-60 p-2',
             'whitespace-pre-wrap break-all overflow-scroll ',
             'border-solid border-2 rounded-md',
+            isChosen ? 'border-primary/50' : '',
           ])}
         >
           {ticket.description}
@@ -56,14 +57,20 @@ export const TicketItem = ({
       <CardFooter
         className={cn(['flex flex-row gap-2 items-center justify-between'])}
       >
-        {ticket.point ? <Badge>{ticket.point}</Badge> : <div></div>}
+        {ticket.point ? (
+          <Badge variant="accent">{ticket.point}</Badge>
+        ) : (
+          <div></div>
+        )}
         <div className="flex gap-2">
           {isChosen ? (
-            <Button variant="outline" onClick={() => reset()}>
+            <Button variant="default" onClick={() => reset()}>
               Reset
             </Button>
           ) : (
-            <Button onClick={() => chooseTicket(ticket.id)}>Vote</Button>
+            <Button variant="outline" onClick={() => chooseTicket(ticket.id)}>
+              Vote
+            </Button>
           )}
           <UpdateTicketBtnDialog ticket={ticket} />
           <Button

@@ -107,7 +107,7 @@ export const GameLayout = ({ id }: { id: string }) => {
   if (!sessionId) return <div>Loading</div>;
 
   return (
-    <div className={cn('h-screen', 'flex flex-col')}>
+    <div className={cn('h-screen', 'flex flex-col', 'text-primary')}>
       <PageHeader />
       <div className={cn(['grow mt-2', 'flex'])}>
         <div className={cn(['basis-1/4', 'flex justify-center'])}></div>
@@ -166,6 +166,7 @@ export const GameLayout = ({ id }: { id: string }) => {
                       <PointCard
                         key={card}
                         isFlipped={true}
+                        enableHover={true}
                         isActive={player?.currentCard === card}
                         content={card}
                         onClick={() => {

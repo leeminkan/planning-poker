@@ -7,12 +7,14 @@ type PointCardProps = {
   isFlipped: boolean;
   isActive?: boolean;
   content: string | null;
+  enableHover?: boolean;
 };
 export function PointCard({
   onClick,
   isFlipped,
   isActive,
   content,
+  enableHover,
 }: PointCardProps) {
   return (
     <div
@@ -29,11 +31,10 @@ export function PointCard({
             'w-full h-full',
             'flex items-center justify-center',
             'rounded-lg',
-            'shadow-lg',
-            content
-              ? 'bg-blue-500 hover:bg-blue-700'
-              : 'bg-gray-500 hover:bg-gray-700',
-            'hover:cursor-pointer',
+            'shadow-md',
+            'text-primary',
+            content ? 'shadow-primary bg-white-500' : 'bg-gray-500',
+            enableHover ? 'hover:bg-gray-200 hover:cursor-pointer' : '',
           ])}
         >
           <h1 className="text-xl">{content}</h1>
@@ -45,12 +46,11 @@ export function PointCard({
             'flex items-center justify-center',
             'rounded-lg',
             'shadow-lg',
-            content
-              ? 'bg-red-500 hover:bg-red-700'
-              : 'bg-gray-500 hover:bg-gray-700',
-            'hover:cursor-pointer',
+            content ? 'bg-red-500' : 'bg-gray-500',
           ])}
-        />
+        >
+          {content ? '✌️' : ''}
+        </div>
       )}
     </div>
   );

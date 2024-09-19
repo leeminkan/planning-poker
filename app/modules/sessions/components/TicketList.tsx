@@ -14,7 +14,13 @@ export const TicketList = ({ sessionId }: { sessionId: string }) => {
 
   return (
     <>
-      <div className={cn(['w-full mb-2', 'flex items-center justify-around'])}>
+      <div
+        className={cn([
+          'w-full mb-2',
+          'flex items-center justify-around',
+          'text-primary text-xl font-bold',
+        ])}
+      >
         <div>Tickets</div>
       </div>
       <div className={cn(['p-4', 'rounded-md border'])}>
