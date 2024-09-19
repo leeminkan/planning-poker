@@ -16,6 +16,7 @@ import {
 
 import { removeUndefinedValuesFromObject } from '../session/utils';
 import { JiraHttpService } from './jira-http.service';
+import { TOKEN_MASK } from './jira.constant';
 import { jiraRepository } from './jira.repository';
 
 const jiraRouter = Router();
@@ -27,20 +28,21 @@ jiraRouter.post(
     const reqWithUser = req as RequestWithUser;
     try {
       const body: SetupApiKeyDto = setupApiKeySchema.parse(req.body);
-      const jiraHttpService = new JiraHttpService(
-        body.host,
-        body.email,
-        body.token,
-      );
-      const isValid = await jiraHttpService.checkValid();
-      if (!isValid) {
-        return res.status(400).send({
-          message: 'Invalid Params',
-        });
+      if (body.token !== TOKEN_MASK) {
+        const jiraHttpService = new JiraHttpService(
+          body.host,
+          body.email,
+          body.token,
+        );
+        const isValid = await jiraHttpService.checkValid();
+        if (!isValid) {
+          return res.status(400).send({
+            message: 'Invalid Params',
+          });
+        }
       }
 
       let jira = await jiraRepository.findOneBySessionId(body.sessionId);
-
       if (!jira) {
         jira = await jiraRepository.create({
           userId: reqWithUser.user.id,

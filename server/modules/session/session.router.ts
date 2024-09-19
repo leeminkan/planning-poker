@@ -3,6 +3,7 @@ import { Request, Response, Router } from 'express';
 import { UpdateSessionDto, updateSessionSchema } from '~/shared/session.dto';
 import { SSE_SYNC_SESSION } from '~/shared/socket-event';
 
+import { TOKEN_MASK } from '../jira/jira.constant';
 import { jiraRepository } from '../jira/jira.repository';
 import { sessionEventEmitter } from './session-socket.handler';
 import { sessionStateRepository } from './session-state.repository';
@@ -27,7 +28,12 @@ sessionRouter.get('/:id/jira', async (req: Request, res: Response, next) => {
   try {
     const jira = await jiraRepository.findOneBySessionId(req.params.id);
     return res.send({
-      data: jira,
+      data: jira
+        ? {
+            ...jira,
+            token: jira.token ? TOKEN_MASK : null,
+          }
+        : null,
     });
   } catch (error) {
     next(error);

@@ -2,6 +2,7 @@ import { DeepPartial, Repository } from 'typeorm';
 
 import { AppDataSource } from '~/server/data-source';
 
+import { TOKEN_MASK } from './jira.constant';
 import { JiraEntity } from './jira.entity';
 
 class JiraRepository {
@@ -29,6 +30,8 @@ class JiraRepository {
   }
 
   async updateById(id: string, payload: DeepPartial<JiraEntity>) {
+    if (payload.token === TOKEN_MASK) delete payload.token;
+
     return await this.repository.update(
       {
         id,
