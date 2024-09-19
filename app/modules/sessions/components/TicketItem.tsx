@@ -48,6 +48,11 @@ export const TicketItem = ({
         className={cn(['flex flex-row gap-2 items-center justify-between'])}
       >
         {ticket.point ? <Badge>{ticket.point}</Badge> : <div></div>}
+        {ticket.jiraIssueId ? (
+          <Badge>JIRA-{ticket.jiraIssueId}</Badge>
+        ) : (
+          <div></div>
+        )}
         <div className="flex gap-2">
           {isChosen ? (
             <Button variant="outline" onClick={() => reset()}>

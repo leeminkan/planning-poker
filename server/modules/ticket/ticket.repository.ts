@@ -20,6 +20,21 @@ class TicketRepository {
     return data;
   }
 
+  async findBySessionAndJira({
+    sessionId,
+    jiraId,
+    jiraIssueId,
+  }: {
+    sessionId: string;
+    jiraId: string;
+    jiraIssueId: string;
+  }) {
+    const data = await this.repository.findOne({
+      where: { sessionId, jiraId, jiraIssueId },
+    });
+    return data;
+  }
+
   async create(payload: DeepPartial<TicketEntity>) {
     return await this.repository.save(payload);
   }

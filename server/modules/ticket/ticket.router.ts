@@ -25,6 +25,20 @@ ticketRouter.post('/', async (req: Request, res: Response, next) => {
       });
     }
 
+    if (body.jiraId && body.jiraIssueId) {
+      const existedTicket = await ticketRepository.findBySessionAndJira({
+        sessionId: body.sessionId,
+        jiraId: body.jiraId,
+        jiraIssueId: body.jiraIssueId,
+      });
+
+      if (existedTicket) {
+        return res.send({
+          data: existedTicket,
+        });
+      }
+    }
+
     const ticket = await ticketRepository.create(body);
 
     const sessionState = sessionStateRepository.findById(body.sessionId);

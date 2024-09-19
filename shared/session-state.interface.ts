@@ -8,6 +8,8 @@ export interface Ticket {
   title: string;
   description: string;
   point?: number;
+  jiraId?: string;
+  jiraIssueId?: string;
 }
 export interface SessionStateInterface {
   id: string;

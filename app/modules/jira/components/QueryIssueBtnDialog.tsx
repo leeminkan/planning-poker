@@ -45,18 +45,6 @@ export const QueryIssueBtnDialog = () => {
                   <IssueItem issue={issue} />
                   <div className="p-2"></div>
                 </div>
-              ))}{' '}
-              {issues.map((issue) => (
-                <div key={issue.id}>
-                  <IssueItem issue={issue} />
-                  <div className="p-2"></div>
-                </div>
-              ))}{' '}
-              {issues.map((issue) => (
-                <div key={issue.id}>
-                  <IssueItem issue={issue} />
-                  <div className="p-2"></div>
-                </div>
               ))}
             </ScrollArea>
           ) : (
