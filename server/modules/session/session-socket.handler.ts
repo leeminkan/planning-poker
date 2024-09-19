@@ -12,6 +12,7 @@ import {
   SLE_UNSELECT_CARD,
   SSE_INIT_SESSION,
   SSE_PING,
+  SSE_RESET_SESSION,
   SSE_SYNC_SESSION,
   SSE_SYNC_USER,
 } from '~/shared/socket-event';
@@ -121,9 +122,7 @@ export class SessionSocket implements SocketHandlerInterface {
         sessionState.reset();
 
         const socketRoomId = getFormattedSessionRoom(sessionState.id);
-        socketWithUser.nsp
-          .to(socketRoomId)
-          .emit(SSE_SYNC_SESSION, sessionState as SSESyncSessionPayload);
+        socketWithUser.nsp.to(socketRoomId).emit(SSE_RESET_SESSION);
       },
     );
 

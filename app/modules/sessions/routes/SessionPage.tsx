@@ -5,6 +5,7 @@ import {
   SLE_PING,
   SSE_INIT_SESSION,
   SSE_PING,
+  SSE_RESET_SESSION,
   SSE_SYNC_SESSION,
   SSE_SYNC_USER,
 } from '~/shared/socket-event';
@@ -88,6 +89,10 @@ export const GameLayout = ({ id }: { id: string }) => {
       console.log('Received SSE_SYNC_SESSION', sessionState);
       syncSessionState(sessionState);
     });
+    socket.on(SSE_RESET_SESSION, () => {
+      console.log('Received SSE_RESET_SESSION');
+      resetRound();
+    });
 
     socket.on(SSE_SYNC_USER, (userSession: SSESyncUserPayload) => {
       console.log('Received SSE_SYNC_USER', userSession);
@@ -102,7 +107,7 @@ export const GameLayout = ({ id }: { id: string }) => {
       reset();
       SocketClient.disconnect();
     };
-  }, [id, name, reset, syncSessionState, syncUser, userId]);
+  }, [id, name, reset, resetRound, syncSessionState, syncUser, userId]);
 
   if (!sessionId) return <div>Loading</div>;
 
