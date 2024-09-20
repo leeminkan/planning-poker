@@ -80,7 +80,7 @@ export function ConfirmationForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={isLoading}>
+        <Button variant="outline" type="submit" disabled={isLoading}>
           Join!
         </Button>
       </form>

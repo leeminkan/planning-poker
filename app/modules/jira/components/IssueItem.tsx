@@ -38,6 +38,7 @@ export const IssueItem = ({ issue }: { issue: JiraIssue }) => {
             href={getJiraIssueLink(jiraData?.host, issue.key)}
             rel="noreferrer"
             target="_blank"
+            className="p-2 rounded-full hover:bg-primary/20"
           >
             <SquareArrowOutUpRight className="w-4 h-4" />
           </a>

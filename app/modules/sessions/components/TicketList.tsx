@@ -32,7 +32,7 @@ export const TicketList = ({ sessionId }: { sessionId: string }) => {
                   ticket={ticket}
                   isChosen={currentTicketId === ticket.id}
                   chooseTicket={chooseTicket}
-                  reset={resetRound}
+                  reset={() => resetRound({ shouldEmitSocket: true })}
                 />
                 <div className="p-2"></div>
               </div>

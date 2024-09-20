@@ -91,7 +91,7 @@ export const GameLayout = ({ id }: { id: string }) => {
     });
     socket.on(SSE_RESET_SESSION, () => {
       console.log('Received SSE_RESET_SESSION');
-      resetRound();
+      resetRound({ shouldEmitSocket: false });
     });
 
     socket.on(SSE_SYNC_USER, (userSession: SSESyncUserPayload) => {
@@ -104,7 +104,7 @@ export const GameLayout = ({ id }: { id: string }) => {
     });
 
     return () => {
-      reset();
+      reset({ shouldEmitSocket: false });
       SocketClient.disconnect();
     };
   }, [id, name, reset, resetRound, syncSessionState, syncUser, userId]);
@@ -128,6 +128,7 @@ export const GameLayout = ({ id }: { id: string }) => {
               >
                 {!isRevealed ? (
                   <Button
+                    variant="outline"
                     onClick={() => {
                       setIsRevealed(true);
                     }}
@@ -139,10 +140,10 @@ export const GameLayout = ({ id }: { id: string }) => {
                     currentTicketId={currentTicketId}
                     averagePoint={averagePoint}
                     onReset={() => {
-                      resetRound();
+                      resetRound({ shouldEmitSocket: true });
                     }}
                     onSuccess={() => {
-                      resetRound();
+                      resetRound({ shouldEmitSocket: true });
                     }}
                   ></ResultForm>
                 )}

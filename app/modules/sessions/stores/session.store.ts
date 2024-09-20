@@ -27,8 +27,8 @@ type SessionAction = {
   setIsRevealed: (isRevealed: SessionState['isRevealed']) => void;
   chooseTicket: (ticketId: Ticket['id']) => void;
   syncSessionState: (sessionState: SessionStateInterface) => void;
-  reset: () => void;
-  resetRound: () => void;
+  reset: (options: { shouldEmitSocket: boolean }) => void;
+  resetRound: (options: { shouldEmitSocket: boolean }) => void;
 };
 type SessionStore = SessionState & {
   actions: SessionAction;
@@ -100,11 +100,13 @@ export const useSessionStore = create<SessionStore>((set) => ({
     },
     syncSessionState: (sessionState: SessionStateInterface) =>
       set((state) => ({ ...state, ...sessionState })),
-    reset: () =>
+    reset: (options: { shouldEmitSocket: boolean }) =>
       set((state) => {
-        SocketClient.getInstance().emit(SLE_RESET_SESSION, {
-          sessionId: state.id,
-        } as SLEResetSessionPayload);
+        if (options.shouldEmitSocket) {
+          SocketClient.getInstance().emit(SLE_RESET_SESSION, {
+            sessionId: state.id,
+          } as SLEResetSessionPayload);
+        }
         const players = state.players.map((player) => {
           player.currentCard = null;
           return player;
@@ -119,11 +121,13 @@ export const useSessionStore = create<SessionStore>((set) => ({
           currentTicketId: undefined,
         };
       }),
-    resetRound: () =>
+    resetRound: (options: { shouldEmitSocket: boolean }) =>
       set((state) => {
-        SocketClient.getInstance().emit(SLE_RESET_SESSION, {
-          sessionId: state.id,
-        } as SLEResetSessionPayload);
+        if (options.shouldEmitSocket) {
+          SocketClient.getInstance().emit(SLE_RESET_SESSION, {
+            sessionId: state.id,
+          } as SLEResetSessionPayload);
+        }
         const players = state.players.map((player) => {
           player.currentCard = null;
           return player;

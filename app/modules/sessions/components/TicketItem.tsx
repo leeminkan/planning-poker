@@ -36,7 +36,12 @@ export const TicketItem = ({
         <div className="flex justify-between items-center gap-2">
           <CardTitle className="break-all">{ticket.title}</CardTitle>
           {ticket.jiraIssueLink && (
-            <a href={ticket.jiraIssueLink} rel="noreferrer" target="_blank">
+            <a
+              href={ticket.jiraIssueLink}
+              rel="noreferrer"
+              target="_blank"
+              className="p-2 rounded-full hover:bg-primary/20"
+            >
               <SquareArrowOutUpRight className="w-4 h-4" />
             </a>
           )}
@@ -64,7 +69,7 @@ export const TicketItem = ({
         )}
         <div className="flex gap-2">
           {isChosen ? (
-            <Button variant="default" onClick={() => reset()}>
+            <Button variant="outline" onClick={() => reset()}>
               Reset
             </Button>
           ) : (
@@ -74,7 +79,7 @@ export const TicketItem = ({
           )}
           <UpdateTicketBtnDialog ticket={ticket} />
           <Button
-            variant="destructive"
+            variant="destructive-outline"
             onClick={() => mutate({ id: ticket.id })}
             disabled={isLoading}
           >

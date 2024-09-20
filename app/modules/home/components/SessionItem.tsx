@@ -19,6 +19,7 @@ export const SessionItem = ({
       <CardContent className="flex gap-2 justify-between">
         <div>{session.name}</div>
         <Button
+          variant="outline"
           onClick={() => {
             return navigate(`/sessions/${session.id}`);
           }}
