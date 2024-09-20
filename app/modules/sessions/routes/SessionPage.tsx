@@ -21,24 +21,28 @@ import { cn } from '~/lib/utils';
 import { useUserSessionStore } from '~/modules/user-session/stores/user-session.store';
 
 import { CardTable } from '../components/CardTable';
+import { PageError } from '../components/PageError';
 import { PageHeader } from '../components/PageHeader';
+import { PageLoading } from '../components/PageLoading';
 import { PointCard } from '../components/PointCard';
 import { ResultForm } from '../components/ResultForm';
 import { TicketList } from '../components/TicketList';
 import { cards } from '../constants';
+import useTimeout from '../hooks/useTimeout';
 import { useSessionState } from '../queries/useSessionState';
 import SocketClient from '../socket-client';
 import { useSessionStore } from '../stores/session.store';
 
 export const SessionPage = ({ id }: { id: string }) => {
   const { isLoading, isError } = useSessionState({ id });
+  const isReady = useTimeout(1000);
 
-  if (isLoading) {
-    return <div>Loading</div>;
+  if (isLoading || !isReady) {
+    return <PageLoading />;
   }
 
-  if (isError) {
-    return <div>Error</div>;
+  if (!isError) {
+    return <PageError />;
   }
 
   return <GameLayout id={id} />;
@@ -109,7 +113,9 @@ export const GameLayout = ({ id }: { id: string }) => {
     };
   }, [id, name, reset, resetRound, syncSessionState, syncUser, userId]);
 
-  if (!sessionId) return <div>Loading</div>;
+  if (!sessionId) {
+    return <PageLoading />;
+  }
 
   return (
     <div className={cn('h-screen', 'flex flex-col', 'text-primary')}>
