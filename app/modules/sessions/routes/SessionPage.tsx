@@ -41,7 +41,7 @@ export const SessionPage = ({ id }: { id: string }) => {
     return <PageLoading />;
   }
 
-  if (!isError) {
+  if (isError) {
     return <PageError />;
   }
 
