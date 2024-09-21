@@ -16,14 +16,14 @@ import {
   SSESyncUserPayload,
 } from '~/shared/socket-event.types';
 
+import { PageError } from '~/components/PageError';
+import { PageLoading } from '~/components/PageLoading';
 import { Button } from '~/components/ui/button';
 import { cn } from '~/lib/utils';
 import { useUserSessionStore } from '~/modules/user-session/stores/user-session.store';
 
 import { CardTable } from '../components/CardTable';
-import { PageError } from '../components/PageError';
 import { PageHeader } from '../components/PageHeader';
-import { PageLoading } from '../components/PageLoading';
 import { PointCard } from '../components/PointCard';
 import { ResultForm } from '../components/ResultForm';
 import { TicketList } from '../components/TicketList';
@@ -66,7 +66,6 @@ export const GameLayout = ({ id }: { id: string }) => {
   } = useSessionStore();
   const {
     id: userId,
-    name,
     actions: { syncUser },
   } = useUserSessionStore();
   const player = players.find((player) => player.id === userId);
@@ -77,7 +76,6 @@ export const GameLayout = ({ id }: { id: string }) => {
       socket.emit(SLE_PING, 'Ping from client!');
       socket.emit(SLE_JOIN_SESSION, {
         sessionId: id,
-        name,
       } as SLEJoinSessionPayload);
     });
     socket.on(SSE_PING, (value) => {
@@ -111,7 +109,7 @@ export const GameLayout = ({ id }: { id: string }) => {
       reset({ shouldEmitSocket: false });
       SocketClient.disconnect();
     };
-  }, [id, name, reset, resetRound, syncSessionState, syncUser, userId]);
+  }, [id, reset, resetRound, syncSessionState, syncUser, userId]);
 
   if (!sessionId) {
     return <PageLoading />;

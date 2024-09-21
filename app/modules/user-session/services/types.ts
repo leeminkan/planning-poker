@@ -5,3 +5,4 @@ export type Response<T> = {
 };
 
 export type UpdateUserSessionResponse = Response<UserSessionStateInterface>;
+export type InitUserSessionResponse = Response<UserSessionStateInterface>;

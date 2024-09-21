@@ -1,8 +1,19 @@
-import { UpdateUserSessionDto } from '~/shared/user-session.dto';
+import {
+  InitUserSessionDto,
+  UpdateUserSessionDto,
+} from '~/shared/user-session.dto';
 
 import { axiosInstance } from '~/axios';
 
-import { UpdateUserSessionResponse } from './types';
+import { InitUserSessionResponse, UpdateUserSessionResponse } from './types';
+
+export const initUserSessionStateApi = async (payload: InitUserSessionDto) => {
+  const res = await axiosInstance.post<InitUserSessionResponse>(
+    `/api/user-sessions/init`,
+    payload,
+  );
+  return res.data.data;
+};
 
 export const updateUserSessionStateApi = async ({
   id,

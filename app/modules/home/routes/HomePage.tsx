@@ -1,8 +1,8 @@
 import { cn } from '~/lib/utils';
 
 import { ConfirmationForm } from '../components/ConfirmationForm';
+import { PageHeader } from '../components/PageHeader';
 import { RecentSessionList } from '../components/RecentSessionList';
-import { PageHeader } from './PageHeader';
 
 export const HomePage = () => {
   return (

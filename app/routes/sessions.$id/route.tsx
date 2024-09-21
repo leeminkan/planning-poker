@@ -2,6 +2,7 @@ import { type LoaderFunction, type MetaFunction, json } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 
 import { SessionPage } from '~/modules/sessions/routes/SessionPage';
+import { UserSessionWrapper } from '~/modules/user-session/components/UserSessionWrapper';
 
 export const meta: MetaFunction = () => {
   return [
@@ -19,5 +20,9 @@ type LoaderData = {
 };
 export default function Index() {
   const { id } = useLoaderData<LoaderData>();
-  return <SessionPage id={id} />;
+  return (
+    <UserSessionWrapper>
+      <SessionPage id={id} />
+    </UserSessionWrapper>
+  );
 }

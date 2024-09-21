@@ -41,15 +41,15 @@ export class SessionSocket implements SocketHandlerInterface {
   handleConnection(socketWithUser: SocketWithUser) {
     socketWithUser.emit(SSE_PING, 'Ping from server!');
     socketWithUser.on(SLE_PING, (value) => {
-      console.log('Received', value);
+      console.log('SLE_PING', value);
     });
     socketWithUser.emit(SSE_SYNC_USER, socketWithUser.user);
     socketWithUser.join(getFormattedUserSessionRoom(socketWithUser.user.id));
 
     socketWithUser.on(
       SLE_JOIN_SESSION,
-      async ({ sessionId, name }: SLEJoinSessionPayload) => {
-        console.log('SLE_JOIN_SESSION', { sessionId, name });
+      async ({ sessionId }: SLEJoinSessionPayload) => {
+        console.log('SLE_JOIN_SESSION', { sessionId });
         // validate
         if (!sessionId) return;
 
@@ -60,9 +60,6 @@ export class SessionSocket implements SocketHandlerInterface {
         if (!sessionState) return;
 
         socketWithUser.user.setCurrentSession(sessionState.id);
-        if (name) {
-          socketWithUser.user.setName(name);
-        }
         sessionState.addNewPlayer({
           id: socketWithUser.user.id,
           name: socketWithUser.user.name,
@@ -70,6 +67,7 @@ export class SessionSocket implements SocketHandlerInterface {
 
         const socketRoomId = getFormattedSessionRoom(sessionState.id);
         socketWithUser.join(socketRoomId);
+
         socketWithUser.emit(
           SSE_SYNC_USER,
           socketWithUser.user as SSESyncUserPayload,

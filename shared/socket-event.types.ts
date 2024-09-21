@@ -1,7 +1,7 @@
 import { SessionStateInterface } from './session-state.interface';
 import { UserSessionStateInterface } from './user-session.interface';
 
-export type SLEJoinSessionPayload = { sessionId: string; name?: string };
+export type SLEJoinSessionPayload = { sessionId: string };
 export type SLESetIsRevealedSessionPayload = {
   sessionId: string;
   isRevealed: boolean;

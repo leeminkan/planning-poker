@@ -2,7 +2,9 @@ import { Request, Response, Router } from 'express';
 
 import { SSE_SYNC_SESSION, SSE_SYNC_USER } from '~/shared/socket-event';
 import {
+  InitUserSessionDto,
   UpdateUserSessionDto,
+  initUserSessionSchema,
   updateUserSessionSchema,
 } from '~/shared/user-session.dto';
 
@@ -11,6 +13,26 @@ import { sessionStateRepository } from '../session/session-state.repository';
 import { userSessionStateRepository } from './user-session-state.repository';
 
 const userSessionRouter = Router();
+
+userSessionRouter.post('/init', async (req: Request, res: Response, next) => {
+  try {
+    const body: InitUserSessionDto = initUserSessionSchema.parse(req.body);
+    let userSession = body.id
+      ? await userSessionStateRepository.findById(body.id)
+      : null;
+    if (!userSession) {
+      userSession = await userSessionStateRepository.create(body);
+    } else {
+      userSession.update(body);
+    }
+
+    return res.send({
+      data: userSession,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
 
 userSessionRouter.put('/:id', async (req: Request, res: Response, next) => {
   try {

@@ -9,8 +9,9 @@ export class UserSessionState implements UserSessionStateInterface {
   name?: string = undefined;
   currentSessionId?: string = undefined;
 
-  constructor() {
-    this.id = uuidv4();
+  constructor({ id, name }: { id?: string; name?: string } = {}) {
+    this.id = id || uuidv4();
+    this.name = name;
   }
 
   setCurrentSession(sessionId: string) {

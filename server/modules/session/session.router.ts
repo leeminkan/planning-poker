@@ -3,6 +3,8 @@ import { Request, Response, Router } from 'express';
 import { UpdateSessionDto, updateSessionSchema } from '~/shared/session.dto';
 import { SSE_SYNC_SESSION } from '~/shared/socket-event';
 
+import { authenticateMiddleware } from '~/server/auth.middleware';
+
 import { TOKEN_MASK } from '../jira/jira.constant';
 import { jiraRepository } from '../jira/jira.repository';
 import { sessionEventEmitter } from './session-socket.handler';
@@ -24,21 +26,25 @@ sessionRouter.get('/recent', async (req: Request, res: Response, next) => {
   }
 });
 
-sessionRouter.get('/:id/jira', async (req: Request, res: Response, next) => {
-  try {
-    const jira = await jiraRepository.findOneBySessionId(req.params.id);
-    return res.send({
-      data: jira
-        ? {
-            ...jira,
-            token: jira.token ? TOKEN_MASK : null,
-          }
-        : null,
-    });
-  } catch (error) {
-    next(error);
-  }
-});
+sessionRouter.get(
+  '/:id/jira',
+  authenticateMiddleware,
+  async (req: Request, res: Response, next) => {
+    try {
+      const jira = await jiraRepository.findOneBySessionId(req.params.id);
+      return res.send({
+        data: jira
+          ? {
+              ...jira,
+              token: jira.token ? TOKEN_MASK : null,
+            }
+          : null,
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+);
 
 sessionRouter.get('/:id', async (req: Request, res: Response, next) => {
   try {
