@@ -19,8 +19,10 @@ export function PointCard({
   return (
     <div
       className={cn([
-        'w-16 h-20',
+        'w-8 h-10',
+        'md:w-16 md:h-20',
         isActive ? 'transition-transform -translate-y-10' : '',
+        'z-10',
       ])}
       role="presentation"
       onClick={onClick}

@@ -51,34 +51,40 @@ export function ResultForm({
         <div
           className={cn([
             'p-4',
-            'flex gap-2 items-baseline justify-center',
+            'flex gap-2 items-baseline justify-center flex-wrap',
             'border-solid border-2',
           ])}
         >
-          <div className={cn(['flex gap-2 items-center justify-center'])}>
-            <FormLabel>Average</FormLabel>
-            <div>{averagePoint}</div>
+          <div className="flex gap-2 z-10">
+            <div className={cn(['flex gap-2 items-center justify-center'])}>
+              <FormLabel>Average</FormLabel>
+              <div>{averagePoint}</div>
+            </div>
+            <FormField
+              control={form.control}
+              name="point"
+              render={({ field }) => (
+                <FormItem>
+                  <div
+                    className={cn(['flex gap-2 items-center justify-center'])}
+                  >
+                    <FormLabel>Final</FormLabel>
+                    <FormControl>
+                      <Input className="w-20" placeholder="Final" {...field} />
+                    </FormControl>
+                  </div>
+                </FormItem>
+              )}
+            />
           </div>
-          <FormField
-            control={form.control}
-            name="point"
-            render={({ field }) => (
-              <FormItem>
-                <div className={cn(['flex gap-2 items-center justify-center'])}>
-                  <FormLabel>Final</FormLabel>
-                  <FormControl>
-                    <Input className="w-20" placeholder="Final" {...field} />
-                  </FormControl>
-                </div>
-              </FormItem>
-            )}
-          />
-          <Button type="submit" disabled={isLoading}>
-            Save
-          </Button>
-          <Button onClick={onReset} disabled={isLoading}>
-            Reset
-          </Button>
+          <div className="flex gap-2 z-10">
+            <Button type="submit" disabled={isLoading}>
+              Save
+            </Button>
+            <Button onClick={onReset} disabled={isLoading}>
+              Reset
+            </Button>
+          </div>
         </div>
       </form>
     </Form>

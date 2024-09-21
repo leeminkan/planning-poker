@@ -40,7 +40,7 @@ const PageRightHeader = () => {
           <CopyIcon className="h-4 w-4" />
         </Button>
       </div>
-      <div className="md:hidden z-10">
+      <div className="md:hidden z-30">
         <Button
           variant="outline"
           onClick={() => {

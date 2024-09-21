@@ -18,19 +18,21 @@ const TicketListContent = () => {
   } = useSessionStore();
 
   return (
-    <div className="flex flex-col justify-center">
-      <div
-        className={cn([
-          'w-full mb-2',
-          'flex items-center justify-around',
-          'text-primary text-xl font-bold',
-        ])}
-      >
-        <div>Tickets</div>
-      </div>
+    <div className="flex flex-col justify-center z-20">
       <div className={cn(['p-4', 'rounded-md', ' bg-primary/50'])}>
+        <div
+          className={cn([
+            'w-full mb-2',
+            'flex items-center justify-around',
+            'text-primary-foreground text-xl font-bold',
+          ])}
+        >
+          <div>Tickets</div>
+        </div>
         {tickets.length ? (
-          <ScrollArea className={cn(['h-[700px]', 'flex gap-4 flex-col'])}>
+          <ScrollArea
+            className={cn(['h-[600px] md:h-[700px]', 'flex gap-4 flex-col'])}
+          >
             {tickets.map((ticket) => (
               <div key={ticket.id}>
                 <TicketItem
@@ -45,7 +47,10 @@ const TicketListContent = () => {
           </ScrollArea>
         ) : (
           <div
-            className={cn(['h-[700px]', 'flex items-center justify-center'])}
+            className={cn([
+              'h-[600px] md:h-[700px]',
+              'flex items-center justify-center',
+            ])}
           >
             Please add ticket!
           </div>
