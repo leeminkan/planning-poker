@@ -1,3 +1,4 @@
+import { SearchCodeIcon } from 'lucide-react';
 import React from 'react';
 
 import { Button } from '~/components/ui/button';
@@ -34,7 +35,7 @@ export const QueryIssueBtnDialog = () => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="outline" className={cn(['m-0'])}>
-          Query Issues
+          <SearchCodeIcon className="w-4 h-4" />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[800px]" aria-describedby={undefined}>

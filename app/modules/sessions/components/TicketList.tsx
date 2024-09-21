@@ -13,7 +13,7 @@ export const TicketList = ({ sessionId }: { sessionId: string }) => {
   } = useSessionStore();
 
   return (
-    <>
+    <div className={cn(['md:flex flex-col justify-center', 'hidden'])}>
       <div
         className={cn([
           'w-full mb-2',
@@ -48,6 +48,6 @@ export const TicketList = ({ sessionId }: { sessionId: string }) => {
 
         <CreateTicketBtnDialog sessionId={sessionId} />
       </div>
-    </>
+    </div>
   );
 };

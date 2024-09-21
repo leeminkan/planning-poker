@@ -1,3 +1,4 @@
+import { PersonIcon } from '@radix-ui/react-icons';
 import React from 'react';
 
 import { Button } from '~/components/ui/button';
@@ -25,7 +26,7 @@ export const UpdateUserSessionBtnDialog = () => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="outline" className={cn(['m-0'])}>
-          Change Profile
+          <PersonIcon className="h-4 w-4" />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]" aria-describedby={undefined}>

@@ -120,7 +120,9 @@ export const GameLayout = ({ id }: { id: string }) => {
       <PageHeader />
       <div className={cn(['grow mt-2', 'flex'])}>
         <div className={cn(['basis-1/4', 'flex justify-center'])}></div>
-        <div className={cn(['basis-1/2', 'flex flex-col justify-center'])}>
+        <div
+          className={cn(['basis-1/2', 'flex flex-col justify-center', 'px-4'])}
+        >
           {currentTicketId && (
             <>
               {/* TOP */}

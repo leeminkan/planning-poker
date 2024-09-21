@@ -1,4 +1,4 @@
-import { SquareArrowOutUpRight } from 'lucide-react';
+import { ExternalLinkIcon } from '@radix-ui/react-icons';
 
 import { Ticket } from '~/shared/session-state.interface';
 
@@ -40,9 +40,9 @@ export const TicketItem = ({
               href={ticket.jiraIssueLink}
               rel="noreferrer"
               target="_blank"
-              className="p-2 rounded-full hover:bg-primary/20"
+              className="p-1 text-primary rounded-md border-primary border-solid border hover:bg-primary hover:text-white"
             >
-              <SquareArrowOutUpRight className="w-4 h-4" />
+              <ExternalLinkIcon className="w-4 h-4" />
             </a>
           )}
         </div>
@@ -50,7 +50,7 @@ export const TicketItem = ({
       <CardContent>
         <div
           className={cn([
-            'max-h-60 p-2',
+            'max-h-60 p-2 min-h-20',
             'whitespace-pre-wrap break-all overflow-scroll ',
             'border-solid border-2 rounded-md',
             isChosen ? 'border-primary/50' : '',
