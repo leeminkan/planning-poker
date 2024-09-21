@@ -199,7 +199,7 @@ export const GameLayout = ({ id }: { id: string }) => {
           )}
         </div>
         <div className={cn(['basis-1/4', 'flex flex-col justify-center'])}>
-          <TicketList sessionId={sessionId} />
+          <TicketList />
         </div>
       </div>
     </div>

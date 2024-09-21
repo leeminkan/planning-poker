@@ -1,3 +1,7 @@
+import { ThickArrowRightIcon } from '@radix-ui/react-icons';
+import { useState } from 'react';
+
+import { Button } from '~/components/ui/button';
 import { ScrollArea } from '~/components/ui/scroll-area';
 import { cn } from '~/lib/utils';
 
@@ -5,15 +9,16 @@ import { TicketItem } from '../components/TicketItem';
 import { useSessionStore } from '../stores/session.store';
 import { CreateTicketBtnDialog } from './CreateTicketBtnDialog';
 
-export const TicketList = ({ sessionId }: { sessionId: string }) => {
+const TicketListContent = () => {
   const {
+    id: sessionId,
     tickets,
     currentTicketId,
     actions: { chooseTicket, resetRound },
   } = useSessionStore();
 
   return (
-    <div className={cn(['md:flex flex-col justify-center', 'hidden'])}>
+    <div className="flex flex-col justify-center">
       <div
         className={cn([
           'w-full mb-2',
@@ -23,7 +28,7 @@ export const TicketList = ({ sessionId }: { sessionId: string }) => {
       >
         <div>Tickets</div>
       </div>
-      <div className={cn(['p-4', 'rounded-md border'])}>
+      <div className={cn(['p-4', 'rounded-md', ' bg-primary/50'])}>
         {tickets.length ? (
           <ScrollArea className={cn(['h-[700px]', 'flex gap-4 flex-col'])}>
             {tickets.map((ticket) => (
@@ -47,6 +52,46 @@ export const TicketList = ({ sessionId }: { sessionId: string }) => {
         )}
 
         <CreateTicketBtnDialog sessionId={sessionId} />
+      </div>
+    </div>
+  );
+};
+
+export const TicketList = () => {
+  const [showMenu, setShowMenu] = useState(true);
+
+  return (
+    <div className="relative h-full">
+      <div
+        className={cn([
+          'h-full flex items-center justify-end mr-2',
+          'absolute top-0 right-0',
+        ])}
+      >
+        {showMenu ? (
+          <Button
+            className="rounded-none rounded-l-full bg-primary/50 hover:bg-primary/60 ml-2"
+            variant="default"
+            size="icon"
+            onClick={() => {
+              setShowMenu(!showMenu);
+            }}
+          >
+            <ThickArrowRightIcon />
+          </Button>
+        ) : (
+          <Button
+            className="rounded-none rounded-l-full"
+            variant="default"
+            onClick={() => {
+              setShowMenu(!showMenu);
+            }}
+          >
+            Tickets
+          </Button>
+        )}
+
+        {showMenu && <TicketListContent />}
       </div>
     </div>
   );
