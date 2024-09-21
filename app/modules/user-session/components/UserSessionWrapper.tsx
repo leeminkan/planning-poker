@@ -19,12 +19,16 @@ export const UserSessionWrapper: React.FC<UserSessionWrapperProps> = ({
     mutate();
   }, [mutate]);
 
-  if (!id || isLoading) {
+  if (isLoading) {
     return <PageLoading />;
   }
 
   if (isError) {
     return <PageError />;
+  }
+
+  if (!id) {
+    return <PageLoading />;
   }
 
   return <>{children}</>;
