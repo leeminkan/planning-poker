@@ -58,6 +58,10 @@ const PageRightHeader = () => {
               'rounded-md border-primary border-solid border',
               'shadow-lg',
             ])}
+            role="presentation"
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
           >
             <QueryIssueBtnDialog />
             <SetupBtnDialog />
