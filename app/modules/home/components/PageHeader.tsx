@@ -41,7 +41,7 @@ export const PageHeader = () => {
           }}
           disabled={isLoading}
         >
-          Start new session!
+          New!
         </Button>
       </div>
     </header>

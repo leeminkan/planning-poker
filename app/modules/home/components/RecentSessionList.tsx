@@ -10,7 +10,7 @@ export const RecentSessionList = () => {
   return (
     <div
       className={cn([
-        'w-full',
+        'w-full mt-4',
         'flex flex-col gap-2 items-center justify-center',
       ])}
     >
@@ -28,6 +28,7 @@ export const RecentSessionList = () => {
           {data?.map((item) => (
             <SessionItem key={item.id} session={item} />
           ))}
+          {data?.length === 0 && 'Nothing...'}
         </div>
       )}
     </div>

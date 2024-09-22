@@ -51,7 +51,7 @@ export function ConfirmationForm() {
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className={cn([
-          'p-4 w-[500px]',
+          'p-4 w-[300px] md:w-[500px]',
           'border-solid border-2',
           'flex flex-col gap-4',
         ])}
@@ -81,7 +81,7 @@ export function ConfirmationForm() {
           )}
         />
         <Button variant="outline" type="submit" disabled={isLoading}>
-          Join!
+          Join
         </Button>
       </form>
     </Form>
